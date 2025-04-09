@@ -5,6 +5,7 @@ import Profile from './_sections/profile'
 import Facilities from './_sections/facilities'
 import Stats from './_sections/stats'
 import Agenda from './_sections/agenda'
+import News from './_sections/news'
 
 export default async function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default async function HomePage() {
       <Profile />
       <Facilities />
       <Stats />
+      <News />
       <Agenda />
     </div>
   )

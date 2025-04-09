@@ -53,9 +53,9 @@ export function Hero() {
                 profesional handal yang siap menghadapi tantangan industri 4.0.
               </p>
               <Button
-                variant="secondary"
+                variant="default"
                 size="lg"
-                className="bg-white text-black hover:bg-white/90 rounded-full"
+                className="rounded-full"
                 onClick={() => {
                   window.scrollBy({
                     top: window.innerHeight,
@@ -79,6 +79,10 @@ export function Hero() {
               }`}
             />
           ))}
+        </div>
+
+        <div className="absolute right-2 bottom-2 md:right-4 md:bottom-4 text-muted-foreground text-sm z-50">
+          Images By: Afiva Nurkamila
         </div>
       </div>
     </div>

@@ -1,28 +1,12 @@
 'use client'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Facility, Media } from '@/payload-types'
-import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { PaginatedDocs } from 'payload'
 import React from 'react'
-
-const fetchFasilites = () =>
-  fetch('/api/facility?limit=5')
-    .then((res) => {
-      if (!res.ok) throw new Error('Fetch Failed')
-      return res.json()
-    })
-    .then((data) => data as PaginatedDocs<Facility>)
+import { useFacilities } from '../_hooks/queries/facilities'
 
 function Facilities() {
-  const {
-    data: facilities,
-    isLoading: facilitiesPending,
-    error: facilitiesError,
-  } = useQuery({
-    queryKey: ['facilities'],
-    queryFn: fetchFasilites,
-  })
+  const { data: facilities, isLoading: facilitiesPending, error: facilitiesError } = useFacilities()
 
   return (
     <section className="py-8 text-center">
