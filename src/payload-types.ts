@@ -72,6 +72,7 @@ export interface Config {
     partner: Partner;
     facility: Facility;
     news: News;
+    agenda: Agenda;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +84,7 @@ export interface Config {
     partner: PartnerSelect<false> | PartnerSelect<true>;
     facility: FacilitySelect<false> | FacilitySelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
+    agenda: AgendaSelect<false> | AgendaSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -208,6 +210,20 @@ export interface News {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agenda".
+ */
+export interface Agenda {
+  id: number;
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -232,6 +248,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'news';
         value: number | News;
+      } | null)
+    | ({
+        relationTo: 'agenda';
+        value: number | Agenda;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -337,6 +357,19 @@ export interface NewsSelect<T extends boolean = true> {
   thumbnail?: T;
   name?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agenda_select".
+ */
+export interface AgendaSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  startDate?: T;
+  endDate?: T;
+  location?: T;
   updatedAt?: T;
   createdAt?: T;
 }

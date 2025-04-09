@@ -4,7 +4,7 @@ import { PaginatedDocs } from 'payload'
 
 export function useFacilities() {
   const fetchData = () =>
-    fetch(`/api/facility?limit=5`)
+    fetch('/api/facility?limit=5')
       .then((res) => {
         if (!res.ok) throw new Error('Fetch Failed')
         return res.json()

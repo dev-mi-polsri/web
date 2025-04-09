@@ -12,7 +12,7 @@ export function usePartners(limit: number) {
       .then((data) => data as PaginatedDocs<Partner>)
 
   return useQuery({
-    queryKey: ['facilities'],
+    queryKey: ['partners'],
     queryFn: fetchData,
   })
 }

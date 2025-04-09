@@ -3,7 +3,8 @@ import { CollectionConfig } from 'payload'
 export const Facility: CollectionConfig = {
   slug: 'facility',
   labels: {
-    plural: 'Facilities',
+    singular: 'Fasilitas',
+    plural: 'Fasilitas',
   },
   admin: {
     description: 'Hanya 5 Konten Yang Pertama Tampil',

@@ -10,7 +10,10 @@ function Facilities() {
 
   return (
     <section className="py-8 text-center">
-      <h1 className="text-2xl font-bold pb-8">Fasilitas</h1>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold">Fasilitas</h1>
+        <p className="text-sm text-muted-foreground">Fasilitas kampus Manajemen Informatika</p>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-screen-lg px-4 pb-4">
         {facilitiesPending
           ? Array.from({ length: 5 }).map((_, idx) => (
@@ -43,7 +46,7 @@ function FacilityCard({ logo, name }: Facility) {
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 rounded-lg" />
-        <div className="absolute bottom-4 left-4 text-white z-50">
+        <div className="absolute bottom-4 left-4 text-white z-40">
           <p className="text-[1.25em] font-bold">{name}</p>
         </div>
       </div>

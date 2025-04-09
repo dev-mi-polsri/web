@@ -9,7 +9,10 @@ export default function Partners() {
   const { data: partners, isLoading: partnersPending, error: partnersError } = usePartners(100)
   return (
     <div className="flex flex-col gap-8 my-8 items-center max-w-full lg:max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold">Kerja Sama</h1>
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Kerja Sama</h1>
+        <p className="text-sm text-muted-foreground">Mitra-Mitra Manajemen Informatika</p>
+      </div>
       {/* <div className="flex flex-row items-center justify-around w-full"> */}
       <Marquee>
         {partnersPending

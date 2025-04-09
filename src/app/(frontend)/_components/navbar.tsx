@@ -22,6 +22,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from './theme-toggle'
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -45,7 +46,7 @@ export function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-300 bg-background',
+        'fixed top-0 w-full z-50 transition-all duration-300 bg-background ',
         isScrolled && 'border-b',
       )}
     >
@@ -176,7 +177,10 @@ export function Navbar() {
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-          <div className="hidden md:block"></div>
+
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
           <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
             <DrawerTrigger asChild>
               <Button variant="outline" size="icon" className="md:hidden">
@@ -201,7 +205,7 @@ export function Navbar() {
                         />
                         Manajemen Informatika Polsri
                       </div>
-                      {/* <ThemeToggle /> */}
+                      <ThemeToggle />
                     </Link>
                   </SheetTitle>
                 </SheetHeader>
