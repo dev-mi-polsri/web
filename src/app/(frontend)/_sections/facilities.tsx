@@ -1,4 +1,5 @@
 'use client'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Facility, Media } from '@/payload-types'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
@@ -27,15 +28,19 @@ function Facilities() {
     <section className="py-8 text-center">
       <h1 className="text-2xl font-bold pb-8">Fasilitas</h1>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-screen-lg px-4 pb-4">
-        {facilitiesPending ? (
-          <p>Loading</p>
-        ) : facilitiesError ? (
-          <p>Error</p>
-        ) : !facilities ? (
-          <p>Not Found</p>
-        ) : (
-          facilities.docs.map((facility, idx) => <FacilityCard {...facility} key={idx} />)
-        )}
+        {facilitiesPending
+          ? Array.from({ length: 5 }).map((_, idx) => (
+              <Skeleton key={idx} className="relative w-full pb-[133.33%]" />
+            ))
+          : facilitiesError
+            ? Array.from({ length: 5 }).map((_, idx) => (
+                <Skeleton key={idx} className="relative w-full pb-[133.33%]" />
+              ))
+            : !facilities
+              ? Array.from({ length: 5 }).map((_, idx) => (
+                  <Skeleton key={idx} className="relative w-full pb-[133.33%]" />
+                ))
+              : facilities.docs.map((facility, idx) => <FacilityCard {...facility} key={idx} />)}
       </div>
     </section>
   )
