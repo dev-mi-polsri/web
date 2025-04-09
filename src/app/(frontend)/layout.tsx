@@ -5,6 +5,7 @@ import { Navbar } from './_components/navbar'
 import { Providers } from './_providers'
 import { ThemeProvider } from './_providers/theme-provider'
 import { cn } from '@/lib/utils'
+import Footer from './_components/footer'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -32,6 +33,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
             <Navbar />
             <main>{children}</main>
+            <Footer />
           </ThemeProvider>
         </Providers>
       </body>

@@ -81,7 +81,7 @@ export function Hero() {
           ))}
         </div>
 
-        <div className="absolute right-2 bottom-2 md:right-4 md:bottom-4 text-muted-foreground text-sm z-40">
+        <div className="absolute right-2 bottom-2 md:right-4 md:bottom-4 text-white text-sm z-40">
           Images By: Afiva Nurkamila
         </div>
       </div>
