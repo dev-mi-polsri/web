@@ -6,6 +6,7 @@ import Facilities from './_sections/facilities'
 import Stats from './_sections/stats'
 import Agenda from './_sections/agenda'
 import News from './_sections/news'
+import CTA from './_sections/cta'
 
 export default async function HomePage() {
   return (
@@ -17,6 +18,7 @@ export default async function HomePage() {
       <Stats />
       <News />
       <Agenda />
+      <CTA />
     </div>
   )
 }

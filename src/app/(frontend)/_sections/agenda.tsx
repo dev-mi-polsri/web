@@ -8,7 +8,7 @@ function Agenda() {
   const { data: agendas, isPending: agendasPending, isError: agendasError } = useAgendas()
 
   return (
-    <section className="py-8 p-4 text-center lg:px-[20dvw]">
+    <section className="py-8 p-4 text-center lg:px-[20dvw]" id="agenda">
       <h1 className="text-2xl font-bold">Agenda</h1>
       <p className="text-sm text-muted-foreground mb-8">Agenda lalu dan mendatang kampus</p>
       {agendasPending ? (

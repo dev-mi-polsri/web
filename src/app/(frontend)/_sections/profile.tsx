@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { BookOpen, Calendar, Play } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import YouTube from 'react-youtube'
 
@@ -57,14 +58,18 @@ function Profile() {
             untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.
           </p>
           <div className="flex gap-2 items-center mt-4">
-            <Button>
-              <BookOpen />
-              Berita MI
-            </Button>
-            <Button variant="secondary">
-              <Calendar />
-              Agenda Kami
-            </Button>
+            <Link href="/berita">
+              <Button>
+                <BookOpen />
+                Berita MI
+              </Button>
+            </Link>
+            <Link href="#agenda" scroll>
+              <Button variant="secondary">
+                <Calendar />
+                Agenda Kami
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
