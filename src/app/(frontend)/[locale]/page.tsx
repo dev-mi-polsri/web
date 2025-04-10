@@ -7,6 +7,7 @@ import Stats from './_sections/stats'
 import Agenda from './_sections/agenda'
 import News from './_sections/news'
 import { getMessages } from 'next-intl/server'
+import CTA from './_sections/cta'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const messages = await getMessages({ locale })
@@ -27,6 +28,7 @@ export default async function HomePage() {
       <Stats />
       <News />
       <Agenda />
+      <CTA />
     </div>
   )
 }

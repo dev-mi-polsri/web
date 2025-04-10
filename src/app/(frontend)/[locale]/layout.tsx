@@ -7,6 +7,7 @@ import { ThemeProvider } from './_providers/theme-provider'
 import { cn } from '@/lib/utils'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
+import Footer from './_components/footer'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -41,6 +42,11 @@ export default async function RootLayout(props: {
               <main>{children}</main>
             </ThemeProvider>
           </NextIntlClientProvider>
+          <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
