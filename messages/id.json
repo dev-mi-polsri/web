@@ -1,6 +1,36 @@
 {
   "navbar": {
-    "title": "Manajemen Informatika"
+    "title": "Manajemen Informatika",
+    "main": "Beranda",
+    "profile": {
+      "title": "Profil",
+      "aboutUs": {
+        "title": "Tentang Kami",
+        "desc": "Informasi mengenai jurusan Manajemen Informatika Polsri."
+      },
+      "visionMision": {
+        "title": "Visi Misi",
+        "desc": "Visi dan Misi jurusan Manajemen Informatika Polsri."
+      },
+      "organizationStructure": {
+        "title": "Struktur Organisasi",
+        "desc": "Struktur organisasi jurusan Manajemen Informatika Polsri."
+      },
+      "lecturers": {
+        "title": "Dosen",
+        "desc": "Daftar nama-nama dosen jurusan Manajemen Informatika Polsri."
+      },
+      "staff": {
+        "title": "Tenaga Didik",
+        "desc": "Daftar nama-nama tenaga pendidik jurusan Manajemen Informatika Polsri."
+      },
+      "alumni": {
+        "title": "Alumni",
+        "desc": "Informasi mengenai alumni jurusan Manajemen Informatika Polsri."
+      }
+    },
+    "news": "News",
+    "agenda": "Agendas"
   },
   "profile": {
     "heading": "Profil Jurusan Manajemen Informatika",

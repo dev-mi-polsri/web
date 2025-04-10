@@ -3,7 +3,7 @@
 import { useState, useEffect, forwardRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import {
   NavigationMenu,
@@ -23,11 +23,14 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
+import { useTranslations } from 'next-intl'
 
 export function Navbar() {
+  const t = useTranslations('navbar')
   const [isScrolled, setIsScrolled] = useState(false)
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
+  const params = useParams<{ locale: string }>()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,7 +55,10 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-foreground flex gap-2 items-center font-semibold text-xl">
+          <Link
+            href={`/${params.locale}/`}
+            className="text-foreground flex gap-2 items-center font-semibold text-xl"
+          >
             <Image
               src="/mi.png"
               alt="Polsri"
@@ -60,14 +66,14 @@ export function Navbar() {
               height={100}
               className="aspect-square size-8 dark:filter dark:invert dark:grayscale dark:brightness-0"
             />
-            Manajemen Informatika
+            {t('title')}
           </Link>
 
           <div className="hidden md:flex space-x-8 items-center">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link href="/" legacyBehavior passHref>
+                  <Link href={`/${params.locale}/`} legacyBehavior passHref>
                     <NavigationMenuLink
                       className={cn(
                         navigationMenuTriggerStyle(),
@@ -76,101 +82,75 @@ export function Navbar() {
                           : 'text-muted-foreground hover:text-foreground',
                       )}
                     >
-                      Beranda
+                      {t('main')}
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-muted-foreground hover:text-foreground">
-                    Profil
+                    {t('profile.title')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
                       {[
                         {
-                          title: 'Tentang Kami',
-                          subtitle: 'Informasi mengenai jurusan Manajemen Informatika Polsri.',
-                          href: '/profil/v/tentang-kami',
+                          label: t('profile.aboutUs.title'),
+                          href: `/${params.locale}/v/tentang-kami`,
                         },
                         {
-                          title: 'Visi Misi',
-                          subtitle: 'Visi dan Misi jurusan Manajemen Informatika Polsri.',
-                          href: '/profil/v/visi-misi',
+                          label: t('profile.visionMision.title'),
+                          href: `/${params.locale}/v/visi-misi`,
                         },
                         {
-                          title: 'Struktur Organisasi',
-                          subtitle: 'Struktur organisasi jurusan Manajemen Informatika Polsri.',
-                          href: '/profil/v/struktur-organisasi',
+                          label: t('profile.organizationStructure.title'),
+                          href: `/${params.locale}/v/struktur-organisasi`,
                         },
                         {
-                          title: 'Dosen',
-                          subtitle: 'Daftar nama-nama dosen jurusan Manajemen Informatika Polsri.',
-                          href: '/profil/dosen',
+                          label: t('profile.lecturers.title'),
+                          href: `/${params.locale}/dosen`,
                         },
                         {
-                          title: 'Tenaga Didik',
-                          subtitle:
-                            'Daftar nama-nama tenaga pendidik jurusan Manajemen Informatika Polsri.',
-                          href: '/profil/tendik',
+                          label: t('profile.educators.title'),
+                          href: `/${params.locale}/tendik`,
                         },
                         {
-                          title: 'Alumni',
-                          subtitle:
-                            'Informasi mengenai alumni jurusan Manajemen Informatika Polsri.',
-                          href: '/profil/alumni',
+                          label: t('profile.alumni.title'),
+                          href: `/${params.locale}/alumni`,
                         },
                       ].map((item) => (
-                        <ListItem key={item.title} href={item.href} title={item.title}>
-                          {item.subtitle}
+                        <ListItem key={item.label} href={item.href} title={item.label}>
+                          {item.label}
                         </ListItem>
                       ))}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
+
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-muted-foreground hover:text-foreground">
-                    Prodi
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                      <li className="row-span-4">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                            href="/"
-                          >
-                            <Image
-                              src="/mi.png"
-                              alt="Logo"
-                              width={80}
-                              height={80}
-                              className="aspect-square size-6"
-                            />
-                            <div className="mb-2 mt-4 text-lg font-medium">
-                              Manajemen Informatika
-                            </div>
-                            <p className="text-sm leading-tight text-muted-foreground">
-                              Manajemen Informatika adalah salah satu Jurusan di Politeknik Negeri
-                              Sriwijaya (POLSRI) yang memiliki reputasi yang sangat baik dalam dunia
-                              pendidikan di Indonesia.
-                            </p>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link href="/informasi" legacyBehavior passHref>
+                  <Link href={`/${params.locale}/news`} legacyBehavior passHref>
                     <NavigationMenuLink
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        pathname === '/informasi'
+                        pathname === `/${params.locale}/news`
                           ? 'text-foreground hover:text-foreground'
                           : 'text-muted-foreground hover:text-foreground',
                       )}
                     >
-                      Informasi
+                      {t('news')}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href={`/${params.locale}/agenda`} legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        pathname === `/${params.locale}/agenda`
+                          ? 'text-foreground hover:text-foreground'
+                          : 'text-muted-foreground hover:text-foreground',
+                      )}
+                    >
+                      {t('agenda')}
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
@@ -187,12 +167,14 @@ export function Navbar() {
                 <Menu className="h-4 w-4" />
               </Button>
             </DrawerTrigger>
+
+            {/* Mobile Menu */}
             <DrawerContent>
               <div className="mx-auto w-full max-w-sm p-4">
                 <SheetHeader>
                   <SheetTitle>
                     <Link
-                      href="/"
+                      href={`/${params.locale}/`}
                       className="text-foreground flex gap-2 justify-between items-center font-semibold text-xl"
                     >
                       <div className="flex gap-2">
@@ -203,7 +185,7 @@ export function Navbar() {
                           height={100}
                           className="aspect-square size-8 dark:filter dark:invert dark:grayscale dark:brightness-0"
                         />
-                        Manajemen Informatika Polsri
+                        {t('title')}
                       </div>
                       <ThemeToggle />
                     </Link>
@@ -221,7 +203,7 @@ export function Navbar() {
                             : 'text-muted-foreground',
                         )}
                       >
-                        Beranda
+                        {t('main')}
                       </Link>
                     </li>
                     <li>
@@ -237,7 +219,7 @@ export function Navbar() {
                               openMenus['profil'] ? 'text-foreground' : 'text-muted-foreground',
                             )}
                           >
-                            Profil
+                            {t('profile.title')}
                             {openMenus['profil'] ? (
                               <ChevronUp className="h-4 w-4" />
                             ) : (
@@ -294,15 +276,28 @@ export function Navbar() {
 
                     <li onClick={() => setDrawerOpen(false)}>
                       <Link
-                        href="/informasi"
+                        href={`/${params.locale}/news`}
                         className={cn(
                           'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
-                          pathname === '/informasi'
+                          pathname === `/${params.locale}/news`
                             ? 'bg-accent text-accent-foreground'
                             : 'text-muted-foreground',
                         )}
                       >
-                        Informasi
+                        {t('news')}
+                      </Link>
+                    </li>
+                    <li onClick={() => setDrawerOpen(false)}>
+                      <Link
+                        href={`/${params.locale}/agenda`}
+                        className={cn(
+                          'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
+                          pathname === `/${params.locale}/agenda`
+                            ? 'bg-accent text-accent-foreground'
+                            : 'text-muted-foreground',
+                        )}
+                      >
+                        {t('agenda')}
                       </Link>
                     </li>
                   </ul>

@@ -1,6 +1,36 @@
 {
   "navbar": {
-    "title": "Informatics Management Srivijaya State Polytechnic"
+    "title": "Informatics Management",
+    "main": "Main",
+    "profile": {
+      "title": "Profile",
+      "aboutUs": {
+        "title": "About Us",
+        "desc": "Information about the Informatics Management Department at Polsri."
+      },
+      "visionMision": {
+        "title": "Vision and Mission",
+        "desc": "Vision and Mission of the Informatics Management Department at Polsri."
+      },
+      "organizationStructure": {
+        "title": "Organizational Structure",
+        "desc": "Organizational structure of the Informatics Management Department at Polsri."
+      },
+      "lecturers": {
+        "title": "Lecturers",
+        "desc": "List of lecturers in the Informatics Management Department at Polsri."
+      },
+      "staff": {
+        "title": "Teaching Staff",
+        "desc": "List of teaching staffs in the Informatics Management Department at Polsri."
+      },
+      "alumni": {
+        "title": "Alumni",
+        "desc": "Information about alumni of the Informatics Management Department at Polsri."
+      }
+    },
+    "news": "News",
+    "agenda": "Agendas"
   },
   "profile": {
     "heading": "Profile of the Informatics Management Department",
