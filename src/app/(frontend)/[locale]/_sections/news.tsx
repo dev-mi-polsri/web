@@ -2,14 +2,16 @@
 import React from 'react'
 import { useNews } from '../_hooks/queries/news'
 import { NewsCard, NewsCardSkeleton } from './news/news-card'
+import { useTranslations } from 'next-intl'
 
 function News() {
+  const t = useTranslations('news')
   const { data: news, isPending: newsPending, isError: newsError } = useNews(12)
   return (
     <section className="py-8 max-w-screen-lg mx-auto text-center w-full">
       <div className="mb-8">
-        <h1 className="font-bold text-2xl">Berita Terbaru</h1>
-        <p className="text-sm text-muted-foreground">Kabar Terbaru dan Aktivitas Kampus terkini</p>
+        <h1 className="font-bold text-2xl">{t('heading')}</h1>
+        <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
         {newsPending

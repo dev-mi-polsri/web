@@ -72,5 +72,29 @@
     "title": "Stay Updated with MI Polsri News!",
     "content": "Get the latest information about activities, achievements, and important announcements from the Informatics Management Department.",
     "button": "Read News"
+  },
+  "footer": {
+    "title": "Informatics Management",
+    "campus": "Sriwijaya State Polytechnic",
+    "road": "Jl. Srijaya Negara, Bukit Besar",
+    "city": "Palembang, Sumatera Selatan 30139",
+    "contact": {
+      "phone": "0711 321234",
+      "email": "mi@polsri.ac.id"
+    },
+    "study": {
+      "d3": "DIII Informatics Management",
+      "d4": "DIV Informatics Management"
+    },
+    "links": {
+      "home": "Home",
+      "news": "News",
+      "contact": "Contact",
+      "study": "Study Programs",
+      "links": "Links",
+      "agenda": "Agenda",
+      "ig": "Instagram",
+      "hmj": "HMJ MI"
+    }
   }
 }

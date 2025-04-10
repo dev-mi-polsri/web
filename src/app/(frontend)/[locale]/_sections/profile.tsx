@@ -1,6 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Calendar, Play } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -8,6 +9,7 @@ import YouTube from 'react-youtube'
 
 function Profile() {
   const [toggled, setToggled] = useState<boolean>(false)
+  const t = useTranslations('profile')
 
   return (
     <section className="py-8">
@@ -51,24 +53,21 @@ function Profile() {
           )}
         </div>
         <div className="flex flex-col gap-2 max-w-2xl">
-          <h1 className="text-2xl font-bold">Profil Jurusan Manajemen Informatika</h1>
+          <h1 className="text-2xl font-bold">{t('heading')}</h1>
           <p className="text-muted-foreground text-lg text-justify">
-            Manajemen Informatika Polsri menghasilkan ahli TI dengan keahlian manajerial melalui
-            pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data,
-            dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern
-            untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.
+            {t('description')}
           </p>
           <div className="flex gap-2 items-center mt-4">
             <Link href="/berita">
               <Button>
                 <BookOpen />
-                Berita MI
+                {t('buttons.news')}
               </Button>
             </Link>
             <Link href="#agenda" scroll>
               <Button variant="secondary">
                 <Calendar />
-                Agenda Kami
+                {t('buttons.agenda')}
               </Button>
             </Link>
           </div>

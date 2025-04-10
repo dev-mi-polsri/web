@@ -72,5 +72,26 @@
     "title": "Tetap Update dengan Berita MI Polsri!",
     "content": "Dapatkan informasi terbaru seputar kegiatan, prestasi, dan pengumuman penting dari Jurusan Manajemen Informatika.",
     "button": "Baca Berita"
+  },
+  "footer": {
+    "title": "Manajemen Informatika",
+    "campus": "Politeknik Negeri Sriwijaya",
+    "road": "Jl. Srijaya Negara, Bukit Besar",
+    "city": "Palembang, Sumatera Selatan 30139",
+    "contact": {
+      "phone": "0711 321234",
+      "email": "mi@polsri.ac.id"
+    },
+    "study": {
+      "d3": "D3 Manajemen Informatika",
+      "d4": "D4 Manajemen Informatika"
+    },
+    "links": {
+      "home": "Beranda",
+      "news": "Berita",
+      "agenda": "Agenda",
+      "ig": "Instagram",
+      "hmj": "HMJ MI"
+    }
   }
 }
