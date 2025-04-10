@@ -24,6 +24,14 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './theme-toggle'
 import { useTranslations } from 'next-intl'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export function Navbar() {
   const t = useTranslations('navbar')
@@ -95,31 +103,37 @@ export function Navbar() {
                       {[
                         {
                           label: t('profile.aboutUs.title'),
+                          desc: t('profile.aboutUs.desc'),
                           href: `/${params.locale}/v/tentang-kami`,
                         },
                         {
                           label: t('profile.visionMision.title'),
+                          desc: t('profile.visionMision.desc'),
                           href: `/${params.locale}/v/visi-misi`,
                         },
                         {
                           label: t('profile.organizationStructure.title'),
+                          desc: t('profile.organizationStructure.desc'),
                           href: `/${params.locale}/v/struktur-organisasi`,
                         },
                         {
                           label: t('profile.lecturers.title'),
+                          desc: t('profile.lecturers.desc'),
                           href: `/${params.locale}/dosen`,
                         },
                         {
-                          label: t('profile.educators.title'),
+                          label: t('profile.staff.title'),
+                          desc: t('profile.staff.desc'),
                           href: `/${params.locale}/tendik`,
                         },
                         {
                           label: t('profile.alumni.title'),
+                          desc: t('profile.alumni.desc'),
                           href: `/${params.locale}/alumni`,
                         },
                       ].map((item) => (
                         <ListItem key={item.label} href={item.href} title={item.label}>
-                          {item.label}
+                          {item.desc}
                         </ListItem>
                       ))}
                     </ul>
@@ -158,7 +172,26 @@ export function Navbar() {
             </NavigationMenu>
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  {params.locale === 'en' ? '🇺🇸 English' : '🇮🇩 Bahasa Indonesia'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>
+                  {params.locale === 'en' ? 'Language' : 'Bahasa'}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <Link href="/en">
+                  <DropdownMenuItem>🇺🇸 English</DropdownMenuItem>
+                </Link>
+                <Link href="/id">
+                  <DropdownMenuItem>🇮🇩 Bahasa Indonesia</DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <ThemeToggle />
           </div>
           <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
@@ -299,6 +332,27 @@ export function Navbar() {
                       >
                         {t('agenda')}
                       </Link>
+                    </li>
+                    <li>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm" className="w-full">
+                            {params.locale === 'en' ? '🇺🇸 English' : '🇮🇩 Bahasa Indonesia'}
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>
+                            {params.locale === 'en' ? 'Language' : 'Bahasa'}
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <Link href="/en">
+                            <DropdownMenuItem>🇺🇸 English</DropdownMenuItem>
+                          </Link>
+                          <Link href="/id">
+                            <DropdownMenuItem>🇮🇩 Bahasa Indonesia</DropdownMenuItem>
+                          </Link>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </li>
                   </ul>
                 </div>
