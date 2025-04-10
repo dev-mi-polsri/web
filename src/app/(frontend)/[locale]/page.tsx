@@ -6,6 +6,16 @@ import Facilities from './_sections/facilities'
 import Stats from './_sections/stats'
 import Agenda from './_sections/agenda'
 import News from './_sections/news'
+import { getMessages } from 'next-intl/server'
+
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+  const messages = await getMessages({ locale })
+  const title = messages.navbar.title
+
+  return {
+    title,
+  }
+}
 
 export default async function HomePage() {
   return (

@@ -5,6 +5,8 @@ import { Navbar } from './_components/navbar'
 import { Providers } from './_providers'
 import { ThemeProvider } from './_providers/theme-provider'
 import { cn } from '@/lib/utils'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -17,11 +19,15 @@ export const metadata = {
   title: 'Payload Blank Template',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}) {
   const { children } = props
-
+  const { locale } = await props.params
+  const messages = await getMessages({ locale })
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(
           'relative antialiased min-h-screen overflow-x-hidden font-sans',
@@ -29,10 +35,12 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <Providers>
-          <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-            <Navbar />
-            <main>{children}</main>
-          </ThemeProvider>
+          <NextIntlClientProvider messages={messages}>
+            <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+              <Navbar />
+              <main>{children}</main>
+            </ThemeProvider>
+          </NextIntlClientProvider>
         </Providers>
       </body>
     </html>

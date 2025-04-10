@@ -7,6 +7,7 @@ import YouTube from 'react-youtube'
 
 function Profile() {
   const [toggled, setToggled] = useState<boolean>(false)
+
   return (
     <section className="py-8">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 p-6 md:p-4">

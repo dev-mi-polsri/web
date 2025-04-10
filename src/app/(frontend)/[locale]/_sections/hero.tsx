@@ -4,8 +4,10 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect, useMemo } from 'react'
 import { ChevronRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export function Hero() {
+  const t = useTranslations('hero')
   const heroImages = useMemo(() => ['Hero-1.jpeg', 'Hero-2.jpeg'], [])
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
@@ -45,13 +47,8 @@ export function Hero() {
         <div className="relative h-full flex items-end z-20">
           <div className="max-w-7xl px-4 sm:px-6 w-full">
             <div className="max-w-4xl pb-8">
-              <h1 className="text-2xl md:text-6xl font-bold text-white mb-4">
-                Jurusan Manajemen Informatika <br /> Politeknik Negeri Sriwijaya
-              </h1>
-              <p className="text-base text-white/90 mb-8">
-                Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi
-                profesional handal yang siap menghadapi tantangan industri 4.0.
-              </p>
+              <h1 className="text-2xl md:text-6xl font-bold text-white mb-4">{t('heading')}</h1>
+              <p className="text-base text-white/90 mb-8">{t('description')}</p>
               <Button
                 variant="default"
                 size="lg"
@@ -63,7 +60,7 @@ export function Hero() {
                   })
                 }}
               >
-                Pelajari Lebih Lanjut <ChevronRight className="size-4" />
+                {t('button')} <ChevronRight className="size-4" />
               </Button>
             </div>
           </div>
@@ -82,7 +79,7 @@ export function Hero() {
         </div>
 
         <div className="absolute right-2 bottom-2 md:right-4 md:bottom-4 text-muted-foreground text-sm z-40">
-          Images By: Afiva Nurkamila
+          {t('imageCredit')}
         </div>
       </div>
     </div>

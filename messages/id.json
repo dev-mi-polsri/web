@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "title": "Manajemen Informatika"
+  },
+  "profile": {
+    "heading": "Profil Jurusan Manajemen Informatika",
+    "description": "Manajemen Informatika Polsri menghasilkan ahli TI dengan keahlian manajerial melalui pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data, dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.",
+    "buttons": {
+      "news": "Berita MI",
+      "agenda": "Agenda Kami"
+    }
+  },
+  "agenda": {
+    "heading": "Agenda",
+    "description": "Agenda lalu dan mendatang kampus"
+  },
+  "hero": {
+    "heading": "Jurusan Manajemen Informatika Politeknik Negeri Sriwijaya",
+    "description": "Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi profesional handal yang siap menghadapi tantangan industri 4.0.",
+    "button": "Pelajari Lebih Lanjut",
+    "imageCredit": "Images By: Afiva Nurkamila"
+  },
+  "news": {
+    "heading": "Berita Terbaru",
+    "description": "Kabar Terbaru dan Aktivitas Kampus terkini"
+  },
+  "facilities": {
+    "heading": "Fasilitas",
+    "description": "Fasilitas kampus Manajemen Informatika"
+  },
+  "partners": {
+    "heading": "Kerja Sama",
+    "description": "Mitra-Mitra Manajemen Informatika"
+  },
+  "stats": {
+    "d3Students": "Mahasiswa DIII",
+    "d4Students": "Mahasiswa DIV",
+    "lecturers": "Dosen",
+    "staff": "Tendik"
+  }
+}
