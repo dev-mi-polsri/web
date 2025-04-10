@@ -72,7 +72,7 @@ export function Navbar() {
               alt="Polsri"
               width={100}
               height={100}
-              className="aspect-square size-8 dark:filter dark:invert dark:grayscale dark:brightness-0"
+              className="aspect-square size-8"
             />
             {t('title')}
           </Link>
@@ -216,7 +216,7 @@ export function Navbar() {
                           alt="Polsri"
                           width={100}
                           height={100}
-                          className="aspect-square size-8 dark:filter dark:invert dark:grayscale dark:brightness-0"
+                          className="aspect-square size-8"
                         />
                         {t('title')}
                       </div>
