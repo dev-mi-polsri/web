@@ -8,7 +8,7 @@ This is a website for Informatics Management Department of Srivijaya State Polyt
 
 - [Next.js](https://nextjs.org)
 - [Payload](https://payloadcms.com)
-- [i18n-next](https://https://next-intl.dev/)
+- [i18n-next](https://next-intl.dev/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Tailwind CSS](https://tailwindcss.com)
 
