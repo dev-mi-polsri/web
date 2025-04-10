@@ -1,12 +1,16 @@
+'use client'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Media, News } from '@/payload-types'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import React from 'react'
 
-export function NewsCard({ name, thumbnail, createdAt }: News) {
+export function NewsCard({ name, thumbnail, slug, createdAt }: News) {
+  const { locale } = useParams<{ locale: string }>()
   return (
-    <div className="flex flex-col gap-2 text-start">
+    <Link href={`/${locale}/news/${slug}`} className="flex flex-col gap-2 text-start">
       <div className="w-full max-w-full overflow-hidden rounded-lg">
         <AspectRatio ratio={16 / 9}>
           <Image
@@ -29,7 +33,7 @@ export function NewsCard({ name, thumbnail, createdAt }: News) {
           {name}
         </h2>
       </div>
-    </div>
+    </Link>
   )
 }
 
