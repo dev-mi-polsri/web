@@ -40,13 +40,9 @@ export default async function RootLayout(props: {
             <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
               <Navbar />
               <main>{children}</main>
+              <Footer />
             </ThemeProvider>
           </NextIntlClientProvider>
-          <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </ThemeProvider>
         </Providers>
       </body>
     </html>

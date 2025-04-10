@@ -37,5 +37,10 @@
     "d4Students": "DIV Students",
     "lecturers": "Lecturers",
     "staff": "Administrative Staff"
+  },
+  "cta": {
+    "title": "Stay Updated with MI Polsri News!",
+    "content": "Get the latest information about activities, achievements, and important announcements from the Informatics Management Department.",
+    "button": "Read News"
   }
 }

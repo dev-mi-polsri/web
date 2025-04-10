@@ -1,5 +1,4 @@
 'use client'
-
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect, useMemo } from 'react'
@@ -8,6 +7,7 @@ import { useTranslations } from 'next-intl'
 
 export function Hero() {
   const t = useTranslations('hero')
+  
   const heroImages = useMemo(() => ['Hero-1.jpeg', 'Hero-2.jpeg'], [])
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 

@@ -37,5 +37,10 @@
     "d4Students": "Mahasiswa DIV",
     "lecturers": "Dosen",
     "staff": "Tendik"
+  },
+  "cta": {
+    "title": "Tetap Update dengan Berita MI Polsri!",
+    "content": "Dapatkan informasi terbaru seputar kegiatan, prestasi, dan pengumuman penting dari Jurusan Manajemen Informatika.",
+    "button": "Baca Berita"
   }
 }

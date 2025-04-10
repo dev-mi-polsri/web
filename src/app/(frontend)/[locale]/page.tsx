@@ -9,7 +9,9 @@ import News from './_sections/news'
 import { getMessages } from 'next-intl/server'
 import CTA from './_sections/cta'
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+
   const messages = await getMessages({ locale })
   const title = messages.navbar.title
 
