@@ -52,11 +52,11 @@ export const News: CollectionConfig = {
       editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          BlocksFeature({ blocks: [MediaBlock] }),
           FixedToolbarFeature(),
           HorizontalRuleFeature(),
           InlineToolbarFeature(),
-          BlocksFeature({ blocks: [MediaBlock] }),
-          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),
     },
@@ -70,6 +70,19 @@ export const News: CollectionConfig = {
         beforeValidate: [generateSlug('judul')],
       },
       required: true,
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
     },
   ],
 }

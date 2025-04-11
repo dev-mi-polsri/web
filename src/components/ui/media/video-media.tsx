@@ -26,16 +26,15 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
 
     return (
       <video
-        autoPlay
-        className={cn(videoClassName)}
-        controls={false}
+        className={cn('rounded-lg', videoClassName)}
+        controls={true}
         loop
         muted
         onClick={onClick}
         playsInline
         ref={videoRef}
       >
-        <source src={`${getClientSideURL()}/media/${filename}`} />
+        <source src={`${getClientSideURL()}/api/media/file/${filename}`} />
       </video>
     )
   }

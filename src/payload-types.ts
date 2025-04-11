@@ -210,6 +210,12 @@ export interface News {
     [k: string]: unknown;
   } | null;
   slug: string;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -364,6 +370,12 @@ export interface NewsSelect<T extends boolean = true> {
   name?: T;
   content?: T;
   slug?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -418,6 +430,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface MediaBlock {
   media: number | Media;
+  description?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';

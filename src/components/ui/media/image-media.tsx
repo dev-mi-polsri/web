@@ -59,6 +59,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   return (
     <picture className={cn(pictureClassName)}>
       <NextImage
+        aria-label="Image ABC"
         alt={alt || ''}
         className={cn(imgClassName)}
         fill={fill}
