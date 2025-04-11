@@ -22,7 +22,7 @@ const parseImageUrl = async (url: string): Promise<File> => {
 const seed = async () => {
   const payload = await getPayload({ config })
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 10; i++) {
     const imageFile = await parseImageUrl(PLACEHOLDER_IMAGE)
 
     const newImage = await payload.create({
@@ -41,10 +41,11 @@ const seed = async () => {
     const newData = await payload.create({
       collection: 'news',
       data: {
-        name: 'Lorem Ipsum Dolor Sit Amet Berita Manajemen Informatika ' + i,
+        name: 'Dolor Sit Amet Berita Manajemen Informatika ' + i + 1,
         thumbnail: newImage,
         global: false,
-        slug: 'slug-placeholder-' + i,
+        slug: 'slug-0-placeholder-' + i + 1,
+        featured: false,
       },
     })
 

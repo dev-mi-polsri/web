@@ -6,7 +6,7 @@ function Page() {
   return (
     <div className="my-12">
       <FeaturedNews />
-      <News />
+      <News pagination />
     </div>
   )
 }
