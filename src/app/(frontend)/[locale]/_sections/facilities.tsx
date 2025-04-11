@@ -4,15 +4,16 @@ import { Facility, Media } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { useFacilities } from '../_hooks/queries/facilities'
-
+import { useTranslations } from 'next-intl'
 function Facilities() {
+  const t = useTranslations('facilities')
   const { data: facilities, isLoading: facilitiesPending, error: facilitiesError } = useFacilities()
 
   return (
     <section className="py-8 text-center">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">Fasilitas</h1>
-        <p className="text-sm text-muted-foreground">Fasilitas kampus Manajemen Informatika</p>
+        <h1 className="text-2xl font-bold">{t('heading')}</h1>
+        <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-screen-lg px-4 pb-4">
         {facilitiesPending

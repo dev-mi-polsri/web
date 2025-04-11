@@ -40,7 +40,7 @@ export default async function RootLayout(props: {
             <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
               <Navbar />
               <main>{children}</main>
-              <Footer />
+              <Footer params={props.params} />
             </ThemeProvider>
           </NextIntlClientProvider>
         </Providers>

@@ -4,14 +4,16 @@ import { Media } from '@/payload-types'
 import Image from 'next/image'
 import Marquee from 'react-fast-marquee'
 import { usePartners } from '../_hooks/queries/partners'
+import { useTranslations } from 'next-intl'
 
 export default function Partners() {
+  const t = useTranslations('partners')
   const { data: partners, isLoading: partnersPending, error: partnersError } = usePartners(100)
   return (
     <div className="flex flex-col gap-8 my-8 items-center max-w-full lg:max-w-7xl mx-auto">
       <div className="text-center">
-        <h1 className="text-2xl font-bold">Kerja Sama</h1>
-        <p className="text-sm text-muted-foreground">Mitra-Mitra Manajemen Informatika</p>
+        <h1 className="text-2xl font-bold">{t('heading')}</h1>
+        <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
       {/* <div className="flex flex-row items-center justify-around w-full"> */}
       <Marquee>
