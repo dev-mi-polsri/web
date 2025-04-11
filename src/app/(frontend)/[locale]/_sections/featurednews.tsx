@@ -1,15 +1,14 @@
 'use client'
-
 import React from 'react'
 import { useNews } from '../_hooks/queries/news'
 import { HotNewsCard, HotNewsCardSkeleton } from './news/hot-news-card'
 
-function HotNews() {
+function FeaturedNews() {
   const { data: news, isPending, isError } = useNews(3)
   const skeletons = Array.from({ length: 3 })
 
   return (
-    <section className="max-w-screen-xl mx-auto px-4 py-10">
+    <section id='featurednews' className="max-w-screen-xl mx-auto px-4 py-10">
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Main News */}
         <div className="lg:col-span-2 lg:row-span-1 ">
@@ -35,4 +34,4 @@ function HotNews() {
   )
 }
 
-export default HotNews
+export default FeaturedNews
