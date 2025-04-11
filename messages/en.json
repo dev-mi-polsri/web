@@ -96,5 +96,15 @@
       "ig": "Instagram",
       "hmj": "HMJ MI"
     }
+  },
+  "newsPage": {
+    "breadcrumbs": {
+      "home": "Home",
+      "news": "News"
+    },
+    "recomendedNews": {
+      "title": "Read Also",
+      "description": "Read Also Interesting News from MI"
+    }
   }
 }

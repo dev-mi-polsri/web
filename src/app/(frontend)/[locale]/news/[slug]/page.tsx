@@ -14,9 +14,12 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Badge } from '@/components/ui/badge'
+import RecommendedNews from '../../_sections/news/recomended-news'
+import { getMessages } from 'next-intl/server'
 
 async function NewsPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params
+  const messages = await getMessages({ locale })
 
   const payload = await getPayload({ config })
 
@@ -35,16 +38,24 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
     notFound()
   }
 
+  if (locale === 'en' && !post.global) {
+    notFound()
+  }
+
   return (
     <div className="container max-w-7xl mx-auto mt-20 grid grid-cols-1 p-4">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}`}>Beranda</BreadcrumbLink>
+            <BreadcrumbLink href={`/${locale}`}>
+              {messages.newsPage.breadcrumbs.home}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/news`}>Berita</BreadcrumbLink>
+            <BreadcrumbLink href={`/${locale}/news`}>
+              {messages.newsPage.breadcrumbs.news}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -79,7 +90,9 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           <RichText data={post.content!} className="w-full text-lg" enableGutter={false} />
         </div>
       </article>
-      <div className="my-8">{/* <RecommendedPosts postSlug={slug} /> */}</div>
+      <div className="my-8">
+        <RecommendedNews />
+      </div>
     </div>
   )
 }

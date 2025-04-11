@@ -19,6 +19,7 @@ function News({ pagination = false }: { pagination?: boolean }) {
     limit: 12,
     page,
   })
+
   return (
     <section id="news" className="max-w-screen-xl mx-auto px-8 py-10 w-full text-center">
       <div className="mb-8">
@@ -39,7 +40,7 @@ function News({ pagination = false }: { pagination?: boolean }) {
               size="icon"
               variant="outline"
               onClick={() => {
-                setPage((page) => page++)
+                setPage((page) => page - 1)
               }}
             >
               <ChevronLeft />
@@ -64,7 +65,7 @@ function News({ pagination = false }: { pagination?: boolean }) {
               size="icon"
               variant="outline"
               onClick={() => {
-                setPage((page) => page--)
+                setPage((page) => page + 1)
               }}
             >
               <ChevronRight />

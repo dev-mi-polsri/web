@@ -2,6 +2,8 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Media, News } from '@/payload-types'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface FeaturedNewsCardProps {
   data: News
@@ -9,9 +11,10 @@ interface FeaturedNewsCardProps {
 }
 
 export function FeaturedNewsCard({
-  data: { name, createdAt, thumbnail, tags },
+  data: { name, createdAt, thumbnail, tags, slug },
   variant = 'side',
 }: FeaturedNewsCardProps) {
+  const { locale } = useParams<{ locale: string }>()
   // return (
   //   <div className="flex flex-col gap-2 text-start w-full">
   //     <div className="w-full max-w-full overflow-hidden rounded-lg">
@@ -41,28 +44,35 @@ export function FeaturedNewsCard({
   //   </div>
   // )
   return (
-    <div className="w-full h-full aspect-video rounded-lg relative overflow-hidden">
-      <Image fill src={(thumbnail as Media).url ?? '/placeholder.svg'} alt={name} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 rounded-lg" />
+    <Link href={`/${locale}/news/${slug}`}>
+      <div className="w-full h-full aspect-video rounded-lg relative overflow-hidden group">
+        <Image
+          fill
+          src={(thumbnail as Media).url ?? '/placeholder.svg'}
+          alt={name}
+          className="group-hover:scale-110 group-hover:brightness-50 transition-all ease-in-out"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 rounded-lg" />
 
-      <div className="absolute z-20 bottom-4 left-4 text-white">
-        <div className="flex flex-wrap items-center gap-2 mb-2">
-          {tags && tags?.length > 0 && tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
+        <div className="absolute z-20 bottom-4 left-4 text-white">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            {tags && tags?.length > 0 && tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
+          </div>
+          <h2
+            className={`font-bold ${variant === 'main' ? 'text-lg lg:text-2xl' : 'lg:text-lg'} leading-tight flex-3`}
+          >
+            {name.length > 20 ? name.slice(0, 80) + '...' : name}
+          </h2>
+          <span className="text-sm text-right flex-1">
+            {new Intl.DateTimeFormat('id-ID', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            }).format(new Date(createdAt))}
+          </span>
         </div>
-        <h2
-          className={`font-bold ${variant === 'main' ? 'text-lg lg:text-2xl' : 'lg:text-lg'} leading-tight flex-3`}
-        >
-          {name.length > 20 ? name.slice(0, 80) + '...' : name}
-        </h2>
-        <span className="text-sm text-right flex-1">
-          {new Intl.DateTimeFormat('id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          }).format(new Date(createdAt))}
-        </span>
       </div>
-    </div>
+    </Link>
   )
 }
 

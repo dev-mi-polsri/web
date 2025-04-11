@@ -93,5 +93,15 @@
       "ig": "Instagram",
       "hmj": "HMJ MI"
     }
+  },
+  "newsPage": {
+    "breadcrumbs": {
+      "home": "Beranda",
+      "news": "Berita"
+    },
+    "recomendedNews": {
+      "title": "Baca Juga",
+      "description": "Baca Juga Berita-Berita Menarik MI"
+    }
   }
 }
