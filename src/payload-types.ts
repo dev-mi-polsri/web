@@ -189,6 +189,10 @@ export interface Facility {
 export interface News {
   id: number;
   thumbnail: number | Media;
+  /**
+   * Apabila Centang Ini Aktif Berita Akan Ditampilkan Di Tab Berita 'English'
+   */
+  global: boolean;
   name: string;
   content?: {
     root: {
@@ -205,6 +209,13 @@ export interface News {
     };
     [k: string]: unknown;
   } | null;
+  slug: string;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -355,8 +366,16 @@ export interface FacilitySelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   thumbnail?: T;
+  global?: T;
   name?: T;
   content?: T;
+  slug?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -404,6 +423,17 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  description?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

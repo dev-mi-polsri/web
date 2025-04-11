@@ -9,7 +9,6 @@ export default getRequestConfig(async ({ locale }: { locale?: string }) => {
   }
 
   if (!locales.includes(locale)) notFound()
-  console.log('Locale', locale)
 
   return {
     locale,

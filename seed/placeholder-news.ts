@@ -43,6 +43,8 @@ const seed = async () => {
       data: {
         name: 'Lorem Ipsum Dolor Sit Amet Berita Manajemen Informatika ' + i,
         thumbnail: newImage,
+        global: false,
+        slug: 'slug-placeholder-' + i,
       },
     })
 

@@ -1,5 +1,14 @@
-import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { MediaBlock } from '@/components/richtext/blocks/media/config'
+import {
+  FixedToolbarFeature,
+  lexicalEditor,
+  BlocksFeature,
+  HorizontalRuleFeature,
+  InlineToolbarFeature,
+  HeadingFeature,
+} from '@payloadcms/richtext-lexical'
 import { CollectionConfig } from 'payload'
+import { generateSlug } from './_lib'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -20,6 +29,17 @@ export const News: CollectionConfig = {
       required: true,
     },
     {
+      name: 'global',
+      label: 'Global News',
+      type: 'checkbox',
+      defaultValue: false,
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: "Apabila Centang Ini Aktif Berita Akan Ditampilkan Di Tab Berita 'English'",
+      },
+    },
+    {
       name: 'name',
       label: 'Nama',
       type: 'text',
@@ -30,8 +50,39 @@ export const News: CollectionConfig = {
       label: 'Konten',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()],
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          BlocksFeature({ blocks: [MediaBlock] }),
+          FixedToolbarFeature(),
+          HorizontalRuleFeature(),
+          InlineToolbarFeature(),
+        ],
       }),
+    },
+    {
+      name: 'slug',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeValidate: [generateSlug('judul')],
+      },
+      required: true,
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
     },
   ],
 }
