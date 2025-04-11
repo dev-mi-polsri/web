@@ -4,7 +4,6 @@ import Partners from './_sections/partners'
 import Profile from './_sections/profile'
 import Facilities from './_sections/facilities'
 import Stats from './_sections/stats'
-import Agenda from './_sections/agenda'
 import News from './_sections/news'
 import { getMessages } from 'next-intl/server'
 import CTA from './_sections/cta'
@@ -28,8 +27,6 @@ export default async function HomePage() {
       <Profile />
       <Facilities />
       <Stats />
-      <News />
-      <Agenda />
       <CTA />
     </div>
   )
