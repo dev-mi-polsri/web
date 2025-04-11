@@ -40,7 +40,8 @@ const seed = async () => {
     const newData = await payload.create({
       collection: 'facility',
       data: {
-        name: 'Lorem Ipsum ' + i,
+        name: 'Fasilitias Bahasa Indonesia ' + i,
+        enName: 'Facilities In English ' + i,
         logo: newImage,
         description: 'Lorem Ipsum Dolor Sit Amet, Manajemen Informatika Jurusan Terbaik POLSRI',
       },

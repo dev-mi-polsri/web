@@ -14,9 +14,9 @@ function Agenda() {
       <h1 className="text-2xl font-bold">{t('heading')}</h1>
       <p className="text-sm text-muted-foreground mb-8">{t('description')}</p>
       {agendasPending ? (
-        <Skeleton className="h-[20vh] w-full rounded-lg" />
+        <Skeleton className="h-[50vh] w-full rounded-lg" />
       ) : agendasError ? (
-        <Skeleton className="h-[20vh] w-full rounded-lg" />
+        <Skeleton className="h-[50vh] w-full rounded-lg" />
       ) : (
         <EventCalendar className="w-full" events={agendas} readOnly />
       )}

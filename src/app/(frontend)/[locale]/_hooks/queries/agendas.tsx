@@ -1,10 +1,12 @@
 import { CalendarEvent, EventColor } from '@/components/event-calendar'
 import { Agenda } from '@/payload-types'
 import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
 import { PaginatedDocs } from 'payload'
 
 export function useAgendas() {
   const COLORS: EventColor[] = ['amber', 'emerald', 'orange', 'rose', 'sky', 'violet']
+  const { locale } = useParams<{ locale: string }>()
 
   const fetchData = () =>
     fetch('/api/agenda?limit=50')
@@ -17,7 +19,7 @@ export function useAgendas() {
         agendas.map(
           (agenda, idx): CalendarEvent => ({
             id: idx.toString(),
-            title: agenda.name,
+            title: locale === 'en' ? agenda.enName : agenda.name,
             description: agenda.description,
             color: COLORS[Math.floor(Math.random() * COLORS.length + 1)],
             start: new Date(agenda.startDate),

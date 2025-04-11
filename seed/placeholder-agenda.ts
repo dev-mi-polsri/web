@@ -3,22 +3,6 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { addDays, subDays } from 'date-fns'
 
-const PLACEHOLDER_IMAGE = 'http://localhost:3000/placeholder.svg'
-const parseImageUrl = async (url: string): Promise<File> => {
-  const filename = url.substring(url.lastIndexOf('/') + 1)
-  try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`)
-    }
-    const blob = await response.blob()
-    return new File([blob], filename, { type: blob.type })
-  } catch (error) {
-    console.error('Error fetching image:', error)
-    throw error // Re-throw to handle it in the calling function
-  }
-}
-
 /**
  *
  * @returns Number From 1 - 30
@@ -42,7 +26,7 @@ function smallGenerateRandomNumber(): number {
 const seed = async () => {
   const payload = await getPayload({ config })
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 10; i++) {
     const isEven = i % 2 === 0
     const randomNumber = generateRandomNumber()
     const randomNumberEnd = smallGenerateRandomNumber()
@@ -55,6 +39,7 @@ const seed = async () => {
       collection: 'agenda',
       data: {
         name: 'Agenda Manajemen Informatika ' + i,
+        enName: 'English Agenda ' + i,
         description: 'Agenda Khusus Jurusan Manajemen Informatika',
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),

@@ -178,6 +178,7 @@ export interface Facility {
   id: number;
   logo: number | Media;
   name: string;
+  enName: string;
   description: string;
   updatedAt: string;
   createdAt: string;
@@ -230,6 +231,7 @@ export interface News {
 export interface Agenda {
   id: number;
   name: string;
+  enName: string;
   description: string;
   startDate: string;
   endDate: string;
@@ -360,6 +362,7 @@ export interface PartnerSelect<T extends boolean = true> {
 export interface FacilitySelect<T extends boolean = true> {
   logo?: T;
   name?: T;
+  enName?: T;
   description?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -390,6 +393,7 @@ export interface NewsSelect<T extends boolean = true> {
  */
 export interface AgendaSelect<T extends boolean = true> {
   name?: T;
+  enName?: T;
   description?: T;
   startDate?: T;
   endDate?: T;

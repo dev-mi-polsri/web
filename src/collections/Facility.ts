@@ -26,6 +26,12 @@ export const Facility: CollectionConfig = {
       required: true,
     },
     {
+      name: 'enName',
+      label: 'English Name',
+      type: 'text',
+      required: true,
+    },
+    {
       name: 'description',
       label: 'Deskripsi',
       type: 'text',
