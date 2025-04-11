@@ -5,7 +5,13 @@ import { PaginatedDocs } from 'payload'
 import { Where } from 'payload'
 import { stringify } from 'qs-esm'
 
-export function useNews(limit: number, featured?: boolean) {
+type useNewsParameters = {
+  limit?: number
+  page?: number
+  featured?: boolean
+}
+
+export function useNews({ limit = 12, page = 1, featured }: useNewsParameters) {
   const params = useParams<{ locale: string }>()
 
   const query: Where = {
@@ -27,6 +33,7 @@ export function useNews(limit: number, featured?: boolean) {
     {
       where: query,
       limit,
+      page,
     },
     {
       addQueryPrefix: true,
@@ -42,7 +49,7 @@ export function useNews(limit: number, featured?: boolean) {
       .then((data) => data as PaginatedDocs<News>)
 
   return useQuery({
-    queryKey: ['news', params.locale, limit],
+    queryKey: ['news', params.locale, limit, page],
     queryFn: fetchData,
   })
 }

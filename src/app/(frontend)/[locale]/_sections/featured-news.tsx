@@ -4,7 +4,7 @@ import { useNews } from '../_hooks/queries/news'
 import { FeaturedNewsCard, FeaturedNewsCardSkeleton } from './news/featured-news-card'
 
 function FeaturedNews() {
-  const { data: news, isPending, isError } = useNews(3, true)
+  const { data: news, isPending, isError } = useNews({ limit: 3, featured: true })
   const skeletons = Array.from({ length: 3 })
 
   return (

@@ -6,7 +6,10 @@ import { useTranslations } from 'next-intl'
 
 function News() {
   const t = useTranslations('news')
-  const { data: news, isPending: newsPending, isError: newsError } = useNews(12)
+
+  const { data: news, isPending: newsPending, isError: newsError } = useNews({
+    limit: 12,
+  })
   return (
     <section id="news" className="max-w-screen-xl mx-auto px-8 py-10 w-full text-center">
       <div className="mb-8">
