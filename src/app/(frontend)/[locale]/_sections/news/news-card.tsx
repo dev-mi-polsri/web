@@ -42,8 +42,8 @@ export function NewsCardSkeleton() {
     <div className="flex flex-col gap-2 text-start">
       <Skeleton className="aspect-video w-full rounded-lg" />
       <div className="flex flex-col gap-1">
-        <Skeleton className="w-[40%] h-10" />
-        <Skeleton className="w-[100%] h-12" />
+        <Skeleton className="w-[40%] h-8" />
+        <Skeleton className="w-[100%] h-10" />
       </div>
     </div>
   )

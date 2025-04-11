@@ -1,14 +1,14 @@
 import React from 'react'
 import News from '../_sections/news'
-import FeaturedNews from '../_sections/featurednews'
+import FeaturedNews from '../_sections/featured-news'
 
-const pages = () => {
+function Page() {
   return (
-    <div className='flex flex-col my-12'>
+    <div className="my-12">
       <FeaturedNews />
-      <News />    
+      <News />
     </div>
   )
 }
 
-export default pages
+export default Page

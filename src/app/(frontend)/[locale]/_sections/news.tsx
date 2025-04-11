@@ -8,7 +8,7 @@ function News() {
   const t = useTranslations('news')
   const { data: news, isPending: newsPending, isError: newsError } = useNews(12)
   return (
-    <section id='news' className="max-w-screen-xl mx-auto px-8 py-10">
+    <section id="news" className="max-w-screen-xl mx-auto px-8 py-10 w-full text-center">
       <div className="mb-8">
         <h1 className="font-bold text-2xl">{t('heading')}</h1>
         <p className="text-sm text-muted-foreground">{t('description')}</p>

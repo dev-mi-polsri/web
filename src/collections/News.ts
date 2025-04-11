@@ -40,6 +40,18 @@ export const News: CollectionConfig = {
       },
     },
     {
+      name: 'featured',
+      label: 'Featured',
+      type: 'checkbox',
+      defaultValue: false,
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Menampilkan Berita Di Highlight Berita Utama (Hanya 3 Yang Terbaru Akan Tampil)',
+      },
+    },
+    {
       name: 'name',
       label: 'Nama',
       type: 'text',

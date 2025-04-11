@@ -193,6 +193,10 @@ export interface News {
    * Apabila Centang Ini Aktif Berita Akan Ditampilkan Di Tab Berita 'English'
    */
   global: boolean;
+  /**
+   * Menampilkan Berita Di Highlight Berita Utama (Hanya 3 Yang Terbaru Akan Tampil)
+   */
+  featured: boolean;
   name: string;
   content?: {
     root: {
@@ -367,6 +371,7 @@ export interface FacilitySelect<T extends boolean = true> {
 export interface NewsSelect<T extends boolean = true> {
   thumbnail?: T;
   global?: T;
+  featured?: T;
   name?: T;
   content?: T;
   slug?: T;

@@ -5,13 +5,22 @@ import { PaginatedDocs } from 'payload'
 import { Where } from 'payload'
 import { stringify } from 'qs-esm'
 
-export function useNews(limit: number) {
+export function useNews(limit: number, featured?: boolean) {
   const params = useParams<{ locale: string }>()
 
   const query: Where = {
-    global: {
-      equals: params.locale === 'id' ? undefined : true,
-    },
+    and: [
+      {
+        global: {
+          equals: params.locale === 'id' ? undefined : true,
+        },
+      },
+      {
+        featured: {
+          equals: featured,
+        },
+      },
+    ],
   }
 
   const stringifiedQuery = stringify(

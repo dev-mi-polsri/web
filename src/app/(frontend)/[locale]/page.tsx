@@ -27,6 +27,7 @@ export default async function HomePage() {
       <Profile />
       <Facilities />
       <Stats />
+      <News />
       <CTA />
     </div>
   )
