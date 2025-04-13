@@ -52,7 +52,8 @@
   },
   "news": {
     "heading": "Berita Terbaru",
-    "description": "Kabar Terbaru dan Aktivitas Kampus terkini"
+    "description": "Kabar Terbaru dan Aktivitas Kampus terkini",
+    "searchBar": "Cari Berita"
   },
   "facilities": {
     "heading": "Fasilitas",

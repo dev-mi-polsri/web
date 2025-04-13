@@ -7,7 +7,13 @@ import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, SearchIcon } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 
-function News({ pagination = false }: { pagination?: boolean }) {
+function News({
+  pagination = false,
+  searchBar = false,
+}: {
+  pagination?: boolean
+  searchBar?: boolean
+}) {
   const [page, setPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
   const controllerRef = useRef<AbortController | null>(null)
@@ -35,20 +41,22 @@ function News({ pagination = false }: { pagination?: boolean }) {
         <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
 
-      <div className="my-8 w-full md:w-[50%] lg:w-[40%]">
-        <div className="*:not-first:mt-2">
-          <div className="relative">
-            <Input
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              value={searchKeyword}
-              className="peer pe-9 rounded-full"
-              placeholder="Cari Berita"
-            />
-            <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 peer-disabled:opacity-50">
-              <SearchIcon size={16} aria-hidden="true" />
+      <div className="my-4 w-full md:w-[50%] lg:w-[40%]">
+        {searchBar && (
+          <div className="*:not-first:mt-2">
+            <div className="relative">
+              <Input
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                value={searchKeyword}
+                className="peer pe-9 rounded-full"
+                placeholder={t('searchBar')}
+              />
+              <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 peer-disabled:opacity-50">
+                <SearchIcon size={16} aria-hidden="true" />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 w-full">
