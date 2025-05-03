@@ -13,6 +13,7 @@ import { Partner } from './collections/Partners'
 import { Facility } from './collections/Facility'
 import { News } from './collections/News'
 import { Agenda } from './collections/Agenda'
+import { azureStorage } from '@payloadcms/storage-azure'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -38,6 +39,16 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
+    azureStorage({
+      enabled: process.env.NODE_ENV === 'production',
+      collections: {
+        media: true,
+      },
+      allowContainerCreate: process.env.AZURE_STORAGE_ALLOW_CONTAINER_CREATE === 'true',
+      baseURL: process.env.AZURE_STORAGE_ACCOUNT_BASEURL!,
+      connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING!,
+      containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
+    }),
     // storage-adapter-placeholder
   ],
 })

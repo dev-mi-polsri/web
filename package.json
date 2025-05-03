@@ -22,6 +22,7 @@
     "@payloadcms/next": "3.31.0",
     "@payloadcms/payload-cloud": "3.31.0",
     "@payloadcms/richtext-lexical": "3.31.0",
+    "@payloadcms/storage-azure": "3.31.0",
     "@radix-ui/react-aspect-ratio": "^1.1.3",
     "@radix-ui/react-checkbox": "^1.1.5",
     "@radix-ui/react-collapsible": "^1.1.4",
