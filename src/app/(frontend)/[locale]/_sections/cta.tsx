@@ -6,7 +6,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 
 function CTA() {
-  const t = useTranslations('cta')
+  const t = useTranslations('pages.home.cta')
   return (
     <section id="call-to-action" className="py-8 max-w-screen-lg mx-auto p-4">
       <div className="rounded-lg p-8 text-card-foreground bg-card border">

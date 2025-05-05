@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl'
 
 function Stats() {
-  const t = useTranslations('stats')
+  const t = useTranslations('pages.home.stats')
   return (
     <section
       className="relative min-h-[300px] flex items-center justify-center py-16 my-16"

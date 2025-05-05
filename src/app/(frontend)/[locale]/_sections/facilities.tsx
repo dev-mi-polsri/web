@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 
 function Facilities() {
-  const t = useTranslations('facilities')
+  const t = useTranslations('pages.home.facilities')
   const { data: facilities, isLoading: facilitiesPending, error: facilitiesError } = useFacilities()
 
   return (
