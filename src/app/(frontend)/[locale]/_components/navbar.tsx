@@ -128,11 +128,6 @@ export function Navbar() {
                                 desc: t('profile.staff.desc'),
                                 href: `/${params.locale}/tendik`,
                               },
-                              {
-                                label: t('profile.alumni.title'),
-                                desc: t('profile.alumni.desc'),
-                                href: `/${params.locale}/alumni`,
-                              },
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
                                 {item.desc}
@@ -284,10 +279,6 @@ export function Navbar() {
                                     {
                                       label: 'Tenaga Didik',
                                       href: '/profil/tendik',
-                                    },
-                                    {
-                                      label: 'Alumni',
-                                      href: '/profil/alumni',
                                     },
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>
