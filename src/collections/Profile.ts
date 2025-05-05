@@ -10,11 +10,11 @@ import {
 import { CollectionConfig } from 'payload'
 import { generateSlug } from './_lib'
 
-export const News: CollectionConfig = {
-  slug: 'news',
+export const Profile: CollectionConfig = {
+  slug: 'profile',
   labels: {
-    singular: 'Berita',
-    plural: 'Berita',
+    singular: 'Profil',
+    plural: 'Profil',
   },
 
   access: {
@@ -30,51 +30,14 @@ export const News: CollectionConfig = {
     },
     {
       name: 'global',
-      label: 'Global News',
+      label: 'Global',
       type: 'checkbox',
       defaultValue: false,
       required: true,
       admin: {
         position: 'sidebar',
-        description: "Apabila Centang Ini Aktif Berita Akan Ditampilkan Di Tab Berita 'English'",
+        description: "Apabila Centang Ini Aktif, Item Akan Ditampilkan Di Tab Berita 'English'",
       },
-    },
-    {
-      name: 'featured',
-      label: 'Featured',
-      type: 'checkbox',
-      defaultValue: false,
-      required: true,
-      admin: {
-        position: 'sidebar',
-        description:
-          'Menampilkan Berita Di Highlight Berita Utama (Hanya 3 Yang Terbaru Akan Tampil)',
-      },
-    },
-    {
-      name: 'tipe',
-      label: 'Tipe',
-      type: 'select',
-      defaultValue: 'news',
-      required: true,
-      options: [
-        {
-          label: 'Berita Umum',
-          value: 'news',
-        },
-        {
-          label: 'HMJ',
-          value: 'news_hmj',
-        },
-        {
-          label: 'Akademik',
-          value: 'news_akademik',
-        },
-        {
-          label: 'Prestasi',
-          value: 'news_prestasi',
-        },
-      ],
     },
     {
       name: 'name',
@@ -82,6 +45,14 @@ export const News: CollectionConfig = {
       type: 'text',
       required: true,
     },
+
+    {
+      name: 'description',
+      label: 'Deskripsi',
+      type: 'text',
+      required: true,
+    },
+
     {
       name: 'content',
       label: 'Konten',
@@ -107,19 +78,6 @@ export const News: CollectionConfig = {
         beforeValidate: [generateSlug('judul')],
       },
       required: true,
-    },
-    {
-      name: 'tags',
-      type: 'array',
-      admin: {
-        position: 'sidebar',
-      },
-      fields: [
-        {
-          name: 'tag',
-          type: 'text',
-        },
-      ],
     },
   ],
 }

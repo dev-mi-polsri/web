@@ -19,16 +19,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+
   return (
     <div className="flex flex-col">
-      <Hero />
-      <Partners />
-      <Profile />
-      <Facilities />
-      <Stats />
+      <Hero locale={locale} />
+      <Partners locale={locale} />
+      <Profile locale={locale} />
+      <Facilities locale={locale} />
+      <Stats locale={locale} />
       <News />
-      <CTA />
+      <CTA locale={locale} />
     </div>
   )
 }

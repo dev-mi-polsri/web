@@ -1,73 +1,35 @@
-'use client'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Calendar, Play } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import Image from 'next/image'
+import { BookOpen, Calendar } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
-import YouTube from 'react-youtube'
+import { VideoProfile } from '../_components/video-profile'
+import { getMessages } from 'next-intl/server'
 
-function Profile() {
-  const [toggled, setToggled] = useState<boolean>(false)
-  const t = useTranslations('pages.home.profile')
+async function Profile({ locale }: { locale: string }) {
+  // const t = useTranslations('pages.home.profile')
+  const {
+    pages: {
+      home: { profile: t },
+    },
+  } = await getMessages({ locale })
 
   return (
     <section className="py-8">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 p-6 md:p-4">
-        <div className="relative h-[19rem] aspect-video rounded overflow-hidden">
-          {toggled ? (
-            <YouTube
-              videoId="cBZ9q42R2LU"
-              opts={{
-                width: '100%',
-                height: '100%',
-                playerVars: {
-                  controls: 1,
-                  modestbranding: 1,
-                  rel: 0,
-                  showinfo: 1,
-                },
-              }}
-              className="w-full h-[20rem]"
-            />
-          ) : (
-            <>
-              <Image
-                key="Head-3.jpg"
-                src="/placeholder.svg"
-                alt="hero"
-                width={1920}
-                height={1080}
-                className={
-                  'absolute inset-0 object-cover h-full w-full transition-opacity duration-1000 ease-in-out hover:cursor-pointer'
-                }
-                onClick={() => setToggled(true)}
-              />
-              <Button
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-6"
-                size="icon"
-              >
-                <Play className="size-8" />
-              </Button>
-            </>
-          )}
-        </div>
+        <VideoProfile />
         <div className="flex flex-col gap-2 max-w-2xl">
-          <h1 className="text-2xl font-bold">{t('heading')}</h1>
-          <p className="text-muted-foreground text-lg text-justify">
-            {t('description')}
-          </p>
+          <h1 className="text-2xl font-bold">{t.heading}</h1>
+          <p className="text-muted-foreground text-lg text-justify">{t.description}</p>
           <div className="flex gap-2 items-center mt-4">
-            <Link href="/berita">
+            <Link href={`/${locale}/news`}>
               <Button>
                 <BookOpen />
-                {t('buttons.news')}
+                {t.buttons.news}
               </Button>
             </Link>
-            <Link href="#agenda" scroll>
+            <Link href={`/${locale}/agenda`}>
               <Button variant="secondary">
                 <Calendar />
-                {t('buttons.agenda')}
+                {t.buttons.agenda}
               </Button>
             </Link>
           </div>
