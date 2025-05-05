@@ -6,13 +6,11 @@ import Image from 'next/image'
 const HeadOfDepartment = () => {
   return (
     <section className="py-8">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-4 md:p-4">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-4 md:p-4 p-6">
         {/* Quote  */}
-        <div className="lg:w-1/2">
-          <h1 className="font-bold lg:text-2xl">
-            Kata Sambutan Kepala Jurusan Manajemen Informatika
-          </h1>
-          <p className="text-gray-600 mt-6 text-lg text-justify">
+        <div className="lg:w-1/2 flex gap-4 flex-col">
+          <h1 className="font-bold text-2xl">Kata Sambutan Kepala Jurusan Manajemen Informatika</h1>
+          <p className="text-muted-foreground text-lg text-justify">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa dignissimos ad, iure
             doloribus dolor ullam eius, accusantium illum, consequuntur obcaecati nihil nobis
             repudiandae cupiditate. Dolor, reprehenderit unde consequuntur minima voluptates nisi
@@ -22,7 +20,7 @@ const HeadOfDepartment = () => {
         </div>
 
         {/* Image */}
-        <div className="lg:w-md">
+        <div className="w-sm lg:w-md">
           <Card className="overflow-hidden w-full h-full object-cover rounded-2xl shadow-lg py-0">
             <Image
               key="Head-3.jpg"
