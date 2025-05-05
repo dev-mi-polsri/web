@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 export function Navbar() {
-  const t = useTranslations('navbar')
+  const t = useTranslations('layout.navbar')
   const [isScrolled, setIsScrolled] = useState(false)
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)

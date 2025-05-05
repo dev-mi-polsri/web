@@ -6,7 +6,7 @@ import { ChevronRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export function Hero() {
-  const t = useTranslations('hero')
+  const t = useTranslations('page.home.hero')
   
   const heroImages = useMemo(() => ['Hero-1.jpeg', 'Hero-2.jpeg'], [])
   const [currentImageIndex, setCurrentImageIndex] = useState(0)

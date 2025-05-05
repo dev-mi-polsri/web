@@ -13,56 +13,63 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
       <footer className="bg-secondary text-secondary-foreground py-12 flex flex-col">
         <div className="container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-2xl">{messages.footer.title}</h1>
+            <h1 className="font-bold text-2xl">{messages.layout.footer.title}</h1>
             <p className="text-muted-foreground">
-              {messages.footer.campus}
+              {messages.layout.footer.campus}
               <br />
-              {messages.footer.road}
+              {messages.layout.footer.road}
               <br />
-              {messages.footer.city}
+              {messages.layout.footer.city}
             </p>
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">{messages.footer.links.contact}</h1>
+            <h1 className="font-bold text-xl">{messages.layout.footer.links.contact}</h1>
             <div className="flex flex-col gap-2">
               <div className="flex gap-2 items-center">
                 <MapPin className="size-4" />
-                <p>{messages.footer.road}</p>
+                <p>{messages.layout.footer.road}</p>
               </div>
               <div className="flex gap-2 items-center">
                 <Phone className="size-4" />
-                <p>{messages.footer.contact.phone}</p>
+                <p>{messages.layout.footer.contact.phone}</p>
               </div>
               <div className="flex gap-2 items-center">
                 <Mail className="size-4" />
-                <p>{messages.footer.contact.email}</p>
+                <p>{messages.layout.footer.contact.email}</p>
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">{messages.footer.links.study}</h1>
+            <h1 className="font-bold text-xl">{messages.layout.footer.links.study}</h1>
             <div className="flex flex-col gap-2">
               {/* {prodi?.docs.map((item, idx) => (
                 <Link href={`/prodi/${item.slug}`} key={idx}>
                   {item.judul}
                 </Link>
               ))} */}
-              <p>{messages.footer.study.d3}</p>
-              <p>{messages.footer.study.d4}</p>
+              <p>{messages.layout.footer.study.d3}</p>
+              <p>{messages.layout.footer.study.d4}</p>
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">{messages.footer.links.links}</h1>
+            <h1 className="font-bold text-xl">{messages.layout.footer.links.links}</h1>
             <div className="flex flex-col gap-2">
-              <Link href="/">{messages.footer.links.home}</Link>
-              <Link href="/berita">{messages.footer.links.news}</Link>
-              <Link href="https://www.instagram.com/jurusan.mi.polsri/">{messages.footer.links.ig}</Link>
-              <Link href="https://www.instagram.com/hmjmi_polsri/">{messages.footer.links.hmj}</Link>
+              <Link href="/">{messages.layout.footer.links.home}</Link>
+              <Link href="/berita">{messages.layout.footer.links.news}</Link>
+              <Link href="https://www.instagram.com/jurusan.mi.polsri/">
+                {messages.layout.footer.links.ig}
+              </Link>
+              <Link href="https://www.instagram.com/hmjmi_polsri/">
+                {messages.layout.footer.links.hmj}
+              </Link>
             </div>
           </div>
         </div>
         <div className="container max-w-7xl mx-auto text-center mt-8 text-xs text-muted-foreground px-6">
-          <p>© {new Date().getFullYear()} {messages.footer.title} Polsri. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {messages.layout.footer.title} Polsri. All rights
+            reserved.
+          </p>
         </div>
       </footer>
     </>
