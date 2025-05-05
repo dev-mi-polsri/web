@@ -1,46 +1,41 @@
-'use client'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Facility, Media } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
-import { useFacilities } from '../_hooks/queries/facilities'
-import { useTranslations } from 'next-intl'
-import { useParams } from 'next/navigation'
+import config from '@payload-config'
+import { getPayload } from 'payload'
+import { getMessages } from 'next-intl/server'
 
-function Facilities() {
-  const t = useTranslations('pages.home.facilities')
-  const { data: facilities, isLoading: facilitiesPending, error: facilitiesError } = useFacilities()
+async function Facilities({ locale }: { locale: string }) {
+  // const t = useTranslations('pages.home.facilities')
+  // const { data: facilities, isLoading: facilitiesPending, error: facilitiesError } = useFacilities()
+  const {
+    pages: {
+      home: { facilities: t },
+    },
+  } = await getMessages({ locale })
+
+  const payload = await getPayload({ config })
+
+  const facilities = await payload.find({
+    collection: 'facility',
+  })
 
   return (
     <section className="py-8 text-center">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">{t('heading')}</h1>
-        <p className="text-sm text-muted-foreground">{t('description')}</p>
+        <h1 className="text-2xl font-bold">{t.heading}</h1>
+        <p className="text-sm text-muted-foreground">{t.description}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-screen-lg px-4 pb-4">
-        {facilitiesPending
-          ? Array.from({ length: 5 }).map((_, idx) => (
-              <Skeleton key={idx} className="relative w-full pb-[133.33%]" />
-            ))
-          : facilitiesError
-            ? Array.from({ length: 5 }).map((_, idx) => (
-                <Skeleton key={idx} className="relative w-full pb-[133.33%]" />
-              ))
-            : !facilities
-              ? Array.from({ length: 5 }).map((_, idx) => (
-                  <Skeleton key={idx} className="relative w-full pb-[133.33%]" />
-                ))
-              : facilities.docs.map(({ ...facility }, idx) => (
-                  <FacilityCard {...facility} key={idx} />
-                ))}
+        {facilities?.docs.map(({ ...facility }, idx) => (
+          <FacilityCard {...facility} locale={locale} key={idx} />
+        ))}
       </div>
     </section>
   )
 }
 
-function FacilityCard({ logo, name, enName }: Facility) {
-  const { locale } = useParams<{ locale: string }>()
-
+function FacilityCard({ logo, name, enName, locale }: Facility & { locale: string }) {
   return (
     <div>
       <div className="relative w-full pb-[133.33%]">
