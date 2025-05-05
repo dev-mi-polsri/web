@@ -7,6 +7,7 @@ import Stats from './_sections/stats'
 import News from './_sections/news'
 import { getMessages } from 'next-intl/server'
 import CTA from './_sections/cta'
+import HeadOfDepartment from './_sections/head-of-department'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -25,6 +26,7 @@ export default async function HomePage() {
       <Hero />
       <Partners />
       <Profile />
+      <HeadOfDepartment />
       <Facilities />
       <Stats />
       <News />
