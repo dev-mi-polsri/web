@@ -30,7 +30,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <Facilities locale={locale} />
       <Stats locale={locale} />
       <News />
-      <CTA />
+      <CTA locale={locale} />
     </div>
   )
 }
