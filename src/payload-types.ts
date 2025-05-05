@@ -198,6 +198,7 @@ export interface News {
    * Menampilkan Berita Di Highlight Berita Utama (Hanya 3 Yang Terbaru Akan Tampil)
    */
   featured: boolean;
+  tipe: 'news' | 'news_hmj' | 'news_akademik' | 'news_prestasi';
   name: string;
   content?: {
     root: {
@@ -375,6 +376,7 @@ export interface NewsSelect<T extends boolean = true> {
   thumbnail?: T;
   global?: T;
   featured?: T;
+  tipe?: T;
   name?: T;
   content?: T;
   slug?: T;
