@@ -6,7 +6,7 @@ import { EventCalendar } from '@/components/event-calendar'
 import { useTranslations } from 'next-intl'
 
 function Agenda() {
-  const t = useTranslations('agenda')
+  const t = useTranslations('pages.agenda')
   const { data: agendas, isPending: agendasPending, isError: agendasError } = useAgendas()
 
   return (

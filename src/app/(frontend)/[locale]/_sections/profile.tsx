@@ -9,7 +9,7 @@ import YouTube from 'react-youtube'
 
 function Profile() {
   const [toggled, setToggled] = useState<boolean>(false)
-  const t = useTranslations('profile')
+  const t = useTranslations('pages.home.profile')
 
   return (
     <section className="py-8">

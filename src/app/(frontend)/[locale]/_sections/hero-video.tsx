@@ -11,7 +11,7 @@ const VIDEO_URL =
   'https://webmistorage.blob.core.windows.net/webstoragecontainer/%20sinematik-mi.mp4'
 
 export function Hero() {
-  const t = useTranslations('hero')
+  const t = useTranslations('pages.home.hero')
   const heroImages = useMemo(() => ['Hero-1.jpeg', 'Hero-2.jpeg'], [])
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)

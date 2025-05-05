@@ -1,108 +1,126 @@
 {
-  "navbar": {
-    "title": "Manajemen Informatika",
-    "main": "Beranda",
-    "profile": {
-      "title": "Profil",
-      "aboutUs": {
-        "title": "Tentang Kami",
-        "desc": "Informasi mengenai jurusan Manajemen Informatika Polsri."
+  "layout": {
+    "navbar": {
+      "title": "Manajemen Informatika",
+      "main": "Beranda",
+      "profile": {
+        "title": "Profil",
+        "aboutUs": {
+          "title": "Tentang Kami",
+          "desc": "Informasi mengenai jurusan Manajemen Informatika Polsri."
+        },
+        "visionMision": {
+          "title": "Visi Misi",
+          "desc": "Visi dan Misi jurusan Manajemen Informatika Polsri."
+        },
+        "organizationStructure": {
+          "title": "Struktur Organisasi",
+          "desc": "Struktur organisasi jurusan Manajemen Informatika Polsri."
+        },
+        "lecturers": {
+          "title": "Dosen",
+          "desc": "Daftar nama-nama dosen jurusan Manajemen Informatika Polsri."
+        },
+        "staff": {
+          "title": "Tenaga Didik",
+          "desc": "Daftar nama-nama tenaga pendidik jurusan Manajemen Informatika Polsri."
+        },
+        "alumni": {
+          "title": "Alumni",
+          "desc": "Informasi mengenai alumni jurusan Manajemen Informatika Polsri."
+        }
       },
-      "visionMision": {
-        "title": "Visi Misi",
-        "desc": "Visi dan Misi jurusan Manajemen Informatika Polsri."
-      },
-      "organizationStructure": {
-        "title": "Struktur Organisasi",
-        "desc": "Struktur organisasi jurusan Manajemen Informatika Polsri."
-      },
-      "lecturers": {
-        "title": "Dosen",
-        "desc": "Daftar nama-nama dosen jurusan Manajemen Informatika Polsri."
-      },
-      "staff": {
-        "title": "Tenaga Didik",
-        "desc": "Daftar nama-nama tenaga pendidik jurusan Manajemen Informatika Polsri."
-      },
-      "alumni": {
-        "title": "Alumni",
-        "desc": "Informasi mengenai alumni jurusan Manajemen Informatika Polsri."
-      }
-    },
-    "news": "Berita",
-    "agenda": "Agenda"
-  },
-  "profile": {
-    "heading": "Profil Jurusan Manajemen Informatika",
-    "description": "Manajemen Informatika Polsri menghasilkan ahli TI dengan keahlian manajerial melalui pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data, dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.",
-    "buttons": {
-      "news": "Berita MI",
-      "agenda": "Agenda Kami"
-    }
-  },
-  "agenda": {
-    "heading": "Agenda",
-    "description": "Agenda lalu dan mendatang kampus"
-  },
-  "hero": {
-    "heading": "Jurusan Manajemen Informatika Politeknik Negeri Sriwijaya",
-    "description": "Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi profesional handal yang siap menghadapi tantangan industri 4.0.",
-    "button": "Pelajari Lebih Lanjut",
-    "imageCredit": "Images By: Afiva Nurkamila"
-  },
-  "news": {
-    "heading": "Berita Terbaru",
-    "description": "Kabar Terbaru dan Aktivitas Kampus terkini",
-    "searchBar": "Cari Berita"
-  },
-  "facilities": {
-    "heading": "Fasilitas",
-    "description": "Fasilitas kampus Manajemen Informatika"
-  },
-  "partners": {
-    "heading": "Kerja Sama",
-    "description": "Mitra-Mitra Manajemen Informatika"
-  },
-  "stats": {
-    "d3Students": "Mahasiswa DIII",
-    "d4Students": "Mahasiswa DIV",
-    "lecturers": "Dosen",
-    "staff": "Tendik"
-  },
-  "cta": {
-    "title": "Tetap Update dengan Berita MI Polsri!",
-    "content": "Dapatkan informasi terbaru seputar kegiatan, prestasi, dan pengumuman penting dari Jurusan Manajemen Informatika.",
-    "button": "Baca Berita"
-  },
-  "footer": {
-    "title": "Manajemen Informatika",
-    "campus": "Politeknik Negeri Sriwijaya",
-    "road": "Jl. Srijaya Negara, Bukit Besar",
-    "city": "Palembang, Sumatera Selatan 30139",
-    "contact": {
-      "phone": "0711 321234",
-      "email": "mi@polsri.ac.id"
-    },
-    "study": {
-      "d3": "D3 Manajemen Informatika",
-      "d4": "D4 Manajemen Informatika"
-    },
-    "links": {
-      "home": "Beranda",
       "news": "Berita",
       "agenda": "Agenda",
-      "ig": "Instagram",
-      "hmj": "HMJ MI"
+      "theme": {
+        "dark": "Gelap",
+        "light": "Terang",
+        "system": "Sistem"
+      }
+    },
+    "footer": {
+      "title": "Manajemen Informatika",
+      "campus": "Politeknik Negeri Sriwijaya",
+      "road": "Jl. Srijaya Negara, Bukit Besar",
+      "city": "Palembang, Sumatera Selatan 30139",
+      "contact": {
+        "phone": "0711 321234",
+        "email": "mi@polsri.ac.id"
+      },
+      "study": {
+        "d3": "D3 Manajemen Informatika",
+        "d4": "D4 Manajemen Informatika"
+      },
+      "links": {
+        "home": "Beranda",
+        "news": "Berita",
+        "contact": "Kontak",
+        "study": "Program Studi",
+        "links": "Tautan",
+        "agenda": "Agenda",
+        "ig": "Instagram",
+        "hmj": "HMJ MI"
+      },
+      "credits": "© 2025 Manajemen Informatika Polsri. All rights reserved."
     }
   },
-  "newsPage": {
-    "breadcrumbs": {
-      "home": "Beranda",
-      "news": "Berita"
+  "pages": {
+    "home": {
+      "hero": {
+        "heading": "Jurusan Manajemen Informatika Politeknik Negeri Sriwijaya",
+        "description": "Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi profesional handal yang siap menghadapi tantangan industri 4.0.",
+        "button": "Pelajari Lebih Lanjut",
+        "imageCredit": "Images By: Afiva Nurkamila"
+      },
+      "partners": {
+        "heading": "Kerja Sama",
+        "description": "Mitra-Mitra Manajemen Informatika"
+      },
+      "profile": {
+        "heading": "Profil Jurusan Manajemen Informatika",
+        "description": "Manajemen Informatika Polsri menghasilkan ahli TI dengan keahlian manajerial melalui pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data, dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.",
+        "buttons": {
+          "news": "Berita MI",
+          "agenda": "Agenda Kami"
+        }
+      },
+      "facilities": {
+        "heading": "Fasilitas",
+        "description": "Fasilitas kampus Manajemen Informatika"
+      },
+      "stats": {
+        "d3Students": "Mahasiswa DIII",
+        "d4Students": "Mahasiswa DIV",
+        "lecturers": "Dosen",
+        "staff": "Tendik"
+      },
+      "news": {
+        "heading": "Berita Terbaru",
+        "description": "Kabar Terbaru dan Aktivitas Kampus terkini",
+        "searchBar": "Cari Berita"
+      },
+      "cta": {
+        "title": "Tetap Update dengan Berita MI Polsri!",
+        "content": "Dapatkan informasi terbaru seputar kegiatan, prestasi, dan pengumuman penting dari Jurusan Manajemen Informatika.",
+        "button": "Baca Berita"
+      }
     },
-    "recomendedNews": {
-      "title": "Baca Juga",
-      "description": "Baca Juga Berita-Berita Menarik MI"
+    "profile": {
+      "aboutUs": {},
+      "visionMision": {},
+      "organizationStructure": {},
+      "lecturers": {},
+      "staff": {},
+      "alumni": {}
+    },
+    "news": {
+      "heading": "Berita",
+      "description": "Berita terbaru dan informasi terkini dari Jurusan Manajemen Informatika Polsri.",
+      "searchBar": "Cari Berita"
+    },
+    "agenda": {
+      "heading": "Agenda",
+      "description": "Agenda lalu dan mendatang kampus"
     }
   }
 }

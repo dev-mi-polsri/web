@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
 
   const messages = await getMessages({ locale })
-  const title = messages.navbar.title
+  const title = messages.layout.navbar.title
 
   return {
     title,
