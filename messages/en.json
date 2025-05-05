@@ -84,8 +84,7 @@
         "heading": "Profile of the Informatics Management Department",
         "description": "Informatics Management at Polsri produces IT experts with managerial skills through comprehensive education in application development, information systems, data analysis, and IT project management, supported by a relevant curriculum, expert lecturers, and modern facilities to prepare competent graduates ready to pursue careers in the digital era.",
         "buttons": {
-          "news": "Our News",
-          "agenda": "Our Agenda"
+          "more": "More About Us"
         }
       },
       "facilities": {

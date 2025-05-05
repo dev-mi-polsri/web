@@ -83,8 +83,7 @@
         "heading": "Profil Jurusan Manajemen Informatika",
         "description": "Manajemen Informatika Polsri menghasilkan ahli TI dengan keahlian manajerial melalui pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data, dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.",
         "buttons": {
-          "news": "Berita MI",
-          "agenda": "Agenda Kami"
+          "more": "Selebihnya Tentang Kami"
         }
       },
       "facilities": {

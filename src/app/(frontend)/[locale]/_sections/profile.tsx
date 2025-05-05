@@ -20,16 +20,10 @@ async function Profile({ locale }: { locale: string }) {
           <h1 className="text-2xl font-bold">{t.heading}</h1>
           <p className="text-muted-foreground text-lg text-justify">{t.description}</p>
           <div className="flex gap-2 items-center mt-4">
-            <Link href={`/${locale}/news`}>
+            <Link href={`/${locale}/profile/${locale === 'en' ? 'about-us' : 'tentang-kami'}`}>
               <Button>
                 <BookOpen />
-                {t.buttons.news}
-              </Button>
-            </Link>
-            <Link href={`/${locale}/agenda`}>
-              <Button variant="secondary">
-                <Calendar />
-                {t.buttons.agenda}
+                {t.buttons.more}
               </Button>
             </Link>
           </div>
