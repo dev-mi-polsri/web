@@ -73,6 +73,8 @@ export interface Config {
     facility: Facility;
     news: News;
     agenda: Agenda;
+    profile: Profile;
+    studyprogram: Studyprogram;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,6 +87,8 @@ export interface Config {
     facility: FacilitySelect<false> | FacilitySelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     agenda: AgendaSelect<false> | AgendaSelect<true>;
+    profile: ProfileSelect<false> | ProfileSelect<true>;
+    studyprogram: StudyprogramSelect<false> | StudyprogramSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -242,6 +246,70 @@ export interface Agenda {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile".
+ */
+export interface Profile {
+  id: number;
+  thumbnail: number | Media;
+  /**
+   * Apabila Centang Ini Aktif, Item Akan Ditampilkan Di Tab Berita 'English'
+   */
+  global: boolean;
+  name: string;
+  description: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studyprogram".
+ */
+export interface Studyprogram {
+  id: number;
+  thumbnail: number | Media;
+  /**
+   * Apabila Centang Ini Aktif, Item Akan Ditampilkan Di Tab Berita 'English'
+   */
+  global: boolean;
+  name: string;
+  description: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -270,6 +338,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'agenda';
         value: number | Agenda;
+      } | null)
+    | ({
+        relationTo: 'profile';
+        value: number | Profile;
+      } | null)
+    | ({
+        relationTo: 'studyprogram';
+        value: number | Studyprogram;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -400,6 +476,34 @@ export interface AgendaSelect<T extends boolean = true> {
   startDate?: T;
   endDate?: T;
   location?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile_select".
+ */
+export interface ProfileSelect<T extends boolean = true> {
+  thumbnail?: T;
+  global?: T;
+  name?: T;
+  description?: T;
+  content?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studyprogram_select".
+ */
+export interface StudyprogramSelect<T extends boolean = true> {
+  thumbnail?: T;
+  global?: T;
+  name?: T;
+  description?: T;
+  content?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
