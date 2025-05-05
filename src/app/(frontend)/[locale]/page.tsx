@@ -28,7 +28,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <Partners locale={locale} />
       <Profile />
       <Facilities />
-      <Stats />
+      <Stats locale={locale} />
       <News />
       <CTA />
     </div>
