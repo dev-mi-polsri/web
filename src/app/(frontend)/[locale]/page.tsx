@@ -25,7 +25,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <div className="flex flex-col">
       <Hero locale={locale} />
-      <Partners />
+      <Partners locale={locale} />
       <Profile />
       <Facilities />
       <Stats />
