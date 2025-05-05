@@ -30,6 +30,9 @@
           "desc": "Informasi mengenai alumni jurusan Manajemen Informatika Polsri."
         }
       },
+      "studyPrograms": {
+        "title": "Program Studi"
+      },
       "news": "Berita",
       "agenda": "Agenda",
       "theme": {

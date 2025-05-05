@@ -9,6 +9,7 @@
           "title": "About Us",
           "desc": "Information about the Informatics Management department of Polsri."
         },
+
         "visionMision": {
           "title": "Vision and Mission",
           "desc": "Vision and Mission of the Informatics Management department of Polsri."
@@ -29,6 +30,9 @@
           "title": "Alumni",
           "desc": "Information about alumni from the Informatics Management department of Polsri."
         }
+      },
+      "studyPrograms": {
+        "title": "Study Programs"
       },
       "news": "News",
       "agenda": "Agenda",

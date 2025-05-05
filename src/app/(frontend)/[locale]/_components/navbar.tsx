@@ -34,9 +34,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useProfiles } from '../_hooks/queries/profile'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useStudyPrograms } from '../_hooks/queries/study-programs'
 
 export function Navbar() {
   const t = useTranslations('layout.navbar')
+
   const [isScrolled, setIsScrolled] = useState(false)
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({})
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
@@ -56,7 +58,12 @@ export function Navbar() {
     setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }))
   }
 
-  const { data: profiles, isPending, error } = useProfiles({})
+  const { data: profiles, isPending: profilesIsPending, error: profilesError } = useProfiles({})
+  const {
+    data: studyPrograms,
+    isPending: studyProgramsIsPending,
+    error: studyProgramsError,
+  } = useStudyPrograms({})
 
   return (
     <nav
@@ -104,11 +111,11 @@ export function Navbar() {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                      {isPending
+                      {profilesIsPending
                         ? Array.from({ length: 6 }).map((_, idx) => (
                             <Skeleton className="h-16 w-full" key={idx} />
                           ))
-                        : error
+                        : profilesError
                           ? Array.from({ length: 6 }).map((_, idx) => (
                               <Skeleton key={idx} className="h-16 w-full bg-destructive/20" />
                             ))
@@ -128,6 +135,35 @@ export function Navbar() {
                                 desc: t('profile.staff.desc'),
                                 href: `/${params.locale}/tendik`,
                               },
+                            ].map((item) => (
+                              <ListItem key={item.label} href={item.href} title={item.label}>
+                                {item.desc}
+                              </ListItem>
+                            ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-muted-foreground hover:text-foreground">
+                    {t('studyPrograms.title')}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                      {studyProgramsIsPending
+                        ? Array.from({ length: 6 }).map((_, idx) => (
+                            <Skeleton className="h-16 w-full" key={idx} />
+                          ))
+                        : studyProgramsError
+                          ? Array.from({ length: 6 }).map((_, idx) => (
+                              <Skeleton key={idx} className="h-16 w-full bg-destructive/20" />
+                            ))
+                          : [
+                              ...studyPrograms.docs.map((program) => ({
+                                label: program.name,
+                                desc: program.description,
+                                href: `/${params.locale}/${program.slug}`,
+                              })),
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
                                 {item.desc}
@@ -225,7 +261,7 @@ export function Navbar() {
                   <ul className="flex flex-col gap-2">
                     <li onClick={() => setDrawerOpen(false)}>
                       <Link
-                        href="/"
+                        href={`/${params.locale}/`}
                         className={cn(
                           'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
                           pathname === '/'
@@ -259,11 +295,11 @@ export function Navbar() {
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <ul className="ml-4 flex flex-col gap-2">
-                            {isPending
+                            {profilesIsPending
                               ? Array.from({ length: 6 }).map((_, idx) => (
                                   <Skeleton className="w-full h-8" key={idx} />
                                 ))
-                              : error
+                              : profilesError
                                 ? Array.from({ length: 6 }).map((_, idx) => (
                                     <Skeleton className="w-full h-8 bg-destructive/20" key={idx} />
                                   ))
@@ -280,6 +316,64 @@ export function Navbar() {
                                       label: 'Tenaga Didik',
                                       href: '/profil/tendik',
                                     },
+                                  ].map((item) => (
+                                    <li key={item.label} onClick={() => setDrawerOpen(false)}>
+                                      <Link
+                                        href={item.href}
+                                        className={cn(
+                                          'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
+                                          pathname === item.href
+                                            ? 'bg-accent text-accent-foreground'
+                                            : 'text-muted-foreground',
+                                        )}
+                                      >
+                                        {item.label}
+                                      </Link>
+                                    </li>
+                                  ))}
+                          </ul>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </li>
+
+                    <li>
+                      <Collapsible
+                        open={openMenus['studyPrograms']}
+                        onOpenChange={() => toggleMenu('studyPrograms')}
+                      >
+                        <CollapsibleTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className={cn(
+                              'w-full justify-between',
+                              openMenus['studyPrograms']
+                                ? 'text-foreground'
+                                : 'text-muted-foreground',
+                            )}
+                          >
+                            {t('studyPrograms.title')}
+                            {openMenus['studyPrograms'] ? (
+                              <ChevronUp className="h-4 w-4" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <ul className="ml-4 flex flex-col gap-2">
+                            {studyProgramsIsPending
+                              ? Array.from({ length: 6 }).map((_, idx) => (
+                                  <Skeleton className="w-full h-8" key={idx} />
+                                ))
+                              : studyProgramsError
+                                ? Array.from({ length: 6 }).map((_, idx) => (
+                                    <Skeleton className="w-full h-8 bg-destructive/20" key={idx} />
+                                  ))
+                                : [
+                                    ...studyPrograms.docs.map((profile) => ({
+                                      label: profile.name,
+                                      href: `/${params.locale}/${profile.slug}`,
+                                    })),
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>
                                       <Link
