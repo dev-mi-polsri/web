@@ -6,9 +6,8 @@ import React from 'react'
 async function Footer({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
 
-  const messages = await getMessages({ locale })
-  const {layout} = messages
-
+  const { layout } = await getMessages({ locale })
+  
   return (
     <>
       <footer className="bg-secondary text-secondary-foreground py-12 flex flex-col">
