@@ -162,7 +162,7 @@ export function Navbar() {
                               ...studyPrograms.docs.map((program) => ({
                                 label: program.name,
                                 desc: program.description,
-                                href: `/${params.locale}/${program.slug}`,
+                                href: `/${params.locale}/program/${program.slug}`,
                               })),
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
@@ -370,9 +370,9 @@ export function Navbar() {
                                     <Skeleton className="w-full h-8 bg-destructive/20" key={idx} />
                                   ))
                                 : [
-                                    ...studyPrograms.docs.map((profile) => ({
-                                      label: profile.name,
-                                      href: `/${params.locale}/${profile.slug}`,
+                                    ...studyPrograms.docs.map((program) => ({
+                                      label: program.name,
+                                      href: `/${params.locale}/program/${program.slug}`,
                                     })),
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>

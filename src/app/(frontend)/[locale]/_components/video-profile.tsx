@@ -29,7 +29,7 @@ export function VideoProfile() {
         <>
           <Image
             key="Head-3.jpg"
-            src="/placeholder.svg"
+            src="/Hero-1.jpeg"
             alt="hero"
             width={1920}
             height={1080}

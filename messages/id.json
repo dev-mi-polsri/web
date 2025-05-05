@@ -44,8 +44,8 @@
     "footer": {
       "title": "Manajemen Informatika",
       "campus": "Politeknik Negeri Sriwijaya",
-      "road": "Jl. Srijaya Negara, Bukit Besar",
-      "city": "Palembang, Sumatera Selatan 30139",
+      "road": " Jl. Sungai Sahang No.3654, Lorok Pakjo, Kec. Ilir Bar. I",
+      "city": "Palembang, South Sumatera 30151",
       "contact": {
         "phone": "0711 321234",
         "email": "mi@polsri.ac.id"
@@ -92,8 +92,8 @@
         "description": "Fasilitas kampus Manajemen Informatika"
       },
       "stats": {
-        "d3Students": "Mahasiswa DIII",
-        "d4Students": "Mahasiswa DIV",
+        "d3Students": "Mahasiswa Program Diploma",
+        "d4Students": "Mahasiswa Program Sarjana Terapan",
         "lecturers": "Dosen",
         "staff": "Tendik"
       },

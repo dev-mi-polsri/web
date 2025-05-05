@@ -1,13 +1,21 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { getMessages } from 'next-intl/server'
 import Link from 'next/link'
+import config from '@payload-config'
+import { getPayload } from 'payload'
 import React from 'react'
 
 async function Footer({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
 
   const { layout } = await getMessages({ locale })
-  
+
+  const payload = await getPayload({ config })
+
+  const studyPrograms = await payload.find({
+    collection: 'studyprogram',
+  })
+
   return (
     <>
       <footer className="bg-secondary text-secondary-foreground py-12 flex flex-col">
@@ -42,13 +50,11 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
           <div className="flex flex-col gap-4">
             <h1 className="font-bold text-xl">{layout.footer.links.study}</h1>
             <div className="flex flex-col gap-2">
-              {/* {prodi?.docs.map((item, idx) => (
-                <Link href={`/prodi/${item.slug}`} key={idx}>
-                  {item.judul}
+              {studyPrograms?.docs.map((item, idx) => (
+                <Link href={`/${locale}/program/${item.slug}`} key={idx}>
+                  {item.name}
                 </Link>
-              ))} */}
-              <p>{layout.footer.study.d3}</p>
-              <p>{layout.footer.study.d4}</p>
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -59,16 +65,13 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
               <Link href="https://www.instagram.com/jurusan.mi.polsri/">
                 {layout.footer.links.ig}
               </Link>
-              <Link href="https://www.instagram.com/hmjmi_polsri/">
-                {layout.footer.links.hmj}
-              </Link>
+              <Link href="https://www.instagram.com/hmjmi_polsri/">{layout.footer.links.hmj}</Link>
             </div>
           </div>
         </div>
         <div className="container max-w-7xl mx-auto text-center mt-8 text-xs text-muted-foreground px-6">
           <p>
-            © {new Date().getFullYear()} {layout.footer.title} Polsri. All rights
-            reserved.
+            © {new Date().getFullYear()} {layout.footer.title} Polsri. All rights reserved.
           </p>
         </div>
       </footer>
