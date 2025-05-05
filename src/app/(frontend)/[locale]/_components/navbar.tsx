@@ -32,6 +32,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useProfiles } from '../_hooks/queries/profile'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export function Navbar() {
   const t = useTranslations('layout.navbar')
@@ -53,6 +55,8 @@ export function Navbar() {
   const toggleMenu = (menu: string) => {
     setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }))
   }
+
+  const { data: profiles, isPending, error } = useProfiles({})
 
   return (
     <nav
@@ -100,42 +104,40 @@ export function Navbar() {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                      {[
-                        {
-                          label: t('profile.aboutUs.title'),
-                          desc: t('profile.aboutUs.desc'),
-                          href: `/${params.locale}/v/tentang-kami`,
-                        },
-                        {
-                          label: t('profile.visionMision.title'),
-                          desc: t('profile.visionMision.desc'),
-                          href: `/${params.locale}/v/visi-misi`,
-                        },
-                        {
-                          label: t('profile.organizationStructure.title'),
-                          desc: t('profile.organizationStructure.desc'),
-                          href: `/${params.locale}/v/struktur-organisasi`,
-                        },
-                        {
-                          label: t('profile.lecturers.title'),
-                          desc: t('profile.lecturers.desc'),
-                          href: `/${params.locale}/dosen`,
-                        },
-                        {
-                          label: t('profile.staff.title'),
-                          desc: t('profile.staff.desc'),
-                          href: `/${params.locale}/tendik`,
-                        },
-                        {
-                          label: t('profile.alumni.title'),
-                          desc: t('profile.alumni.desc'),
-                          href: `/${params.locale}/alumni`,
-                        },
-                      ].map((item) => (
-                        <ListItem key={item.label} href={item.href} title={item.label}>
-                          {item.desc}
-                        </ListItem>
-                      ))}
+                      {isPending
+                        ? Array.from({ length: 6 }).map((_, idx) => (
+                            <Skeleton className="h-16 w-full" key={idx} />
+                          ))
+                        : error
+                          ? Array.from({ length: 6 }).map((_, idx) => (
+                              <Skeleton key={idx} className="h-16 w-full bg-destructive/20" />
+                            ))
+                          : [
+                              ...profiles.docs.map((profile) => ({
+                                label: profile.name,
+                                desc: profile.description,
+                                href: `/${params.locale}/${profile.slug}`,
+                              })),
+                              {
+                                label: t('profile.lecturers.title'),
+                                desc: t('profile.lecturers.desc'),
+                                href: `/${params.locale}/dosen`,
+                              },
+                              {
+                                label: t('profile.staff.title'),
+                                desc: t('profile.staff.desc'),
+                                href: `/${params.locale}/tendik`,
+                              },
+                              {
+                                label: t('profile.alumni.title'),
+                                desc: t('profile.alumni.desc'),
+                                href: `/${params.locale}/alumni`,
+                              },
+                            ].map((item) => (
+                              <ListItem key={item.label} href={item.href} title={item.label}>
+                                {item.desc}
+                              </ListItem>
+                            ))}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -262,46 +264,46 @@ export function Navbar() {
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <ul className="ml-4 flex flex-col gap-2">
-                            {[
-                              {
-                                label: 'Tentang Kami',
-                                href: '/profil/v/tentang-kami',
-                              },
-                              {
-                                label: 'Visi Misi',
-                                href: '/profil/v/visi-misi',
-                              },
-                              {
-                                label: 'Struktur Organisasi',
-                                href: '/profil/v/struktur-organisasi',
-                              },
-                              {
-                                label: 'Dosen',
-                                href: '/profil/dosen',
-                              },
-                              {
-                                label: 'Tenaga Didik',
-                                href: '/profil/tendik',
-                              },
-                              {
-                                label: 'Alumni',
-                                href: '/profil/alumni',
-                              },
-                            ].map((item) => (
-                              <li key={item.label} onClick={() => setDrawerOpen(false)}>
-                                <Link
-                                  href={item.href}
-                                  className={cn(
-                                    'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
-                                    pathname === item.href
-                                      ? 'bg-accent text-accent-foreground'
-                                      : 'text-muted-foreground',
-                                  )}
-                                >
-                                  {item.label}
-                                </Link>
-                              </li>
-                            ))}
+                            {isPending
+                              ? Array.from({ length: 6 }).map((_, idx) => (
+                                  <Skeleton className="w-full h-8" key={idx} />
+                                ))
+                              : error
+                                ? Array.from({ length: 6 }).map((_, idx) => (
+                                    <Skeleton className="w-full h-8 bg-destructive/20" key={idx} />
+                                  ))
+                                : [
+                                    ...profiles.docs.map((profile) => ({
+                                      label: profile.name,
+                                      href: `/${params.locale}/${profile.slug}`,
+                                    })),
+                                    {
+                                      label: 'Dosen',
+                                      href: '/profil/dosen',
+                                    },
+                                    {
+                                      label: 'Tenaga Didik',
+                                      href: '/profil/tendik',
+                                    },
+                                    {
+                                      label: 'Alumni',
+                                      href: '/profil/alumni',
+                                    },
+                                  ].map((item) => (
+                                    <li key={item.label} onClick={() => setDrawerOpen(false)}>
+                                      <Link
+                                        href={item.href}
+                                        className={cn(
+                                          'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
+                                          pathname === item.href
+                                            ? 'bg-accent text-accent-foreground'
+                                            : 'text-muted-foreground',
+                                        )}
+                                      >
+                                        {item.label}
+                                      </Link>
+                                    </li>
+                                  ))}
                           </ul>
                         </CollapsibleContent>
                       </Collapsible>
