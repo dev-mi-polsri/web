@@ -104,7 +104,7 @@ export const News: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [generateSlug('judul')],
+        beforeValidate: [generateSlug('name')],
       },
       required: true,
     },

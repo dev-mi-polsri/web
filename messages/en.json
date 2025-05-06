@@ -91,6 +91,10 @@
         "heading": "Facilities",
         "description": "Facilities of the Informatics Management campus"
       },
+      "studyPrograms": {
+        "heading": "Study Programs",
+        "description": "Study Programs of Informatics Management Department"
+      },
       "stats": {
         "d3Students": "Diploma Program Students",
         "d4Students": "Applied Science Program Students",

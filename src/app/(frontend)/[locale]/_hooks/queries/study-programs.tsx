@@ -27,7 +27,7 @@ export function useStudyPrograms({
     and: [
       {
         global: {
-          equals: params.locale === 'id' ? undefined : true,
+          equals: params.locale === 'id' ? false : true,
         },
       },
       {

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { BookOpen, Calendar } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { VideoProfile } from '../_components/video-profile'
 import { getMessages } from 'next-intl/server'
