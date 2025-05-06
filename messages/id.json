@@ -69,6 +69,7 @@
   },
   "pages": {
     "home": {
+      "title": "Halaman Beranda",
       "hero": {
         "heading": "Jurusan Manajemen Informatika Politeknik Negeri Sriwijaya",
         "description": "Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi profesional handal yang siap menghadapi tantangan industri 4.0.",
@@ -117,6 +118,7 @@
       }
     },
     "profile": {
+      "title": "Halaman Profil",
       "aboutUs": {},
       "visionMision": {},
       "organizationStructure": {},
@@ -125,15 +127,18 @@
       "alumni": {}
     },
     "news": {
+      "title": "Halaman Semua Berita",
       "heading": "Berita",
       "description": "Berita terbaru dan informasi terkini dari Jurusan Manajemen Informatika Polsri.",
       "searchBar": "Cari Berita"
     },
     "agenda": {
+      "title": "Halaman Agenda",
       "heading": "Agenda",
       "description": "Agenda lalu dan mendatang kampus"
     },
     "newsPage": {
+      "title": "Halaman Berita",
       "breadcrumbs": {
         "home": "Home",
         "news": "News",

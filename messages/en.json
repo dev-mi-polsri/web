@@ -70,6 +70,7 @@
   },
   "pages": {
     "home": {
+      "title": "Home Page",
       "hero": {
         "heading": "Informatics Management Department of Sriwijaya State Polytechnic",
         "description": "Learn the ins and outs of information technology and business management to become a reliable professional ready to face the challenges of industry 4.0.",
@@ -118,6 +119,7 @@
       }
     },
     "profile": {
+      "title": "Profile Page",
       "aboutUs": {},
       "visionMision": {},
       "organizationStructure": {},
@@ -126,15 +128,18 @@
       "alumni": {}
     },
     "news": {
+      "title": "All News Page",
       "heading": "Latest News",
       "description": "Latest News and Current Campus Activities",
       "searchBar": "Search News"
     },
     "agenda": {
+      "title": "Agenda Page",
       "heading": "Agenda",
       "description": "Past and upcoming campus agendas"
     },
     "newsPage": {
+      "title": "News Page",
       "breadcrumbs": {
         "home": "Home",
         "news": "News",
