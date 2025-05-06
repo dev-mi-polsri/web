@@ -4,6 +4,18 @@ import { useAgendas } from '../_hooks/queries/agendas'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EventCalendar } from '@/components/event-calendar'
 import { useTranslations } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+
+  const messages = await getMessages({ locale })
+  const title = messages.layout.navbar.title
+
+  return {
+    title,
+  }
+}
 
 function Agenda() {
   const t = useTranslations('pages.agenda')
