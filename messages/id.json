@@ -144,6 +144,9 @@
         "title": "Baca Juga",
         "description": "Baca Juga Berita Berita Terbaru Dari MI"
       }
+    },
+    "lecturers": {
+      "title": "Daftar Dosen"
     }
   }
 }
