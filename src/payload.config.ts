@@ -16,6 +16,7 @@ import { Agenda } from './collections/Agenda'
 import { azureStorage } from '@payloadcms/storage-azure'
 import { Profile } from './collections/Profile'
 import { StudyProgram } from './collections/StudyProgram'
+import { DosenTendik } from './collections/DosenTendik'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +28,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Partner, Facility, News, Agenda, Profile, StudyProgram],
+  collections: [Users, Media, Partner, Facility, News, Agenda, Profile, StudyProgram, DosenTendik],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

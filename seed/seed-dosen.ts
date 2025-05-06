@@ -1,8 +1,6 @@
 import { getPayload } from 'payload'
-
+import lecturers from './data/dosen.json'
 import config from '@payload-config'
-
-const PLACEHOLDER_IMAGE = 'http://localhost:3000/Hero-1.jpeg'
 
 const parseImageUrl = async (url: string): Promise<File> => {
   const filename = url.substring(url.lastIndexOf('/') + 1)
@@ -22,31 +20,27 @@ const parseImageUrl = async (url: string): Promise<File> => {
 const seed = async () => {
   const payload = await getPayload({ config })
 
-  for (let i = 0; i < 10; i++) {
-    const imageFile = await parseImageUrl(PLACEHOLDER_IMAGE)
-
+  for (const lecturer of lecturers) {
+    const imageFile = await parseImageUrl(lecturer.foto)
     const newImage = await payload.create({
       collection: 'media',
       data: {
-        alt: 'placeholder',
+        alt: lecturer.nama,
       },
       file: {
         data: Buffer.from(await imageFile.arrayBuffer()),
         mimetype: imageFile.type,
-        name: imageFile.name,
+        name: lecturer.nama,
         size: imageFile.size,
       },
     })
-
     const newData = await payload.create({
-      collection: 'news',
+      collection: 'dosentendik',
       data: {
-        name: 'Dolor Sit Amet Berita Manajemen Informatika ' + i + 1,
-        thumbnail: newImage,
-        global: false,
-        slug: 'slug-0-placeholder-' + i + 1,
-        featured: false,
-        tipe: 'news',
+        name: lecturer.nama,
+        image: newImage,
+        nip: lecturer.nip,
+        tipe: 'dosen',
       },
     })
 

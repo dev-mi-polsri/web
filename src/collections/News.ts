@@ -57,6 +57,9 @@ export const News: CollectionConfig = {
       type: 'select',
       defaultValue: 'news',
       required: true,
+      admin: {
+        position: 'sidebar',
+      },
       options: [
         {
           label: 'Berita Umum',
