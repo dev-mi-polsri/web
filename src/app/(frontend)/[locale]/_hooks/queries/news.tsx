@@ -27,7 +27,7 @@ export function useNews({
     and: [
       {
         global: {
-          equals: params.locale === 'id' ? undefined : true,
+          equals: params.locale === 'id' ? false : true,
         },
       },
       {
