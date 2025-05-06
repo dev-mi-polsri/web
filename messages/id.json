@@ -99,7 +99,8 @@
       },
       "studyPrograms": {
         "heading": "Program Studi",
-        "description": "Program Studi di Jurusan Manajemen Informatika"
+        "description": "Program Studi di Jurusan Manajemen Informatika",
+        "button": "Selengkapnya"
       },
       "stats": {
         "d3Students": "Mahasiswa Program Diploma",

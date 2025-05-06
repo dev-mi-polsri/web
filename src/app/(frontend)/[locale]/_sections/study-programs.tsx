@@ -37,7 +37,7 @@ async function StudyPrograms({ locale }: { locale: string }) {
         </div>
         <div className="flex flex-col md:flex-row items-stretch justify-center gap-2">
           {studyPrograms?.docs.map((program, idx) => (
-            <StudyProgramCard {...program} locale={locale} key={idx} />
+            <StudyProgramCard {...program} t={t} locale={locale} key={idx} />
           ))}
         </div>
       </div>
@@ -51,7 +51,8 @@ function StudyProgramCard({
   description,
   slug,
   locale,
-}: Studyprogram & { locale: string }) {
+  t,
+}: Studyprogram & { locale: string; t: Record<string, string> }) {
   return (
     <Link href={`/${locale}/program/${slug}`}>
       <div className="group max-w-[20rem] p-2 w-full h-full bg-secondary/50 rounded-lg transition-colors duration-200 overflow-hidden">
@@ -67,7 +68,7 @@ function StudyProgramCard({
           <h3 className="font-semibold text-xl">{name}</h3>
           <p className="text-sm text-muted-foreground line-clamp-3">{description}</p>
           <Button size="sm" className="mt-2">
-            Selengkapnya <ChevronRight />
+            {t.button} <ChevronRight />
           </Button>
         </div>
       </div>

@@ -100,7 +100,8 @@
       },
       "studyPrograms": {
         "heading": "Study Programs",
-        "description": "Study Programs of Informatics Management Department"
+        "description": "Study Programs of Informatics Management Department",
+        "button": "Read More"
       },
       "stats": {
         "d3Students": "Diploma Program Students",
