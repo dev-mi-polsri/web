@@ -1,5 +1,17 @@
 import React from 'react'
 import Agenda from '../_sections/agenda'
+import { getMessages } from 'next-intl/server'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+
+  const messages = await getMessages({ locale })
+  const title = messages.layout.navbar.title
+
+  return {
+    title,
+  }
+}
 
 function Page() {
   return (

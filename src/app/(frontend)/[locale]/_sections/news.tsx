@@ -6,18 +6,6 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, SearchIcon } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { getMessages } from 'next-intl/server'
-
-export async function generateMetadata({params}: {params: Promise<{locale: string}>}) {
-  const { locale } = await params
-
-  const messages = await getMessages({ locale })
-  const title = messages.layout.navbar.title
-
-  return {
-    title,
-  }
-}
 
 function News({
   pagination = false,
