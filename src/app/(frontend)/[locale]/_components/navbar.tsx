@@ -166,11 +166,11 @@ export function Navbar() {
                                 desc: t('profile.lecturers.desc'),
                                 href: `/${params.locale}/dosen`,
                               },
-                              {
-                                label: t('profile.staff.title'),
-                                desc: t('profile.staff.desc'),
-                                href: `/${params.locale}/tendik`,
-                              },
+                              // {
+                              //   label: t('profile.staff.title'),
+                              //   desc: t('profile.staff.desc'),
+                              //   href: `/${params.locale}/tendik`,
+                              // },
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
                                 {item.desc}
@@ -362,12 +362,12 @@ export function Navbar() {
                                     })),
                                     {
                                       label: 'Dosen',
-                                      href: '/profil/dosen',
+                                      href: `/${params.locale}/dosen`,
                                     },
-                                    {
-                                      label: 'Tenaga Didik',
-                                      href: '/profil/tendik',
-                                    },
+                                    // {
+                                    //   label: 'Tenaga Didik',
+                                    //   href: `/${params.locale}/tendik`,
+                                    // },
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>
                                       <Link
