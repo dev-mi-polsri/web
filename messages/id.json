@@ -127,6 +127,18 @@
     "agenda": {
       "heading": "Agenda",
       "description": "Agenda lalu dan mendatang kampus"
+    },
+    "newsPage": {
+      "breadcrumbs": {
+        "home": "Home",
+        "news": "News",
+        "program": "Program Studi",
+        "profile": "Profil"
+      },
+      "recommended": {
+        "title": "Baca Juga",
+        "description": "Baca Juga Berita Berita Terbaru Dari MI"
+      }
     }
   }
 }

@@ -128,6 +128,18 @@
     "agenda": {
       "heading": "Agenda",
       "description": "Past and upcoming campus agendas"
+    },
+    "newsPage": {
+      "breadcrumbs": {
+        "home": "Home",
+        "news": "News",
+        "program": "Study Program",
+        "profile": "Profile",
+        "recommended": {
+          "title": "Also Read",
+          "description": "Read Our Latest News"
+        }
+      }
     }
   }
 }
