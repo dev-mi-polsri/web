@@ -23,15 +23,14 @@ async function WelcomingWord({ locale }: { locale: string }) {
         </div>
 
         {/* Left side - Quote */}
-        <div className="w-full md:w-1/2 bg-white p-8 flex flex-col justify-between">
+        <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
           <div>
             <div className="text-red-500 text-6xl">
               <Quote size={48} color="#EF4444" strokeWidth={1} />
             </div>
-            <h2 className="text-3xl font-bold text-gray-800 mt-2 mb-4">{t.heading}</h2>
-            <p className="text-gray-600 text-lg text-justify">
-              {t.description}
-            </p>
+            <h2 className="text-3xl font-bold mt-2 mb-4">{t.heading}</h2>
+            <p className=" text-lg text-justify text-muted-foreground">{t.description}</p>
+            <p className="font-bold text-gray-800 mt-4 text-right"> — {t.leaderName}</p>
             <div className="text-red-500 w-xl overflow-hidden flex justify-end">
               <Quote size={48} color="#EF4444" strokeWidth={1} className="transform rotate-180" />
             </div>
