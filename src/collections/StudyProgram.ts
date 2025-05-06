@@ -16,7 +16,9 @@ export const StudyProgram: CollectionConfig = {
     singular: 'Program Studi',
     plural: 'Program Studi',
   },
-
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
   },

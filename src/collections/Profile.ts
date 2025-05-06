@@ -16,7 +16,9 @@ export const Profile: CollectionConfig = {
     singular: 'Profil',
     plural: 'Profil',
   },
-
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
   },

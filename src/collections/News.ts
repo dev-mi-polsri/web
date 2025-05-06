@@ -16,7 +16,9 @@ export const News: CollectionConfig = {
     singular: 'Berita',
     plural: 'Berita',
   },
-
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
   },
