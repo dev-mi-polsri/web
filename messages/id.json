@@ -70,6 +70,7 @@
   "pages": {
     "home": {
       "title": "Halaman Beranda",
+      "description": "Halaman Beranda Jurusan Manajemen Informatika Polsri",
       "hero": {
         "heading": "Jurusan Manajemen Informatika Politeknik Negeri Sriwijaya",
         "description": "Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi profesional handal yang siap menghadapi tantangan industri 4.0.",
@@ -119,6 +120,7 @@
     },
     "profile": {
       "title": "Halaman Profil",
+      "description": "Halaman Profil Jurusan Manajemen Informatika Polsri",
       "aboutUs": {},
       "visionMision": {},
       "organizationStructure": {},
@@ -139,6 +141,7 @@
     },
     "newsPage": {
       "title": "Halaman Berita",
+      "description": "Halaman Berita Jurusan Manajemen Informatika Polsri",
       "breadcrumbs": {
         "home": "Home",
         "news": "News",
@@ -151,7 +154,8 @@
       }
     },
     "lecturers": {
-      "title": "Daftar Dosen"
+      "title": "Daftar Dosen",
+      "description": "Dosen Jurusan Manajemen Informatika Polsri"
     }
   }
 }

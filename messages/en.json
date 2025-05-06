@@ -71,6 +71,7 @@
   "pages": {
     "home": {
       "title": "Home Page",
+      "description": "Home Page of Informatics Management Department of Polsri",
       "hero": {
         "heading": "Informatics Management Department of Sriwijaya State Polytechnic",
         "description": "Learn the ins and outs of information technology and business management to become a reliable professional ready to face the challenges of industry 4.0.",
@@ -120,6 +121,7 @@
     },
     "profile": {
       "title": "Profile Page",
+      "description": "Profile Page of Informatics Management Department of Polsri",
       "aboutUs": {},
       "visionMision": {},
       "organizationStructure": {},
@@ -129,17 +131,18 @@
     },
     "news": {
       "title": "All News Page",
-      "heading": "Latest News",
       "description": "Latest News and Current Campus Activities",
+      "heading": "Latest News",
       "searchBar": "Search News"
     },
     "agenda": {
       "title": "Agenda Page",
-      "heading": "Agenda",
-      "description": "Past and upcoming campus agendas"
+      "description": "Past and upcoming campus agendas",
+      "heading": "Agenda"
     },
     "newsPage": {
       "title": "News Page",
+      "description": "Campus Activity Page",
       "breadcrumbs": {
         "home": "Home",
         "news": "News",
@@ -152,7 +155,8 @@
       }
     },
     "lecturers": {
-      "title": "Lecturers"
+      "title": "Lecturers",
+      "description": "Lecturers of Informatics Management Department of Polsri"
     }
   }
 }

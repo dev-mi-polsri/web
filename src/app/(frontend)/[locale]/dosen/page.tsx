@@ -6,10 +6,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
 
   const messages = await getMessages({ locale })
-  const title = messages.layout.navbar.title
+  const title = messages.pages.lecturer.title
+  const description = messages.pages.lecturer.description
 
   return {
     title,
+    description,
   }
 }
 
