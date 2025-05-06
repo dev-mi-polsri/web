@@ -2,6 +2,19 @@ import React from 'react'
 import DosenList from './list'
 import { getMessages } from 'next-intl/server'
 
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+
+  const messages = await getMessages({ locale })
+  const title = messages.pages.lecturer.title
+  const description = messages.pages.lecturer.description
+
+  return {
+    title,
+    description,
+  }
+}
+
 async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
 
