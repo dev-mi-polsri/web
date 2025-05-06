@@ -74,7 +74,7 @@ export const StudyProgram: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [generateSlug('judul')],
+        beforeValidate: [generateSlug('name')],
       },
       required: true,
     },
