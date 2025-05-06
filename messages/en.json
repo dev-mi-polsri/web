@@ -1,111 +1,129 @@
 {
-  "navbar": {
-    "title": "Informatics Management",
-    "main": "Main",
-    "profile": {
-      "title": "Profile",
-      "aboutUs": {
-        "title": "About Us",
-        "desc": "Information about the Informatics Management Department at Polsri."
+  "layout": {
+    "navbar": {
+      "title": "Informatics Management",
+      "main": "Home",
+      "profile": {
+        "title": "Profile",
+        "aboutUs": {
+          "title": "About Us",
+          "desc": "Information about the Informatics Management department of Polsri."
+        },
+
+        "visionMision": {
+          "title": "Vision and Mission",
+          "desc": "Vision and Mission of the Informatics Management department of Polsri."
+        },
+        "organizationStructure": {
+          "title": "Organization Structure",
+          "desc": "Organization structure of the Informatics Management department of Polsri."
+        },
+        "lecturers": {
+          "title": "Lecturers",
+          "desc": "List of lecturers in the Informatics Management department of Polsri."
+        },
+        "staff": {
+          "title": "Staff",
+          "desc": "List of educational staff in the Informatics Management department of Polsri."
+        },
+        "alumni": {
+          "title": "Alumni",
+          "desc": "Information about alumni from the Informatics Management department of Polsri."
+        }
       },
-      "visionMision": {
-        "title": "Vision and Mission",
-        "desc": "Vision and Mission of the Informatics Management Department at Polsri."
+      "studyPrograms": {
+        "title": "Study Programs"
       },
-      "organizationStructure": {
-        "title": "Organizational Structure",
-        "desc": "Organizational structure of the Informatics Management Department at Polsri."
-      },
-      "lecturers": {
-        "title": "Lecturers",
-        "desc": "List of lecturers in the Informatics Management Department at Polsri."
-      },
-      "staff": {
-        "title": "Teaching Staff",
-        "desc": "List of teaching staffs in the Informatics Management Department at Polsri."
-      },
-      "alumni": {
-        "title": "Alumni",
-        "desc": "Information about alumni of the Informatics Management Department at Polsri."
+      "news": "News",
+      "agenda": "Agenda",
+      "theme": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
       }
     },
-    "news": "News",
-    "agenda": "Agendas"
-  },
-  "profile": {
-    "heading": "Profile of the Informatics Management Department",
-    "description": "Informatics Management at Polsri produces IT experts with managerial skills through comprehensive education in application development, information systems, data analysis, and IT project management, supported by a relevant curriculum, expert lecturers, and modern facilities to prepare competent graduates ready to pursue careers in the digital era.",
-    "buttons": {
-      "news": "Our News",
-      "agenda": "Our Agenda"
+    "footer": {
+      "title": "Informatics Management",
+      "campus": "Sriwijaya State Polytechnic",
+      "road": " Jl. Sungai Sahang No.3654, Lorok Pakjo, Kec. Ilir Bar. I",
+      "city": "Palembang, South Sumatera 30151",
+      "contact": {
+        "phone": "0711 321234",
+        "email": "mi@polsri.ac.id"
+      },
+      "study": {
+        "d3": "D3 Informatics Management",
+        "d4": "D4 Informatics Management"
+      },
+      "links": {
+        "home": "Home",
+        "news": "News",
+        "contact": "Contact",
+        "study": "Study Programs",
+        "links": "Links",
+        "agenda": "Agenda",
+        "ig": "Instagram",
+        "hmj": "HMJ MI"
+      },
+      "credits": "© 2025 Manajemen Informatika Polsri. All rights reserved."
     }
   },
-  "agenda": {
-    "heading": "Agenda",
-    "description": "Past and upcoming campus agendas"
-  },
-  "hero": {
-    "heading": "Informatics Management Department of Sriwijaya State Polytechnic",
-    "description": "Learn the ins and outs of information technology and business management to become a reliable professional ready to face the challenges of industry 4.0.",
-    "button": "Learn More",
-    "imageCredit": "Images By: Afiva Nurkamila"
-  },
-  "news": {
-    "heading": "Latest News",
-    "description": "Latest News and Current Campus Activities",
-    "searchBar": "Search"
-  },
-  "facilities": {
-    "heading": "Facilities",
-    "description": "Facilities of the Informatics Management campus"
-  },
-  "partners": {
-    "heading": "Partnerships",
-    "description": "Partners of Informatics Management"
-  },
-  "stats": {
-    "d3Students": "DIII Students",
-    "d4Students": "DIV Students",
-    "lecturers": "Lecturers",
-    "staff": "Administrative Staff"
-  },
-  "cta": {
-    "title": "Stay Updated with MI Polsri News!",
-    "content": "Get the latest information about activities, achievements, and important announcements from the Informatics Management Department.",
-    "button": "Read News"
-  },
-  "footer": {
-    "title": "Informatics Management",
-    "campus": "Sriwijaya State Polytechnic",
-    "road": "Jl. Srijaya Negara, Bukit Besar",
-    "city": "Palembang, Sumatera Selatan 30139",
-    "contact": {
-      "phone": "0711 321234",
-      "email": "mi@polsri.ac.id"
+  "pages": {
+    "home": {
+      "hero": {
+        "heading": "Informatics Management Department of Sriwijaya State Polytechnic",
+        "description": "Learn the ins and outs of information technology and business management to become a reliable professional ready to face the challenges of industry 4.0.",
+        "button": "Learn More",
+        "imageCredit": "Images By: Afiva Nurkamila"
+      },
+      "partners": {
+        "heading": "Partnerships",
+        "description": "Partners of Informatics Management"
+      },
+      "profile": {
+        "heading": "Profile of the Informatics Management Department",
+        "description": "Informatics Management at Polsri produces IT experts with managerial skills through comprehensive education in application development, information systems, data analysis, and IT project management, supported by a relevant curriculum, expert lecturers, and modern facilities to prepare competent graduates ready to pursue careers in the digital era.",
+        "buttons": {
+          "more": "More About Us"
+        }
+      },
+      "facilities": {
+        "heading": "Facilities",
+        "description": "Facilities of the Informatics Management campus"
+      },
+      "stats": {
+        "d3Students": "Diploma Program Students",
+        "d4Students": "Applied Science Program Students",
+        "lecturers": "Lecturers",
+        "staff": "Administrative Staff"
+      },
+      "news": {
+        "heading": "Latest News",
+        "description": "Latest News and Current Campus Activities",
+        "searchBar": "Search News"
+      },
+      "cta": {
+        "title": "Stay Updated with MI Polsri News!",
+        "content": "Get the latest information about activities, achievements, and important announcements from the Informatics Management Department.",
+        "button": "Read News"
+      }
     },
-    "study": {
-      "d3": "DIII Informatics Management",
-      "d4": "DIV Informatics Management"
+    "profile": {
+      "aboutUs": {},
+      "visionMision": {},
+      "organizationStructure": {},
+      "lecturers": {},
+      "staff": {},
+      "alumni": {}
     },
-    "links": {
-      "home": "Home",
-      "news": "News",
-      "contact": "Contact",
-      "study": "Study Programs",
-      "links": "Links",
-      "agenda": "Agenda",
-      "ig": "Instagram",
-      "hmj": "HMJ MI"
-    }
-  },
-  "newsPage": {
-    "breadcrumbs": {
-      "home": "Home",
-      "news": "News"
+    "news": {
+      "heading": "Latest News",
+      "description": "Latest News and Current Campus Activities",
+      "searchBar": "Search News"
     },
-    "recomendedNews": {
-      "title": "Read Also",
-      "description": "Read Also Interesting News from MI"
+    "agenda": {
+      "heading": "Agenda",
+      "description": "Past and upcoming campus agendas"
     }
   }
 }

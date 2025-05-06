@@ -13,24 +13,26 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
 
   const messages = await getMessages({ locale })
-  const title = messages.navbar.title
+  const title = messages.layout.navbar.title
 
   return {
     title,
   }
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+
   return (
     <div className="flex flex-col">
-      <Hero />
-      <Partners />
-      <Profile />
+      <Hero locale={locale} />
+      <Partners locale={locale} />
+      <Profile locale={locale} />
       <WelcomeSection />
-      <Facilities />
-      <Stats />
+      <Facilities locale={locale} />
+      <Stats locale={locale} />
       <News />
-      <CTA />
+      <CTA locale={locale} />
     </div>
   )
 }

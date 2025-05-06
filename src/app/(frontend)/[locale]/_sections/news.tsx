@@ -18,7 +18,7 @@ function News({
   const [searchKeyword, setSearchKeyword] = useState('')
   const controllerRef = useRef<AbortController | null>(null)
 
-  const t = useTranslations('news')
+  const t = useTranslations('pages.home.news')
 
   const {
     data: news,
