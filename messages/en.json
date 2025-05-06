@@ -76,6 +76,10 @@
         "button": "Learn More",
         "imageCredit": "Images By: Afiva Nurkamila"
       },
+      "welcomingWord": {
+        "heading": "Department Head of Informatics Management",
+        "description": "We believe that technology is not just a tool, but a path to create meaningful change—and that is what we instill in Polsri Informatics Management."
+      },
       "partners": {
         "heading": "Partnerships",
         "description": "Partners of Informatics Management"

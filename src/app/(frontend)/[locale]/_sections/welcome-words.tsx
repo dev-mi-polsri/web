@@ -1,7 +1,13 @@
 import Image from 'next/image'
 import { Quote } from 'lucide-react'
+import { getMessages } from 'next-intl/server'
 
-const WelcomeSection = () => {
+async function WelcomingWord({ locale }: { locale: string }) {
+  const {
+    pages: {
+      home: { welcomingWord: t },
+    },
+  } = await getMessages({ locale })
   return (
     <section className="py-8">
       <div className="flex flex-col md:flex-row-reverse justify-between w-full max-w-6xl mx-auto overflow-hidden rounded-lg border">
@@ -22,13 +28,9 @@ const WelcomeSection = () => {
             <div className="text-red-500 text-6xl">
               <Quote size={48} color="#EF4444" strokeWidth={1} />
             </div>
-            <h2 className="text-3xl font-bold text-gray-800 mt-2 mb-4">
-              Department Head of Informatics Management
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-800 mt-2 mb-4">{t.heading}</h2>
             <p className="text-gray-600 text-lg text-justify">
-              Head of Department Sony Oktapriandi said, &quot;We believe technology is not just a
-              tool, but a path to meaningful change — and that&apos;s the mindset we cultivate at
-              Manajemen Informatika Polsri.&quot;
+              {t.description}
             </p>
             <div className="text-red-500 w-xl overflow-hidden flex justify-end">
               <Quote size={48} color="#EF4444" strokeWidth={1} className="transform rotate-180" />
@@ -38,6 +40,6 @@ const WelcomeSection = () => {
       </div>
     </section>
   )
-      }
+}
 
-      export default WelcomeSection
+export default WelcomingWord
