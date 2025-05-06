@@ -90,6 +90,10 @@
         "heading": "Fasilitas",
         "description": "Fasilitas kampus Manajemen Informatika"
       },
+      "studyPrograms": {
+        "heading": "Program Studi",
+        "description": "Program Studi di Jurusan Manajemen Informatika"
+      },
       "stats": {
         "d3Students": "Mahasiswa Program Diploma",
         "d4Students": "Mahasiswa Program Sarjana Terapan",
