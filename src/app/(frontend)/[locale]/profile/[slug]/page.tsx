@@ -13,23 +13,21 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Badge } from '@/components/ui/badge'
 import RecommendedNews from '../../_sections/news/recomended-news'
 import { getMessages } from 'next-intl/server'
-import { Metadata } from 'next'
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string; locale: string }>
-}): Promise<Metadata> {
+}) {
   const { slug, locale } = await params
   const payload = await getPayload({ config })
 
   const {
-    docs: { 0: post },
+    docs: { 0: profile },
   } = await payload.find({
-    collection: 'news',
+    collection: 'profile',
     where: {
       slug: {
         equals: slug,
@@ -37,25 +35,26 @@ export async function generateMetadata({
     },
   })
 
-  if (!post) {
-    notFound()
+  if (!profile) {
+    return null
   }
 
-  if (locale === 'en' && !post.global) {
-    notFound()
+  if (locale === 'en' && !profile.global) {
+    return null
   }
 
   return {
-    title: post.name,
+    title: profile.name,
+    description: profile.description,
     openGraph: {
       images: [
-        { url: `https://manajemeninformatika.polsri.ac.id${(post.thumbnail as Media).url!}` },
+        { url: `https://manajemeninformatika.polsri.ac.id${(profile.thumbnail as Media).url!}` },
       ],
     },
   }
 }
 
-async function NewsPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+async function ProfilePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params
   const {
     pages: { newsPage: t },
@@ -64,9 +63,9 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
   const payload = await getPayload({ config })
 
   const {
-    docs: { 0: post },
+    docs: { 0: profile },
   } = await payload.find({
-    collection: 'news',
+    collection: 'profile',
     where: {
       slug: {
         equals: slug,
@@ -74,11 +73,11 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
     },
   })
 
-  if (!post) {
+  if (!profile) {
     notFound()
   }
 
-  if (locale === 'en' && !post.global) {
+  if (locale === 'en' && !profile.global) {
     notFound()
   }
 
@@ -91,24 +90,19 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/news`}>{t.breadcrumbs.news}</BreadcrumbLink>
+            <BreadcrumbLink href={`/${locale}/news`}>{t.breadcrumbs.profile}</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{post.name}</BreadcrumbPage>
+            <BreadcrumbPage>{profile.name}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <article>
-        <div className="flex gap-1 items-center mb-2">
-          {post.tags &&
-            post.tags?.length > 0 &&
-            post.tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
-        </div>
-        <h1 className="text-4xl font-bold">{post.name}</h1>
+        <h1 className="text-4xl font-bold">{profile.name}</h1>
         <div>
           <div className="mb-2 text-muted-foreground">
-            {new Date(post.createdAt).toLocaleDateString('id-ID', {
+            {new Date(profile.createdAt).toLocaleDateString('id-ID', {
               day: 'numeric',
               month: 'long',
               year: 'numeric',
@@ -116,14 +110,14 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           </div>
         </div>
         <Image
-          src={(post.thumbnail as Media).url || '/placeholder.png'}
-          alt={post.name}
+          src={(profile.thumbnail as Media).url || '/placeholder.png'}
+          alt={profile.name}
           width={1280}
           height={720}
           className="w-full aspect-video object-cover rounded-lg mb-6"
         />
         <div className="w-full text-lg">
-          <RichText data={post.content!} className="w-full text-lg" enableGutter={false} />
+          <RichText data={profile.content!} className="w-full text-lg" enableGutter={false} />
         </div>
       </article>
       <div className="my-8">
@@ -133,4 +127,4 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
   )
 }
 
-export default NewsPage
+export default ProfilePage

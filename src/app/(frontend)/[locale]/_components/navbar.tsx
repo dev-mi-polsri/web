@@ -159,7 +159,7 @@ export function Navbar() {
                               ...profiles.docs.map((profile) => ({
                                 label: profile.name,
                                 desc: profile.description,
-                                href: `/${params.locale}/${profile.slug}`,
+                                href: `/${params.locale}/profile/${profile.slug}`,
                               })),
                               {
                                 label: t('profile.lecturers.title'),
