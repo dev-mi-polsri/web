@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import Footer from './_components/footer'
+import { Metadata } from 'next'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -15,9 +16,27 @@ const fontSans = FontSans({
   subsets: ['latin'],
 })
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+
+  const messages = await getMessages({ locale })
+  const title = messages.pages.home.hero.heading
+
+  return {
+    title,
+    description: messages.pages.home.hero.description,
+    openGraph: {
+      images: [
+        {
+          url: 'https://manajemeninformatika.polsri.ac.id/Hero-1.jpeg',
+        },
+      ],
+    },
+  }
 }
 
 export default async function RootLayout(props: {
