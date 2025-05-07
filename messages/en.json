@@ -148,11 +148,11 @@
         "home": "Home",
         "news": "News",
         "program": "Study Program",
-        "profile": "Profile",
-        "recommended": {
-          "title": "Also Read",
-          "description": "Read Our Latest News"
-        }
+        "profile": "Profile"
+      },
+      "recommended": {
+        "title": "Also Read",
+        "description": "Read Our Latest News"
       }
     },
     "lecturers": {
