@@ -156,7 +156,11 @@
       }
     },
     "lecturers": {
-      "title": "Lecturers",
+      "metadataTitle": "Lecuteres",
+      "title": {
+        "d4": "Applied Science Program Lecturers",
+        "d3": "Diploma Program Lecturers"
+      },
       "description": "Lecturers of Informatics Management Department of Polsri"
     }
   }
