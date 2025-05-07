@@ -66,7 +66,7 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
             <h1 className="font-bold text-xl">{layout.footer.links.links}</h1>
             <div className="flex flex-col gap-2">
               <Link href="/">{layout.footer.links.home}</Link>
-              <Link href="/berita">{layout.footer.links.news}</Link>
+              <Link href={`/${locale}/news`}>{layout.footer.links.news}</Link>
               <Link href="https://www.instagram.com/jurusan.mi.polsri/">
                 {layout.footer.links.ig}
               </Link>
