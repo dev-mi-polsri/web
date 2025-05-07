@@ -358,7 +358,7 @@ export function Navbar() {
                                 : [
                                     ...profiles.docs.map((profile) => ({
                                       label: profile.name,
-                                      href: `/${params.locale}/${profile.slug}`,
+                                      href: `/${params.locale}/profile/${profile.slug}`,
                                     })),
                                     {
                                       label: 'Dosen',
