@@ -36,6 +36,42 @@ import { useProfiles } from '../_hooks/queries/profile'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useStudyPrograms } from '../_hooks/queries/study-programs'
 
+function EnglishFlag() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 60 30"
+      width={16}
+      height={16}
+      style={{ borderRadius: '5px' }}
+    >
+      <clipPath id="t">
+        <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
+      </clipPath>
+      <path d="M0,0 v30 h60 v-30 z" fill="#00247d" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" clipPath="url(#t)" stroke="#cf142b" strokeWidth="4" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" strokeWidth="6" />
+    </svg>
+  )
+}
+
+function IndonesianFlag() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 3 2"
+      width={16}
+      height={16}
+      style={{ borderRadius: '5px' }}
+    >
+      <rect fill="#FFF" width="3" height="2" />
+      <rect fill="#CE1126" width="3" height="1" />
+    </svg>
+  )
+}
+
 export function Navbar() {
   const t = useTranslations('layout.navbar')
 
@@ -123,18 +159,18 @@ export function Navbar() {
                               ...profiles.docs.map((profile) => ({
                                 label: profile.name,
                                 desc: profile.description,
-                                href: `/${params.locale}/${profile.slug}`,
+                                href: `/${params.locale}/profile/${profile.slug}`,
                               })),
                               {
                                 label: t('profile.lecturers.title'),
                                 desc: t('profile.lecturers.desc'),
                                 href: `/${params.locale}/dosen`,
                               },
-                              {
-                                label: t('profile.staff.title'),
-                                desc: t('profile.staff.desc'),
-                                href: `/${params.locale}/tendik`,
-                              },
+                              // {
+                              //   label: t('profile.staff.title'),
+                              //   desc: t('profile.staff.desc'),
+                              //   href: `/${params.locale}/tendik`,
+                              // },
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
                                 {item.desc}
@@ -209,7 +245,17 @@ export function Navbar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
-                  {params.locale === 'en' ? '🇺🇸 English' : '🇮🇩 Bahasa Indonesia'}
+                  {params.locale === 'en' ? (
+                    <>
+                      <EnglishFlag />
+                      English
+                    </>
+                  ) : (
+                    <>
+                      <IndonesianFlag />
+                      Bahasa Indonesia
+                    </>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -218,10 +264,16 @@ export function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link href="/en">
-                  <DropdownMenuItem>🇺🇸 English</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <EnglishFlag />
+                    English
+                  </DropdownMenuItem>
                 </Link>
                 <Link href="/id">
-                  <DropdownMenuItem>🇮🇩 Bahasa Indonesia</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <IndonesianFlag />
+                    Bahasa Indonesia
+                  </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -310,12 +362,12 @@ export function Navbar() {
                                     })),
                                     {
                                       label: 'Dosen',
-                                      href: '/profil/dosen',
+                                      href: `/${params.locale}/dosen`,
                                     },
-                                    {
-                                      label: 'Tenaga Didik',
-                                      href: '/profil/tendik',
-                                    },
+                                    // {
+                                    //   label: 'Tenaga Didik',
+                                    //   href: `/${params.locale}/tendik`,
+                                    // },
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>
                                       <Link

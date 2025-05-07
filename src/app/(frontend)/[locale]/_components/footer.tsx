@@ -14,6 +14,11 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
 
   const studyPrograms = await payload.find({
     collection: 'studyprogram',
+    where: {
+      global: {
+        equals: locale === 'id' ? false : true,
+      },
+    },
   })
 
   return (

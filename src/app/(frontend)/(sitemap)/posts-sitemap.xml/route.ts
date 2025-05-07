@@ -12,7 +12,6 @@ const getPostsSitemap = unstable_cache(
       collection: 'news',
       overrideAccess: false,
       draft: false,
-      depth: 0,
       limit: 1000,
       pagination: false,
       where: {

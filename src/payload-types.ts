@@ -75,6 +75,7 @@ export interface Config {
     agenda: Agenda;
     profile: Profile;
     studyprogram: Studyprogram;
+    dosentendik: Dosentendik;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -89,6 +90,7 @@ export interface Config {
     agenda: AgendaSelect<false> | AgendaSelect<true>;
     profile: ProfileSelect<false> | ProfileSelect<true>;
     studyprogram: StudyprogramSelect<false> | StudyprogramSelect<true>;
+    dosentendik: DosentendikSelect<false> | DosentendikSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -228,6 +230,7 @@ export interface News {
     | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -275,6 +278,7 @@ export interface Profile {
   slug: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -305,6 +309,24 @@ export interface Studyprogram {
     [k: string]: unknown;
   } | null;
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dosentendik".
+ */
+export interface Dosentendik {
+  id: number;
+  /**
+   * Pastikan Foto Berukuran 1:1
+   */
+  image: number | Media;
+  tipe: 'dosen' | 'tendik';
+  name: string;
+  nip: string;
+  nidn?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -346,6 +368,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'studyprogram';
         value: number | Studyprogram;
+      } | null)
+    | ({
+        relationTo: 'dosentendik';
+        value: number | Dosentendik;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -464,6 +490,7 @@ export interface NewsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -492,6 +519,7 @@ export interface ProfileSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -504,6 +532,20 @@ export interface StudyprogramSelect<T extends boolean = true> {
   description?: T;
   content?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dosentendik_select".
+ */
+export interface DosentendikSelect<T extends boolean = true> {
+  image?: T;
+  tipe?: T;
+  name?: T;
+  nip?: T;
+  nidn?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -16,7 +16,9 @@ export const Profile: CollectionConfig = {
     singular: 'Profil',
     plural: 'Profil',
   },
-
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
   },
@@ -75,7 +77,7 @@ export const Profile: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [generateSlug('judul')],
+        beforeValidate: [generateSlug('name')],
       },
       required: true,
     },

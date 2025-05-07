@@ -16,7 +16,9 @@ export const StudyProgram: CollectionConfig = {
     singular: 'Program Studi',
     plural: 'Program Studi',
   },
-
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
   },
@@ -74,7 +76,7 @@ export const StudyProgram: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [generateSlug('judul')],
+        beforeValidate: [generateSlug('name')],
       },
       required: true,
     },

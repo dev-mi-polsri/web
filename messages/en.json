@@ -70,6 +70,8 @@
   },
   "pages": {
     "home": {
+      "title": "Home Page",
+      "description": "Home Page of Informatics Management Department of Polsri",
       "hero": {
         "heading": "Informatics Management Department of Sriwijaya State Polytechnic",
         "description": "Learn the ins and outs of information technology and business management to become a reliable professional ready to face the challenges of industry 4.0.",
@@ -78,7 +80,8 @@
       },
       "welcomingWord": {
         "heading": "Department Head of Informatics Management",
-        "description": "We believe that technology is not just a tool, but a path to create meaningful change—and that is what we instill in Polsri Informatics Management."
+        "description": "We believe that technology is not just a tool, but a path to create meaningful change—and that is what we instill in Polsri Informatics Management.",
+        "leaderName": "Sony Oktapriandi, S.Kom., M.Kom."
       },
       "partners": {
         "heading": "Partnerships",
@@ -94,6 +97,11 @@
       "facilities": {
         "heading": "Facilities",
         "description": "Facilities of the Informatics Management campus"
+      },
+      "studyPrograms": {
+        "heading": "Study Programs",
+        "description": "Study Programs of Informatics Management Department",
+        "button": "Read More"
       },
       "stats": {
         "d3Students": "Diploma Program Students",
@@ -113,6 +121,8 @@
       }
     },
     "profile": {
+      "title": "Profile Page",
+      "description": "Profile Page of Informatics Management Department of Polsri",
       "aboutUs": {},
       "visionMision": {},
       "organizationStructure": {},
@@ -121,13 +131,33 @@
       "alumni": {}
     },
     "news": {
-      "heading": "Latest News",
+      "title": "All News Page",
       "description": "Latest News and Current Campus Activities",
+      "heading": "Latest News",
       "searchBar": "Search News"
     },
     "agenda": {
-      "heading": "Agenda",
-      "description": "Past and upcoming campus agendas"
+      "title": "Agenda Page",
+      "description": "Past and upcoming campus agendas",
+      "heading": "Agenda"
+    },
+    "newsPage": {
+      "title": "News Page",
+      "description": "Campus Activity Page",
+      "breadcrumbs": {
+        "home": "Home",
+        "news": "News",
+        "program": "Study Program",
+        "profile": "Profile",
+        "recommended": {
+          "title": "Also Read",
+          "description": "Read Our Latest News"
+        }
+      }
+    },
+    "lecturers": {
+      "title": "Lecturers",
+      "description": "Lecturers of Informatics Management Department of Polsri"
     }
   }
 }

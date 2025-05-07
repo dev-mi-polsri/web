@@ -1,40 +1,25 @@
-import { Studyprogram } from '@/payload-types'
+import { Dosentendik } from '@/payload-types'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
 import { PaginatedDocs } from 'payload'
 import { Where } from 'payload'
 import { stringify } from 'qs-esm'
 import { RefObject } from 'react'
 
-type useStudyProgramsParameters = {
+type useDosenTendikParameters = {
   controllerRef?: RefObject<AbortController | null>
   searchKeyword?: string
   limit?: number
   page?: number
-  featured?: boolean
 }
 
-export function useStudyPrograms({
+export function useDosenTendik({
   limit = 12,
   page = 1,
-  featured,
   searchKeyword,
   controllerRef,
-}: useStudyProgramsParameters) {
-  const params = useParams<{ locale: string }>()
-
+}: useDosenTendikParameters) {
   const query: Where = {
     and: [
-      {
-        global: {
-          equals: params.locale === 'id' ? false : true,
-        },
-      },
-      {
-        featured: {
-          equals: featured,
-        },
-      },
       {
         name: {
           contains: searchKeyword,
@@ -66,17 +51,17 @@ export function useStudyPrograms({
   }
 
   const fetchData = () =>
-    fetch(`/api/studyprogram${stringifiedQuery}`, {
+    fetch(`/api/dosentendik${stringifiedQuery}`, {
       signal: signal ?? undefined,
     })
       .then((res) => {
         if (!res.ok) throw new Error('Fetch Failed')
         return res.json()
       })
-      .then((data) => data as PaginatedDocs<Studyprogram>)
+      .then((data) => data as PaginatedDocs<Dosentendik>)
 
   return useQuery({
-    queryKey: ['studyprogram', params.locale, searchKeyword, limit, page],
+    queryKey: ['dosen-tendik', searchKeyword, limit, page],
     queryFn: fetchData,
   })
 }

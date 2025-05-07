@@ -16,7 +16,9 @@ export const News: CollectionConfig = {
     singular: 'Berita',
     plural: 'Berita',
   },
-
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true,
   },
@@ -57,6 +59,9 @@ export const News: CollectionConfig = {
       type: 'select',
       defaultValue: 'news',
       required: true,
+      admin: {
+        position: 'sidebar',
+      },
       options: [
         {
           label: 'Berita Umum',
@@ -104,7 +109,7 @@ export const News: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [generateSlug('judul')],
+        beforeValidate: [generateSlug('name')],
       },
       required: true,
     },

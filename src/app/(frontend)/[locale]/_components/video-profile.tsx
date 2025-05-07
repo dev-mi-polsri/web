@@ -12,7 +12,7 @@ export function VideoProfile() {
     <div className="relative h-[19rem] aspect-video rounded overflow-hidden">
       {toggled ? (
         <YouTube
-          videoId="cBZ9q42R2LU"
+          videoId="NU5ytMsu3AY"
           opts={{
             width: '100%',
             height: '100%',

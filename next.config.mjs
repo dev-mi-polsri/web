@@ -14,6 +14,10 @@ const nextConfig = {
         hostname: 'localhost',
         port: '3000',
       },
+      {
+        protocol: 'https',
+        hostname: 'manajemeninformatika.polsri.ac.id',
+      },
     ],
   },
 }

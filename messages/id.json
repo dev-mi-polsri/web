@@ -69,6 +69,8 @@
   },
   "pages": {
     "home": {
+      "title": "Halaman Beranda",
+      "description": "Halaman Beranda Jurusan Manajemen Informatika Polsri",
       "hero": {
         "heading": "Jurusan Manajemen Informatika Politeknik Negeri Sriwijaya",
         "description": "Pelajari seluk beluk teknologi informasi dan manajemen bisnis untuk menjadi profesional handal yang siap menghadapi tantangan industri 4.0.",
@@ -77,7 +79,8 @@
       },
       "welcomingWord": {
         "heading": "Kepala Jurusan Manjamen Informatika",
-        "description": "Kami percaya teknologi bukan sekadar alat, tapi jalan untuk menciptakan perubahan yang berarti—dan itulah yang kami tanamkan di Manajemen Informatika Polsri."
+        "description": "Kami percaya teknologi bukan sekadar alat, tapi jalan untuk menciptakan perubahan yang berarti—dan itulah yang kami tanamkan di Manajemen Informatika Polsri.",
+        "leaderName": "Sony Oktapriandi, S.Kom., M.Kom."
       },
       "partners": {
         "heading": "Kerja Sama",
@@ -93,6 +96,11 @@
       "facilities": {
         "heading": "Fasilitas",
         "description": "Fasilitas kampus Manajemen Informatika"
+      },
+      "studyPrograms": {
+        "heading": "Program Studi",
+        "description": "Program Studi di Jurusan Manajemen Informatika",
+        "button": "Selengkapnya"
       },
       "stats": {
         "d3Students": "Mahasiswa Program Diploma",
@@ -112,6 +120,8 @@
       }
     },
     "profile": {
+      "title": "Halaman Profil",
+      "description": "Halaman Profil Jurusan Manajemen Informatika Polsri",
       "aboutUs": {},
       "visionMision": {},
       "organizationStructure": {},
@@ -120,13 +130,33 @@
       "alumni": {}
     },
     "news": {
+      "title": "Halaman Semua Berita",
       "heading": "Berita",
       "description": "Berita terbaru dan informasi terkini dari Jurusan Manajemen Informatika Polsri.",
       "searchBar": "Cari Berita"
     },
     "agenda": {
+      "title": "Halaman Agenda",
       "heading": "Agenda",
       "description": "Agenda lalu dan mendatang kampus"
+    },
+    "newsPage": {
+      "title": "Halaman Berita",
+      "description": "Halaman Berita Jurusan Manajemen Informatika Polsri",
+      "breadcrumbs": {
+        "home": "Home",
+        "news": "News",
+        "program": "Program Studi",
+        "profile": "Profil"
+      },
+      "recommended": {
+        "title": "Baca Juga",
+        "description": "Baca Juga Berita Berita Terbaru Dari MI"
+      }
+    },
+    "lecturers": {
+      "title": "Daftar Dosen",
+      "description": "Dosen Jurusan Manajemen Informatika Polsri"
     }
   }
 }
