@@ -23,7 +23,9 @@ const DosenCard = ({ dosen }: { dosen: Omit<Dosentendik, 'nip'> & { nip: number 
       <div className="p-4 flex flex-col justify-between h-full">
         <div className="text-center">
           <h2 className="font-bold">{dosen.name}</h2>
-          {dosen.nip && <p className="text-muted-foreground text-sm">NIP: {dosen.nip}</p>}
+          <p className="text-muted-foreground text-sm">NIP: {dosen.nip ?? '-'}</p>
+          <p className="text-muted-foreground text-sm">NUPTK: {dosen.nuptk ?? '-'}</p>
+          <p className="text-muted-foreground text-sm">NIDN: {dosen.nidn ?? '-'}</p>
         </div>
       </div>
     </div>
