@@ -324,6 +324,7 @@ export interface Dosentendik {
    */
   image: number | Media;
   tipe: 'dosen' | 'tendik';
+  pejabat?: boolean | null;
   homebase: 'd4' | 'd3';
   name: string;
   nip: string;
@@ -545,6 +546,7 @@ export interface StudyprogramSelect<T extends boolean = true> {
 export interface DosentendikSelect<T extends boolean = true> {
   image?: T;
   tipe?: T;
+  pejabat?: T;
   homebase?: T;
   name?: T;
   nip?: T;

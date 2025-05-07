@@ -40,6 +40,11 @@ export const DosenTendik: CollectionConfig = {
       ],
     },
     {
+      name: 'pejabat',
+      label: 'Pejabat',
+      type: 'checkbox',
+    },
+    {
       name: 'homebase',
       label: 'Homebase',
       type: 'select',
