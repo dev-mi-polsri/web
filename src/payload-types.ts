@@ -324,9 +324,11 @@ export interface Dosentendik {
    */
   image: number | Media;
   tipe: 'dosen' | 'tendik';
+  homebase: 'd4' | 'd3';
   name: string;
   nip: string;
   nidn?: string | null;
+  nuptk?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -543,9 +545,11 @@ export interface StudyprogramSelect<T extends boolean = true> {
 export interface DosentendikSelect<T extends boolean = true> {
   image?: T;
   tipe?: T;
+  homebase?: T;
   name?: T;
   nip?: T;
   nidn?: T;
+  nuptk?: T;
   updatedAt?: T;
   createdAt?: T;
 }

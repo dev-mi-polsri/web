@@ -40,6 +40,26 @@ export const DosenTendik: CollectionConfig = {
       ],
     },
     {
+      name: 'homebase',
+      label: 'Homebase',
+      type: 'select',
+      defaultValue: 'd4',
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+      options: [
+        {
+          label: 'D4 Manajemen Informatika',
+          value: 'd4',
+        },
+        {
+          label: 'D3 Manajemen Informatika',
+          value: 'd3',
+        },
+      ],
+    },
+    {
       name: 'name',
       type: 'text',
       required: true,
@@ -51,6 +71,10 @@ export const DosenTendik: CollectionConfig = {
     },
     {
       name: 'nidn',
+      type: 'text',
+    },
+    {
+      name: 'nuptk',
       type: 'text',
     },
   ],
