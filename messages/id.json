@@ -155,6 +155,7 @@
       }
     },
     "lecturers": {
+      "metadataTitle": "Dosen",
       "title": {
         "d4": "Dosen Prodi Sarjana Terapan",
         "d3": "Dosen Prodi Diploma"
