@@ -115,7 +115,7 @@ export function Navbar() {
             className="text-foreground flex gap-2 items-center font-semibold text-xl"
           >
             <Image
-              src="/logo-mi.png"
+              src="/mi.png"
               alt="Polsri"
               width={100}
               height={100}
