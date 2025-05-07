@@ -39,7 +39,10 @@ const seed = async () => {
       data: {
         name: lecturer.nama,
         image: newImage,
-        nip: lecturer.nip,
+        nip: lecturer.nip.toString(),
+        homebase: lecturer.homebase === 'D4' ? 'd4' : 'd3',
+        nidn: lecturer.nidn?.toString(),
+        nuptk: lecturer.nuptk.toString(),
         tipe: 'dosen',
       },
     })

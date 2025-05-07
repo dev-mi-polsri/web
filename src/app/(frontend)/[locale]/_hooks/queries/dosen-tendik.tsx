@@ -10,6 +10,8 @@ type useDosenTendikParameters = {
   searchKeyword?: string
   limit?: number
   page?: number
+  homebase?: 'd3' | 'd4'
+  pejabat?: boolean
 }
 
 export function useDosenTendik({
@@ -17,12 +19,20 @@ export function useDosenTendik({
   page = 1,
   searchKeyword,
   controllerRef,
+  homebase = 'd4',
+  pejabat = false,
 }: useDosenTendikParameters) {
   const query: Where = {
     and: [
       {
         name: {
           contains: searchKeyword,
+        },
+        homebase: {
+          equals: homebase,
+        },
+        pejabat: {
+          equals: pejabat,
         },
       },
     ],

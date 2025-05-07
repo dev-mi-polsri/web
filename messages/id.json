@@ -155,7 +155,10 @@
       }
     },
     "lecturers": {
-      "title": "Daftar Dosen",
+      "title": {
+        "d4": "Dosen Prodi Sarjana Terapan",
+        "d3": "Dosen Prodi Diploma"
+      },
       "description": "Dosen Jurusan Manajemen Informatika Polsri"
     }
   }

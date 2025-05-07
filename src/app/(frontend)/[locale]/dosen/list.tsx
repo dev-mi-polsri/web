@@ -1,11 +1,10 @@
 'use client'
 import React, { useState } from 'react'
-import { useDosenTendik } from '../_hooks/queries/dosen-tendik'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { Dosentendik, Media } from '@/payload-types'
+import { PaginatedDocs } from 'payload'
 
 const DosenCard = ({ dosen }: { dosen: Omit<Dosentendik, 'nip'> & { nip: number } }) => {
   return (
@@ -31,9 +30,8 @@ const DosenCard = ({ dosen }: { dosen: Omit<Dosentendik, 'nip'> & { nip: number 
   )
 }
 
-function DosenList() {
+function DosenList({ dosen }: { dosen: PaginatedDocs<Dosentendik> }) {
   const [page, setPage] = useState(1)
-  const { data: dosen, isPending, error } = useDosenTendik({ limit: 0 })
   const ITEMS_PER_PAGE = 12
 
   const getCurrentPageData = () => {
@@ -53,16 +51,10 @@ function DosenList() {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-        {isPending
-          ? Array.from({ length: ITEMS_PER_PAGE }).map((_, idx) => (
-              <Skeleton key={idx} className="w-full h-[400px]" />
-            ))
-          : error
-            ? Array.from({ length: ITEMS_PER_PAGE }).map((_, idx) => (
-                <Skeleton key={idx} className="w-full h-[400px] bg-destructive/20 animate-none" />
-              ))
-            : getCurrentPageData().map((data, idx) => <DosenCard key={idx} dosen={data} />)}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {getCurrentPageData().map((data, idx) => (
+          <DosenCard key={idx} dosen={data} />
+        ))}
       </div>
       <div className="flex items-center gap-2">
         {dosen && totalPages > 0 && (
