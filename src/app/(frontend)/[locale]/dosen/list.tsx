@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Dosentendik, Media } from '@/payload-types'
 import { PaginatedDocs } from 'payload'
 
-const DosenCard = ({ dosen }: { dosen: Omit<Dosentendik, 'nip'> & { nip: number } }) => {
+const DosenCard = ({ dosen }: { dosen: Dosentendik }) => {
   return (
     <div className="bg-card rounded-lg border overflow-hidden flex flex-col h-full">
       {dosen.image && typeof dosen.image === 'object' && (
@@ -41,12 +41,12 @@ function DosenList({ dosen }: { dosen: PaginatedDocs<Dosentendik> }) {
     const startIndex = (page - 1) * ITEMS_PER_PAGE
     return dosen.docs
       .sort((a, b) => {
-        const parameterA = parseInt(a.nip.split('').splice(8, 4).join(''))
-        const parameterB = parseInt(b.nip.split('').splice(8, 4).join(''))
+        const parameterA = Number(a.nip.split('').splice(8, 4).join(''))
+        const parameterB = Number(b.nip.split('').splice(8, 4).join(''))
         return parameterA - parameterB
       })
       .slice(startIndex, startIndex + ITEMS_PER_PAGE)
-      .map(({ nip, ...data }) => ({ nip: parseInt(nip), ...data }))
+    // .map(({ nip, ...data }) => ({ nip: parseInt(nip), ...data }))
   }
 
   const totalPages = dosen?.docs ? Math.ceil(dosen.docs.length / ITEMS_PER_PAGE) : 0
