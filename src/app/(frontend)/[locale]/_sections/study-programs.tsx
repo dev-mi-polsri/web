@@ -35,7 +35,7 @@ async function StudyPrograms({ locale }: { locale: string }) {
           <h1 className="text-2xl font-bold">{t.heading}</h1>
           <p className="text-sm">{t.description}</p>
         </div>
-        <div className="flex flex-col md:flex-row items-stretch justify-center gap-2">
+        <div className="flex flex-col md:flex-row items-center md:items-stretch w-full justify-center gap-2">
           {studyPrograms?.docs.map((program, idx) => (
             <StudyProgramCard {...program} t={t} locale={locale} key={idx} />
           ))}
@@ -64,7 +64,7 @@ function StudyProgramCard({
             className="h-full w-full rounded-lg object-cover"
           />
         </AspectRatio>
-        <div className="mt-4 flex flex-col gap-2">
+        <div className="mt-4 flex flex-col gap-2 w-full">
           <h3 className="font-semibold text-xl">{name}</h3>
           <p className="text-sm text-muted-foreground line-clamp-3">{description}</p>
           <Button size="sm" className="mt-2">
