@@ -239,28 +239,6 @@ export default buildConfig({
 
 ## API Integration
 
-### GraphQL Queries
-
-```graphql
-query GetNews($locale: String!) {
-  News(where: { status: { equals: "published" } }, locale: $locale) {
-    docs {
-      id
-      title
-      excerpt
-      content
-      publishedDate
-      author {
-        name
-      }
-    }
-    totalDocs
-    page
-    totalPages
-  }
-}
-```
-
 ### REST API
 
 ```typescript
