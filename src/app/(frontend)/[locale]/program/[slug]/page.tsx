@@ -82,7 +82,7 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
   }
 
   return (
-    <div className="container max-w-7xl mx-auto mt-20 grid grid-cols-1 p-4">
+    <div className="container max-w-7xl mx-auto my-20 grid grid-cols-1 p-4">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
