@@ -98,7 +98,7 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <article className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <article className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 flex flex-col">
           <h1 className="text-4xl font-bold max-w-4xl">{program.name}</h1>
           <div>
