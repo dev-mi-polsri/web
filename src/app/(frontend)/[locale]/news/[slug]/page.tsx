@@ -99,36 +99,40 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <article>
-        <div className="flex gap-1 items-center mb-2">
-          {post.tags &&
-            post.tags?.length > 0 &&
-            post.tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
-        </div>
-        <h1 className="text-4xl font-bold">{post.name}</h1>
-        <div>
-          <div className="mb-2 text-muted-foreground">
-            {new Date(post.createdAt).toLocaleDateString('id-ID', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
+      <article className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 flex flex-col">
+          <div className="flex gap-1 items-center mb-2">
+            {post.tags &&
+              post.tags?.length > 0 &&
+              post.tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
+          </div>
+          <h1 className="text-4xl font-bold max-w-4xl">{post.name}</h1>
+          <div>
+            <div className="mb-2 text-muted-foreground">
+              {new Date(post.createdAt).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 w-full">
+            <Image
+              src={(post.thumbnail as Media).url || '/placeholder.png'}
+              alt={post.name}
+              width={1280}
+              height={720}
+              className="w-full aspect-video object-cover rounded-lg mb-6"
+            />
+            <div>
+              <RichText data={post.content!} className="w-full text-lg" enableGutter={false} />
+            </div>
           </div>
         </div>
-        <Image
-          src={(post.thumbnail as Media).url || '/placeholder.png'}
-          alt={post.name}
-          width={1280}
-          height={720}
-          className="w-full aspect-video object-cover rounded-lg mb-6"
-        />
-        <div className="w-full text-lg">
-          <RichText data={post.content!} className="w-full text-lg" enableGutter={false} />
+        <div>
+          <RecommendedNews />
         </div>
       </article>
-      <div className="my-8">
-        <RecommendedNews />
-      </div>
     </div>
   )
 }

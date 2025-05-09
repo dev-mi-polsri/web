@@ -90,7 +90,7 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/news`}>{t.breadcrumbs.program}</BreadcrumbLink>
+            <BreadcrumbLink href={`/${locale}/news`}>{t.breadcrumbs.news}</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -98,31 +98,35 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <article>
-        <h1 className="text-4xl font-bold">{program.name}</h1>
-        <div>
-          <div className="mb-2 text-muted-foreground">
-            {new Date(program.createdAt).toLocaleDateString('id-ID', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
+      <article className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 flex flex-col">
+          <h1 className="text-4xl font-bold max-w-4xl">{program.name}</h1>
+          <div>
+            <div className="mb-2 text-muted-foreground">
+              {new Date(program.createdAt).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 w-full">
+            <Image
+              src={(program.thumbnail as Media).url || '/placeholder.png'}
+              alt={program.name}
+              width={1280}
+              height={720}
+              className="w-full aspect-video object-cover rounded-lg mb-6"
+            />
+            <div>
+              <RichText data={program.content!} className="w-full text-lg" enableGutter={false} />
+            </div>
           </div>
         </div>
-        <Image
-          src={(program.thumbnail as Media).url || '/placeholder.png'}
-          alt={program.name}
-          width={1280}
-          height={720}
-          className="w-full aspect-video object-cover rounded-lg mb-6"
-        />
-        <div className="w-full text-lg">
-          <RichText data={program.content!} className="w-full text-lg" enableGutter={false} />
+        <div>
+          <RecommendedNews />
         </div>
       </article>
-      <div className="my-8">
-        <RecommendedNews />
-      </div>
     </div>
   )
 }

@@ -29,7 +29,7 @@ export function NewsCard({ name, thumbnail, slug, createdAt }: News) {
             year: 'numeric',
           }).format(new Date(createdAt))}
         </span>
-        <h2 className="font-bold text-lg leading-6 group-hover:text-primary group-hover:cursor-pointer transition-all ease-in-out">
+        <h2 className="font-bold text-lg leading-6 group-hover:text-primary group-hover:cursor-pointer transition-all ease-in-out line-clamp-2">
           {name}
         </h2>
       </div>

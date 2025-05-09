@@ -124,7 +124,7 @@ export function Navbar() {
             {t('title')}
           </Link>
 
-          <div className="hidden md:flex space-x-8 items-center">
+          <div className="hidden lg:flex space-x-8 items-center">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -241,7 +241,7 @@ export function Navbar() {
             </NavigationMenu>
           </div>
 
-          <div className="hidden md:flex gap-2">
+          <div className="hidden lg:flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
@@ -281,7 +281,7 @@ export function Navbar() {
           </div>
           <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
             <DrawerTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
+              <Button variant="outline" size="icon" className="lg:hidden">
                 <Menu className="h-4 w-4" />
               </Button>
             </DrawerTrigger>
