@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import Footer from './_components/footer'
 import { Metadata } from 'next'
+import FabButton from './_widgets/fab/button'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -59,6 +60,7 @@ export default async function RootLayout(props: {
             <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
               <Navbar />
               <main>{children}</main>
+              <FabButton />
               <Footer params={props.params} />
             </ThemeProvider>
           </NextIntlClientProvider>
