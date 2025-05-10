@@ -43,7 +43,7 @@ export default buildConfig({
   plugins: [
     payloadCloudPlugin(),
     azureStorage({
-      // enabled: process.env.NODE_ENV === 'production',
+      enabled: process.env.NODE_ENV === 'production',
       collections: {
         media: true,
       },
