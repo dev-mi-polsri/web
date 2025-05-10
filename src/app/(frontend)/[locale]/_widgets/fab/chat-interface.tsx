@@ -13,6 +13,7 @@ import { useAutoScroll } from '@/hooks/use-auto-scroll'
 import { Badge } from '@/components/ui/badge'
 import { useTranslations } from 'next-intl'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
 
 interface ChatInterfaceProps {
   onClose: () => void
@@ -186,7 +187,7 @@ export default function ChatInterface({ onClose }: ChatInterfaceProps) {
                     </div>
                   )}
                   <div className="text-sm space-y-2">
-                    <p>{message.content}</p>
+                    <MarkdownRenderer>{message.content}</MarkdownRenderer>
                   </div>
                 </div>
               </motion.div>
