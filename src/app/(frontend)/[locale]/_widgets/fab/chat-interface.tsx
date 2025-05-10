@@ -1,85 +1,67 @@
 'use client'
 
 import type React from 'react'
-
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Maximize2, Minimize2, X, Send, Bot, Smile } from 'lucide-react'
+import { Maximize2, Minimize2, X, Send, Bot, FlaskConical } from 'lucide-react'
 import { useMobile } from '../../_hooks/use-mobile'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useChat } from '@ai-sdk/react'
+import { useAutoScroll } from '@/hooks/use-auto-scroll'
+import { Badge } from '@/components/ui/badge'
+import { useTranslations } from 'next-intl'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface ChatInterfaceProps {
   onClose: () => void
 }
 
-interface Message {
-  id: string
+interface Source {
   content: string
-  isUser: boolean
+  path?: string
+  title?: string
 }
 
 export default function ChatInterface({ onClose }: ChatInterfaceProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content:
-        "Let's review your diary entries! I can find and summarize any information that you saved.",
-      isUser: false,
-    },
-  ])
-  const [input, setInput] = useState('')
+  const t = useTranslations('layout.chatbot')
   const [isMaximized, setIsMaximized] = useState(false)
-  const [isTyping, setIsTyping] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [sourcesForMessages, setSourcesForMessages] = useState<Record<string, Source[]>>({})
   const isMobile = useMobile()
 
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    api: '/api/ai',
+    onResponse(response) {
+      const sourcesHeader = response.headers.get('x-sources')
+      const sources = sourcesHeader
+        ? JSON.parse(Buffer.from(sourcesHeader, 'base64').toString('utf8'))
+        : []
 
-  const handleSendMessage = () => {
-    if (!input.trim()) return
-
-    // Add user message
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      content: input,
-      isUser: true,
-    }
-
-    setMessages((prev) => [...prev, newMessage])
-    setInput('')
-
-    // Show typing indicator
-    setIsTyping(true)
-
-    // Simulate AI response (in a real app, you'd call an API here)
-    setTimeout(() => {
-      setIsTyping(false)
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content: "I'm your AI assistant. How can I help you today?",
-        isUser: false,
+      const messageIndexHeader = response.headers.get('x-message-index')
+      if (sources.length && messageIndexHeader !== null) {
+        setSourcesForMessages({
+          ...sourcesForMessages,
+          [messageIndexHeader]: sources,
+        })
       }
-      setMessages((prev) => [...prev, aiResponse])
-    }, 2000)
-  }
+    },
+  })
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
-    }
-  }
+  const { containerRef, handleScroll, handleTouchStart } = useAutoScroll([messages])
 
   const toggleMaximize = () => {
     setIsMaximized(!isMaximized)
   }
 
-  // Determine size based on device and maximized state
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSubmit(e)
+    }
+  }
+
+  // Container variants for animation
   const getContainerVariants = () => {
     if (isMobile) {
       return {
@@ -122,10 +104,22 @@ export default function ChatInterface({ onClose }: ChatInterfaceProps) {
   return (
     <motion.div {...getContainerVariants()} className={getContainerClasses()}>
       <Card className="flex flex-col h-full border-0 shadow-xl overflow-hidden">
-        <CardHeader className="flex flex-row items-center justify-between bg-primray text-primray-foreground">
+        <CardHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-2">
             <Bot size={20} />
             <h3 className="font-medium">MI Assistant</h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge>
+                    <FlaskConical /> Beta
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('beta')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <div className="flex items-center gap-1">
             {!isMobile && (
@@ -133,7 +127,7 @@ export default function ChatInterface({ onClose }: ChatInterfaceProps) {
                 variant="ghost"
                 size="icon"
                 onClick={toggleMaximize}
-                className="h-8 w-8 hover:bg-muted"
+                className="h-8 w-8 hover:bg-primary/20"
               >
                 {isMaximized ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
               </Button>
@@ -142,52 +136,75 @@ export default function ChatInterface({ onClose }: ChatInterfaceProps) {
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="h-8 w-8 hover:bg-muted"
+              className="h-8 w-8 hover:bg-primary/20"
             >
               <X size={16} />
             </Button>
           </div>
         </CardHeader>
 
-        <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+        <CardContent
+          className="flex-1 overflow-y-auto p-4 space-y-4"
+          ref={containerRef}
+          onScroll={handleScroll}
+          onTouchStart={handleTouchStart}
+        >
           <AnimatePresence initial={false}>
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className={'flex justify-start'}
+            >
+              <div className={'max-w-[80%] rounded-lg p-3 bg-muted'}>
+                <div className="flex items-center gap-2 mb-1">
+                  <Bot size={16} className="text-primary" />
+                  <span className="text-xs font-medium text-primary">MI Assistant</span>
+                </div>
+                <div className="text-sm space-y-2">
+                  <p>{t('baseMessage')}</p>
+                </div>
+              </div>
+            </motion.div>
             {messages.map((message) => (
               <motion.div
                 key={message.id}
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-[80%] rounded-lg p-3 ${
-                    message.isUser ? 'bg-primary text-white' : 'bg-gray-100 text-gray-800'
+                    message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
                   }`}
                 >
-                  {!message.isUser && (
+                  {message.role === 'assistant' && (
                     <div className="flex items-center gap-2 mb-1">
                       <Bot size={16} className="text-primary" />
                       <span className="text-xs font-medium text-primary">MI Assistant</span>
                     </div>
                   )}
-                  <p className="text-sm">{message.content}</p>
+                  <div className="text-sm space-y-2">
+                    <p>{message.content}</p>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
 
-          {isTyping && (
+          {isLoading && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="max-w-[80%] rounded-lg p-3 bg-gray-100 text-gray-800">
+              <div className="max-w-[80%] rounded-lg p-3 bg-muted">
                 <div className="flex items-center gap-2 mb-1">
                   <Bot size={16} className="text-primary" />
                   <span className="text-xs font-medium text-primary">MI Assistant</span>
                 </div>
-                <div className="flex space-x-1">
+                <div className="flex space-x-1 mt-2">
                   <motion.div
                     className="w-2 h-2 rounded-full bg-primary"
                     animate={{ y: [0, -5, 0] }}
@@ -207,31 +224,28 @@ export default function ChatInterface({ onClose }: ChatInterfaceProps) {
               </div>
             </motion.div>
           )}
-          <div ref={messagesEndRef} />
         </CardContent>
 
         <CardFooter className="p-3 border-t">
-          <div className="flex w-full items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
-              <Smile size={18} />
-            </Button>
+          <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
             <Input
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              placeholder="How can you help me?"
+              placeholder={t('input')}
               className="flex-1"
             />
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
-                onClick={handleSendMessage}
+                type="submit"
                 size="icon"
-                className="h-8 w-8 rounded-full bg-primary hover:bg-primary flex-shrink-0"
+                disabled={isLoading || !input.trim()}
+                className="h-8 w-8 rounded-full bg-primary hover:bg-primary/90 flex-shrink-0"
               >
-                <Send size={16} className="text-white" />
+                <Send size={16} className="text-primary-foreground" />
               </Button>
             </motion.div>
-          </div>
+          </form>
         </CardFooter>
       </Card>
     </motion.div>
