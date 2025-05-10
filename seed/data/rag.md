@@ -1,26 +1,51 @@
 # Manajemen Informatika Politeknik Negeri Sriwijaya
 
-Manajemen Informatika Polsri atau MI adalah jurusan yang menghasilkan ahli TI dengan keahlian manajerial melalui pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data, dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital.
+Manajemen Informatika Polsri (MI) adalah jurusan yang berfokus pada pengembangan ahli teknologi informasi dengan keahlian manajerial. Program ini menyediakan pendidikan komprehensif dalam bidang:
 
-## Tentang Kami
+- Pengembangan aplikasi
+- Sistem informasi
+- Analisis data
+- Manajemen proyek TI
 
-Manajemen Informatika Polsri atau MI adlaah jurusan menghasilkan ahli TI dengan keahlian manajerial melalui pendidikan komprehensif dalam pengembangan aplikasi, sistem informasi, analisis data, dan manajemen proyek TI, didukung kurikulum relevan, dosen ahli, dan fasilitas modern untuk menyiapkan lulusan yang kompeten dan siap berkarir di era digital. Selain itu, program ini juga menekankan pentingnya keterampilan komunikasi, kerja tim, serta pemecahan masalah secara kreatif dan analitis. Mahasiswa dibimbing untuk memahami kebutuhan industri secara aktual melalui praktik kerja lapangan, proyek berbasis kasus nyata, dan kolaborasi dengan berbagai mitra strategis. Dengan pendekatan pembelajaran yang adaptif dan inovatif, Manajemen Informatika Polsri berupaya mencetak lulusan yang tidak hanya siap kerja, tetapi juga mampu menjadi pemimpin di bidang teknologi informasi.
+## Tentang MI Polsri
 
-### VISI Manajemen Informatika
+Program studi ini didukung oleh:
 
-Menjadi jurusan yang unggul dalam bidang Manajemen Informatika melalui kolaborasi, inovasi, dan transformasi digital yang berkelanjutan, serta mengedepankan akuntabilitas dalam menghasilkan lulusan yang berdaya saing global.
+- Kurikulum yang relevan dengan industri
+- Dosen-dosen ahli berpengalaman
+- Fasilitas pembelajaran modern
 
-### MISI Manajemen Informatika
+Mahasiswa dibekali dengan:
 
-- Mengembangkan kolaborasi yang erat dengan industri, lembaga pendidikan, dan pemerintah untuk menciptakan lingkungan pendidikan yang dinamis, relevan, dan aplikatif di bidang Manajemen Informatika.
-- Mendorong inovasi dalam penelitian dan pengajaran, serta memfasilitasi mahasiswa dan dosen untuk menghasi lkan solusi kreatif berbasis teknologi yang dapat menjawab tantangan masa depan.
-- Mewujudkan transformasi digital dalam kurikulum dan proses pembelajaran, dengan terus memperbarui metode pengajaran dan teknologi yang digunakan sesuai perkembangan industri.
-- Menjamin akuntabilitas dalam setiap aspek manajemen program studi, termasuk transparansi dalam pengelolaan sumber daya, pengambilan keputusan, dan pelaksanaan pendidikan yang berorientasi pada mutu.
+- Keterampilan teknis dan manajerial
+- Kemampuan komunikasi efektif
+- Pengalaman praktik kerja industri
+- Pengerjaan proyek berbasis kasus nyata
 
-# List Program Studi
+### Visi
 
-- Program Sarjana Terapan (D4) Manajemen Informatika, Program Sarjana Terapan di Polsri dirancang sebagai jenjang Strata 1 Terapan dengan durasi studi 4 tahun. Kurikulum memadukan dasar–dasar komputer (basis data, pemrograman, jaringan) dengan mata‑kuliah manajemen TI, metodologi R&D, strategi digital internasional, dan bahasa Inggris profesional. Mahasiswa dibimbing untuk merancang, mengimplementasikan, dan mengelola sistem informasi skala menengah–besar sesuai standar global.
-- Program Diploma (D3) Manajemen Informatika, Program Diploma di Polsri berdurasi 3 tahun, fokus pada penerapan praktis teknologi informasi dan manajerial. Mahasiswa mempelajari sistem basis data, desain aplikasi, infrastruktur jaringan, manajemen proyek TI, dan kewirausahaan digital. Lulusan siap mengisi posisi teknis dan manajerial awal di berbagai organisasi.
+Menjadi jurusan unggul dalam Manajemen Informatika melalui kolaborasi, inovasi, dan transformasi digital berkelanjutan, dengan lulusan berdaya saing global.
+
+### Misi
+
+1. Mengembangkan kolaborasi dengan industri, lembaga pendidikan, dan pemerintah
+2. Mendorong inovasi dalam penelitian dan pengajaran
+3. Melaksanakan transformasi digital dalam kurikulum dan pembelajaran
+4. Menjamin akuntabilitas dalam pengelolaan program studi
+
+## Program Studi
+
+### D4 Manajemen Informatika
+
+- Program Sarjana Terapan (4 tahun)
+- Fokus: pengembangan sistem informasi skala menengah-besar
+- Kurikulum: pemrograman, basis data, jaringan, manajemen TI
+
+### D3 Manajemen Informatika
+
+- Program Diploma (3 tahun)
+- Fokus: penerapan praktis teknologi informasi
+- Kurikulum: basis data, aplikasi, jaringan, manajemen proyek
 
 # List Dosen Manajemen Informatika
 
