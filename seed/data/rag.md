@@ -35,13 +35,13 @@ Menjadi jurusan unggul dalam Manajemen Informatika melalui kolaborasi, inovasi, 
 
 ## Program Studi
 
-### D4 Manajemen Informatika
+### Sarjana Terapan / D4 Manajemen Informatika
 
 - Program Sarjana Terapan (4 tahun)
 - Fokus: pengembangan sistem informasi skala menengah-besar
 - Kurikulum: pemrograman, basis data, jaringan, manajemen TI
 
-### D3 Manajemen Informatika
+### Diploma / D3 Manajemen Informatika
 
 - Program Diploma (3 tahun)
 - Fokus: penerapan praktis teknologi informasi

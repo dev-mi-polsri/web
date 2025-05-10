@@ -27,14 +27,14 @@ const formatVercelMessages = (chatHistory: VercelChatMessage[]) => {
   })
   return formattedDialogueTurns.join('\n')
 }
-const CONDENSE_QUESTION_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language.
+const CONDENSE_QUESTION_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question. Important: Keep the exact same language as the original question.
 
 <chat_history>
     {chat_history}
 </chat_history>
 
 Follow Up Input: {question}
-Standalone question:`
+Standalone question (in the same language as the input):`
 const condenseQuestionPrompt = PromptTemplate.fromTemplate(CONDENSE_QUESTION_TEMPLATE)
 
 const ANSWER_TEMPLATE = `You are an AI assistant for the Information Management Department at Politeknik Negeri Sriwijaya (POLSRI). Your role is to provide helpful and accurate information about the department, including its programs, courses, facilities, admissions, and other related information.
@@ -55,7 +55,7 @@ Important guidelines:
 - Be professional and helpful
 - If information is not available in the context, politely say so
 - Maintain a friendly but professional tone
-- Answer in the same language as the question`
+- You must respond in the EXACT SAME LANGUAGE as the question. If the question is in Indonesian, answer in Indonesian. If in English, answer in English.`
 
 const answerPrompt = PromptTemplate.fromTemplate(ANSWER_TEMPLATE)
 
