@@ -1,5 +1,10 @@
 {
   "layout": {
+    "chatbot": {
+      "beta": "This feature is experimental and under heavy development",
+      "baseMessage": "Hello I'm MI Assistant, An AI Chatbot made by Informatics Management Department of Sriwijaya Polytechnic. How can i help you?",
+      "input": "How can I help you?"
+    },
     "navbar": {
       "title": "Informatics Management",
       "main": "Home",
@@ -156,7 +161,7 @@
       }
     },
     "lecturers": {
-      "metadataTitle": "Lecuteres",
+      "metadataTitle": "Lecturers",
       "title": {
         "d4": "Applied Science Program Lecturers",
         "d3": "Diploma Program Lecturers"

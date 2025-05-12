@@ -1,5 +1,10 @@
 {
   "layout": {
+    "chatbot": {
+      "beta": "Fitur ini masih dalam pengembangan, dan rentan melakukan kesalahan",
+      "baseMessage": "Halo saya MI Assistant, AI Chatbot yang dibuat khusus untuk Manajemen Informatika yang tercinta. Apakah ada yang bisa saya bantu?",
+      "input": "Apakah ada yang bisa saya bantu?"
+    },
     "navbar": {
       "title": "Manajemen Informatika",
       "main": "Beranda",

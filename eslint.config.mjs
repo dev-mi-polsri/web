@@ -29,6 +29,7 @@ const eslintConfig = [
         },
       ],
     },
+    ignorePatterns: ['./src/components/*'],
   },
 ]
 
