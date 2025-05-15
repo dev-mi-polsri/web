@@ -19,6 +19,8 @@ export default async function Partners({ locale }: { locale: string }) {
     collection: 'partner',
   })
 
+  if (partners.docs.length < 1) return null
+
   return (
     <div className="flex flex-col gap-8 my-8 items-center max-w-full lg:max-w-7xl mx-auto">
       <div className="text-center">

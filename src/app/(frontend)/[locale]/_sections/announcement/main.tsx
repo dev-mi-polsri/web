@@ -29,6 +29,8 @@ export default async function AnnouncementSection({ locale }: { locale: string }
     limit: 5,
   })
 
+  if (announcements.docs.length < 1) return null
+
   return (
     <section
       id="announcement"
