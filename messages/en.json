@@ -83,6 +83,10 @@
         "button": "Learn More",
         "imageCredit": "Images By: Afiva Nurkamila"
       },
+      "announcementBanner": {
+        "headline": "Announcement",
+        "button": "Read More"
+      },
       "announcement": {
         "heading": "Announcement",
         "description": "Read our latest announcements"

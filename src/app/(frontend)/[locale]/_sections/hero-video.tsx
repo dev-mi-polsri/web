@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { getMessages } from 'next-intl/server'
 import VideoHero from '../_components/video-hero'
+import AnnouncementBanner from './announcement/banner'
 
 export async function Hero({ locale }: { locale: string }) {
   const {
@@ -39,7 +40,10 @@ export async function Hero({ locale }: { locale: string }) {
         <div className="relative h-full flex items-end z-20">
           <div className="max-w-7xl px-4 sm:px-6 w-full">
             <div className="max-w-4xl pb-8">
-              <h1 className="text-2xl md:text-6xl font-bold text-white mb-4">{t.heading}</h1>
+              <div className="hidden md:flex mb-4">
+                <AnnouncementBanner locale={locale} />
+              </div>
+              <h1 className="text-2xl md:text-5xl font-bold text-white mb-4">{t.heading}</h1>
               <p className="text-base text-white/90 mb-8">{t.description}</p>
               <Link href={`/${locale}/profile/${locale === 'en' ? 'about-us' : 'tentang-kami'}`}>
                 <Button variant="default" size="lg" className="rounded-full">

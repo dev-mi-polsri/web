@@ -42,13 +42,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     <div className="flex flex-col">
       <Hero locale={locale} />
       <Partners locale={locale} />
-      <AnnouncementSection locale={locale} />
       <Profile locale={locale} />
       <WelcomingWord locale={locale} />
-      <News />
       <StudyPrograms locale={locale} />
       <Facilities locale={locale} />
       <Stats locale={locale} />
+      <AnnouncementSection locale={locale} />
+      <News />
       <CTA locale={locale} />
     </div>
   )
