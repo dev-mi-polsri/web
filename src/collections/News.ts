@@ -68,6 +68,10 @@ export const News: CollectionConfig = {
           value: 'news',
         },
         {
+          label: 'Pengumuman',
+          value: 'pengumuman',
+        },
+        {
           label: 'HMJ',
           value: 'news_hmj',
         },

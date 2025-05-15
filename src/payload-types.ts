@@ -204,7 +204,7 @@ export interface News {
    * Menampilkan Berita Di Highlight Berita Utama (Hanya 3 Yang Terbaru Akan Tampil)
    */
   featured: boolean;
-  tipe: 'news' | 'news_hmj' | 'news_akademik' | 'news_prestasi';
+  tipe: 'news' | 'pengumuman' | 'news_hmj' | 'news_akademik' | 'news_prestasi';
   name: string;
   content?: {
     root: {
