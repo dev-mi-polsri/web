@@ -82,6 +82,14 @@
         "button": "Pelajari Lebih Lanjut",
         "imageCredit": "Images By: Afiva Nurkamila"
       },
+      "announcementBanner": {
+        "headline": "Pengumuman",
+        "button": "Baca Selengkapnya"
+      },
+      "announcement": {
+        "heading": "Pengumuman",
+        "description": "Baca pengumuman terbaru Manajemen Informatika"
+      },
       "welcomingWord": {
         "heading": "Ketua Jurusan Manjamen Informatika",
         "description": "Kami percaya teknologi bukan sekadar alat, tapi jalan untuk menciptakan perubahan yang berarti—dan itulah yang kami tanamkan di Manajemen Informatika Polsri.",
