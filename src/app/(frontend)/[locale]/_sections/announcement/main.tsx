@@ -58,7 +58,7 @@ function AnnouncementListItem({ name, createdAt, slug, locale }: News & { locale
       href={`/${locale}/news/${slug}`}
       className="text-start flex flex-col group hover:cursor-pointer hover:bg-muted p-1.5 rounded-lg"
     >
-      <h2 className="text-lg font-bold group-hover:underline">{name}</h2>
+      <h2 className="text-lg font-bold group-hover:tunderline">{name}</h2>
       <span className="text-muted-foreground">
         {Intl.DateTimeFormat('id-ID', {
           day: 'numeric',
