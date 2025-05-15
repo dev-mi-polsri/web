@@ -40,12 +40,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <div className="flex flex-col">
       <Hero locale={locale} />
-      <Partners locale={locale} />
       <Profile locale={locale} />
       <WelcomingWord locale={locale} />
       <StudyPrograms locale={locale} />
       <Facilities locale={locale} />
       <Stats locale={locale} />
+      <Partners locale={locale} />
       <News />
       <CTA locale={locale} />
     </div>

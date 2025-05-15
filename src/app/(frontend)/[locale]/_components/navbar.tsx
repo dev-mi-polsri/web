@@ -504,6 +504,14 @@ export function Navbar() {
   )
 }
 
+function MobileNavbarContent() {
+
+}
+
+function DesktopNavbarContent() {
+
+}
+
 const ListItem = forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
   ({ className, title, children, ...props }, ref) => {
     return (
