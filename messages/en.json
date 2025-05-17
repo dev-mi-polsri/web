@@ -14,7 +14,6 @@
           "title": "About Us",
           "desc": "Information about the Informatics Management department of Polsri."
         },
-
         "visionMision": {
           "title": "Vision and Mission",
           "desc": "Vision and Mission of the Informatics Management department of Polsri."
@@ -27,6 +26,7 @@
           "title": "Lecturers",
           "desc": "List of lecturers in the Informatics Management department of Polsri."
         },
+
         "staff": {
           "title": "Staff",
           "desc": "List of educational staff in the Informatics Management department of Polsri."
@@ -45,6 +45,12 @@
         "dark": "Dark",
         "light": "Light",
         "system": "System"
+      },
+      "downloads": {
+        "title": "Downloads"
+        "content": {
+          
+        }
       }
     },
     "footer": {

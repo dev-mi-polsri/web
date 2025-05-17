@@ -17,7 +17,7 @@ import {
 // import { useQuery } from '@tanstack/react-query'
 // import { Skeleton } from '@/components/ui/skeleton'
 import { SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { Menu } from 'lucide-react'
+import { Download, Menu } from 'lucide-react'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -223,6 +223,7 @@ export function Navbar() {
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
+
                 <NavigationMenuItem>
                   <Link href={`/${params.locale}/agenda`} legacyBehavior passHref>
                     <NavigationMenuLink
@@ -236,6 +237,41 @@ export function Navbar() {
                       {t('agenda')}
                     </NavigationMenuLink>
                   </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-muted-foreground hover:text-foreground">
+                    {t('download')}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                      {profilesIsPending
+                        ? Array.from({ length: 6 }).map((_, idx) => (
+                            <Skeleton className="h-16 w-full" key={idx} />
+                          ))
+                        : profilesError
+                          ? Array.from({ length: 6 }).map((_, idx) => (
+                              <Skeleton key={idx} className="h-16 w-full bg-destructive/20" />
+                            ))
+                          : [
+                              ...profiles.docs.map((profile) => ({
+                                label: profile.name,
+                                desc: profile.description,
+                                href: `/${params.locale}/profile/${profile.slug}`,
+                              })),
+                              {
+                                label: t('download'),
+                                desc: t('profile.lecturers.desc'),
+                                href: `/${params.locale}/dosen`,
+                              },
+
+                            ].map((item) => (
+                              <ListItem key={item.label} href={item.href} title={item.label}>
+                                {item.desc}
+                              </ListItem>
+                            ))}
+                    </ul>
+                  </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -504,13 +540,9 @@ export function Navbar() {
   )
 }
 
-function MobileNavbarContent() {
+function MobileNavbarContent() {}
 
-}
-
-function DesktopNavbarContent() {
-
-}
+function DesktopNavbarContent() {}
 
 const ListItem = forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
   ({ className, title, children, ...props }, ref) => {
