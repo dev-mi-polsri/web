@@ -22,6 +22,7 @@ const getPostsSitemap = unstable_cache(
       select: {
         slug: true,
         updatedAt: true,
+        global: true,
       },
     })
 
@@ -31,7 +32,7 @@ const getPostsSitemap = unstable_cache(
       ? results.docs
           .filter((post) => Boolean(post?.slug))
           .map((post) => ({
-            loc: `${SITE_URL}/news/${post?.slug}`,
+            loc: `${SITE_URL}/${global ? 'en' : 'id'}/news/${post?.slug}`,
             lastmod: post.updatedAt || dateFallback,
           }))
       : []
