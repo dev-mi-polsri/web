@@ -101,7 +101,7 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
       </Breadcrumb>
       <article className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 flex flex-col">
-          <div className="flex gap-1 items-center mb-2">
+          <div className="flex gap-1 items-center mb-2 flex-wrap">
             {post.tags &&
               post.tags?.length > 0 &&
               post.tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
