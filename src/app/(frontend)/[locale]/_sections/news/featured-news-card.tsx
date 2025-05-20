@@ -50,7 +50,7 @@ export function FeaturedNewsCard({
           fill
           src={(thumbnail as Media).url ?? '/placeholder.svg'}
           alt={name}
-          className="group-hover:scale-110 group-hover:brightness-50 transition-all ease-in-out"
+          className="group-hover:scale-110 group-hover:brightness-50 transition-all ease-in-out object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 rounded-lg" />
 
