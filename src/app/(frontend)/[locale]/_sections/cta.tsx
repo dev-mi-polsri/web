@@ -10,8 +10,8 @@ async function CTA({ locale }: { locale: string }) {
     },
   } = await getMessages({ locale })
   return (
-    <section id="call-to-action" className="py-8 max-w-screen-lg mx-auto p-4">
-      <div className="rounded-lg p-8 border text-white overflow-hidden relative">
+    <section id="call-to-action" className="py-8 w-full mx-auto p-4">
+      <div className="rounded-lg p-8 border text-white max-w-7xl mx-auto overflow-hidden relative">
         {/* Dark overlay with increased blur */}
         <div className="absolute inset-0 bg-black/20 backdrop-blur-xl z-10"></div>
 

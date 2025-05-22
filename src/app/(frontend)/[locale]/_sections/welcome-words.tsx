@@ -10,7 +10,7 @@ async function WelcomingWord({ locale }: { locale: string }) {
   } = await getMessages({ locale })
   return (
     <section className="py-8 px-4">
-      <div className="flex flex-col md:flex-row-reverse justify-between w-full max-w-6xl mx-auto overflow-hidden rounded-lg border">
+      <div className="flex flex-col md:flex-row-reverse justify-between w-full max-w-7xl mx-auto overflow-hidden rounded-lg border">
         {/* Right side - Image */}
         <div className="overflow-hidden w-full md:w-1/3 h-64 md:h-auto hidden md:block">
           <Image
