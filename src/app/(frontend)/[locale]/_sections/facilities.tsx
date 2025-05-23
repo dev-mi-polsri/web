@@ -27,7 +27,7 @@ async function Facilities({ locale }: { locale: string }) {
         <h1 className="text-2xl font-bold">{t.heading}</h1>
         <p className="text-sm text-muted-foreground">{t.description}</p>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-screen-lg px-4 pb-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-7xl px-4 pb-4">
         {facilities?.docs.map(({ ...facility }, idx) => (
           <FacilityCard {...facility} locale={locale} key={idx} />
         ))}
