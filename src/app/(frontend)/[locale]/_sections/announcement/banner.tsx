@@ -24,6 +24,11 @@ export default async function AnnouncementBanner({ locale }: { locale: string })
             equals: 'pengumuman',
           },
         },
+        {
+          global: {
+            equals: locale === 'id' ? false : true,
+          },
+        },
       ],
     },
     limit: 1,
