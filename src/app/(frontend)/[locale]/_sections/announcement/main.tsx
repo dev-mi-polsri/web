@@ -24,6 +24,11 @@ export default async function AnnouncementSection({ locale }: { locale: string }
             equals: 'pengumuman',
           },
         },
+        {
+          global: {
+            equals: locale === 'id' ? false : true,
+          },
+        },
       ],
     },
     limit: 5,
