@@ -61,7 +61,8 @@ export function FeaturedNewsCard({
           <h2
             className={`font-bold ${variant === 'main' ? 'text-lg lg:text-2xl' : 'lg:text-lg'} leading-tight flex-3`}
           >
-            {name.length > 20 ? name.slice(0, 80) + (name.length > 20 ? '...' : '') : name}
+            {/* {name.length > 25 ? name.slice(0, 80) + (name.length > 25 ? '...' : '') : name} */}
+            {name.length > 25 ? name.slice(0, 100) + '...' : name}
           </h2>
           <span className="text-sm text-right flex-1">
             {new Intl.DateTimeFormat('id-ID', {
