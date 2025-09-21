@@ -24,7 +24,7 @@ async function Facilities({ locale }: { locale: string }) {
   return (
     <section className="py-8 text-center">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">{t.heading}</h1>
+        <h2 className="text-2xl font-bold">{t.heading}</h2>
         <p className="text-sm text-muted-foreground">{t.description}</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-7xl px-4 pb-4">

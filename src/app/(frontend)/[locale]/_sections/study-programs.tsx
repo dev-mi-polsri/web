@@ -32,7 +32,7 @@ async function StudyPrograms({ locale }: { locale: string }) {
     <section className="py-12 relative">
       <div className="relative max-w-2xl mx-auto px-4 z-20">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold">{t.heading}</h1>
+          <h2 className="text-2xl font-bold">{t.heading}</h2>
           <p className="text-sm">{t.description}</p>
         </div>
         <div className="flex flex-col md:flex-row items-center md:items-stretch w-full justify-center gap-2">

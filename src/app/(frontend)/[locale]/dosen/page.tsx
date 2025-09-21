@@ -61,7 +61,7 @@ async function Page({ params }: { params: Promise<{ locale: string }> }) {
         <DosenList dosen={dosenD4} />
       </div>
       <div className="flex flex-col gap-4 px-4 items-center">
-        <h1 className="text-2xl font-bold mb-6">{t.title.d3}</h1>
+        <h2 className="text-2xl font-bold mb-6">{t.title.d3}</h2>
         <DosenList dosen={dosenD3} />
       </div>
     </div>

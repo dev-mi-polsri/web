@@ -42,7 +42,7 @@ export default async function AnnouncementSection({ locale }: { locale: string }
       className="max-w-screen-lg mx-auto px-8 py-10 w-full text-center flex flex-col items-center"
     >
       <div>
-        <h1 className="text-2xl font-bold">{t.heading}</h1>
+        <h2 className="text-2xl font-bold">{t.heading}</h2>
         <p className="text-sm text-muted-foreground">{t.description}</p>
       </div>
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full">
