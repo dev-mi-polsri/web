@@ -1,0 +1,94 @@
+# GitHub Action for building and releasing a Next.js 15 standalone application
+
+name: Build and Release Next.js App
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the main branch
+  push:
+    branches: ['main']
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build-and-release"
+  build-and-release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Permissions are required to create a release and write to the repository
+    permissions:
+      contents: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up pnpm for package management
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8 # You can specify your desired pnpm version
+
+      # 3. Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' # Use a Node.js version compatible with Next.js 15
+          cache: 'pnpm'
+
+      # 4. Install project dependencies using pnpm
+      - name: Install dependencies
+        run: pnpm install
+
+      # 5. Build the Next.js application for standalone output
+      # Ensure your next.config.mjs has `output: 'standalone'`
+      - name: Build Next.js app
+        env:
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }} # Example of using a secret
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+        run: pnpm build
+
+      - name: Running post build scripts
+        run: |
+          pnpm post-build
+          cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
+
+      # 6. Create a zip archive of the standalone build output
+      - name: Package standalone output
+        run: |
+          cd .next/standalone
+          zip -r ../../nextjs-standalone-build.zip .
+          cd ../..
+
+      # 7. Create a unique release tag name based on the current date and time
+      - name: Create release tag
+        id: create_tag
+        run: echo "TAG_NAME=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+
+      # 8. Create a new GitHub Release
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          release_name: Release ${{ env.TAG_NAME }}
+          body: |
+            Automated release of the Next.js standalone application.
+            Commit: ${{ github.sha }}
+          draft: false
+          prerelease: false
+
+      # 9. Upload the zip archive as an asset to the created GitHub Release
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL for uploading assets
+          asset_path: ./nextjs-standalone-build.zip # Path to the file to upload
+          asset_name: nextjs-standalone-build.zip # Name of the asset in the release
+          asset_content_type: application/zip
