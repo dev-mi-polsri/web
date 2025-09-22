@@ -26,7 +26,7 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
       <footer className="bg-secondary text-secondary-foreground py-12 flex flex-col">
         <div className="container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-2xl">{layout.footer.title}</h1>
+            <h2 className="font-bold text-2xl">{layout.footer.title}</h2>
             <p className="text-muted-foreground">
               {layout.footer.campus}
               <br />
@@ -36,7 +36,7 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
             </p>
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">{layout.footer.links.contact}</h1>
+            <h2 className="font-bold text-xl">{layout.footer.links.contact}</h2>
             <div className="flex flex-col gap-2">
               <div className="flex gap-2 items-center">
                 <MapPin className="size-4" />
@@ -53,7 +53,7 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">{layout.footer.links.study}</h1>
+            <h2 className="font-bold text-xl">{layout.footer.links.study}</h2>
             <div className="flex flex-col gap-2">
               {studyPrograms?.docs.map((item, idx) => (
                 <Link href={`/${locale}/program/${item.slug}`} key={idx}>
@@ -63,7 +63,7 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-bold text-xl">{layout.footer.links.links}</h1>
+            <h2 className="font-bold text-xl">{layout.footer.links.links}</h2>
             <div className="flex flex-col gap-2">
               <Link href="/">{layout.footer.links.home}</Link>
               <Link href={`/${locale}/news`}>{layout.footer.links.news}</Link>

@@ -19,7 +19,7 @@ async function CTA({ locale }: { locale: string }) {
         <div className="absolute inset-0 bg-[url(/Hero-2.jpeg)] bg-cover bg-center z-0"></div>
 
         <div className="flex flex-col gap-2 mb-4 items-center text-center md:max-w-[80%] mx-auto relative z-20">
-          <h1 className="text-2xl font-bold">{t.title}</h1>
+          <h2 className="text-2xl font-bold">{t.title}</h2>
           <p>{t.content}</p>
         </div>
         <Link href={`/${locale}/news`}>
