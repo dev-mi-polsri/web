@@ -8,10 +8,10 @@ const nextConfig = {
   // Your Next.js config here
   output: 'standalone',
   outputFileTracingRoot: path.join(__dirname, '../../'),
-  outputFileTracingIncludes: {
-    '/admin/*': ['../../node_modules/@libsql/**/*'],
-    '/admin/*': ['../../node_modules/libsql/**/*'],
-  },
+  // outputFileTracingIncludes: {
+  //   '/admin/*': ['../../node_modules/@libsql/**/*'],
+  //   '/admin/*': ['../../node_modules/libsql/**/*'],
+  // },
   images: {
     remotePatterns: [
       {
