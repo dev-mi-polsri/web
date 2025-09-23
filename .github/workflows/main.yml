@@ -29,75 +29,154 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9 # Updated to latest stable pnpm version
+          version: 9
 
       # 3. Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x' # Use a Node.js version compatible with Next.js 15
+          node-version: '20.x'
           cache: 'pnpm'
 
       # 4. Install project dependencies using pnpm
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          echo "Installing dependencies..."
+          pnpm install --frozen-lockfile
+          echo "Dependencies installed successfully ✓"
 
       # 5. Build the Next.js application for standalone output
-      # Ensure your next.config.mjs has `output: 'standalone'`
       - name: Build Next.js app
         env:
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET || 'fallback-secret-for-build' }}
+          DATABASE_URI: ${{ secrets.DATABASE_URI || 'file:./payload.db' }}
           NEXT_PUBLIC_SERVER_URL: ${{ vars.NEXT_PUBLIC_SERVER_URL || 'https://manajemeninformatika.polsri.ac.id' }}
-        run: pnpm build
+          NODE_ENV: production
+        run: |
+          echo "Starting Next.js build..."
+          echo "Environment variables:"
+          echo "- NODE_ENV: $NODE_ENV"
+          echo "- NEXT_PUBLIC_SERVER_URL: $NEXT_PUBLIC_SERVER_URL"
+          echo "- PAYLOAD_SECRET: [REDACTED]"
+          echo "- DATABASE_URI: [REDACTED]"
+
+          pnpm build
+          echo "Build completed successfully ✓"
 
       # 6. Verify standalone build exists before post-processing
       - name: Verify standalone build
         run: |
-          if [ ! -d ".next/standalone" ]; then
-            echo "Error: .next/standalone directory not found!"
-            echo "Build may have failed or standalone output is not configured."
+          echo "Checking build output..."
+
+          if [ ! -d ".next" ]; then
+            echo "❌ Error: .next directory not found!"
             exit 1
           fi
-          echo "Standalone build directory found ✓"
 
+          if [ ! -d ".next/standalone" ]; then
+            echo "❌ Error: .next/standalone directory not found!"
+            echo "Available .next contents:"
+            ls -la .next/ || echo "Cannot list .next contents"
+            echo ""
+            echo "This might be due to:"
+            echo "1. Build failed (check previous step)"
+            echo "2. next.config.mjs doesn't have 'output: standalone'"
+            echo "3. Build process was interrupted"
+            exit 1
+          fi
+
+          echo "✅ Standalone build directory found"
+          echo "Standalone build contents:"
+          ls -la .next/standalone/ | head -10
+
+      # 7. Run post-build script with error handling
       - name: Running post build scripts
         run: |
-          echo "Running post-build script..."
-          pnpm run post-build
-          echo "Post-build script completed ✓"
+          echo "🚀 Running post-build script..."
 
-          echo "Copying additional files..."
+          # Run the post-build script with error handling
+          if ! pnpm run post-build; then
+            echo "❌ Post-build script failed"
+            echo "Checking if standalone directory still exists..."
+            ls -la .next/standalone/ || echo "Standalone directory missing after post-build failure"
+            exit 1
+          fi
+
+          echo "✅ Post-build script completed successfully"
+
+      # 8. Copy additional files
+      - name: Copy additional files
+        run: |
+          echo "📁 Copying additional files..."
+
+          # Copy public directory if it exists
           if [ -d "public" ]; then
             cp -r public .next/standalone/
-            echo "Copied public directory ✓"
+            echo "✅ Copied public directory"
           else
-            echo "No public directory found, skipping..."
+            echo "ℹ️  No public directory found, skipping..."
           fi
 
+          # Copy .next/static directory if it exists
           if [ -d ".next/static" ]; then
+            mkdir -p .next/standalone/.next
             cp -r .next/static .next/standalone/.next/
-            echo "Copied .next/static directory ✓"
+            echo "✅ Copied .next/static directory"
           else
-            echo "No .next/static directory found, skipping..."
+            echo "ℹ️  No .next/static directory found, skipping..."
           fi
 
-          echo "All post-build operations completed ✓"
+          echo "✅ All file operations completed"
 
-      # 7. Create a zip archive of the standalone build output
+      # 9. Verify final build structure
+      - name: Verify final build structure
+        run: |
+          echo "🔍 Verifying final build structure..."
+
+          # Check if server.js exists
+          if [ ! -f ".next/standalone/server.js" ]; then
+            echo "❌ Error: server.js not found in standalone build"
+            echo "Standalone contents:"
+            ls -la .next/standalone/ || echo "Cannot list standalone contents"
+            exit 1
+          fi
+
+          echo "✅ server.js found"
+          echo "✅ Build structure verification completed"
+
+      # 10. Create a zip archive of the standalone build output
       - name: Package standalone output
         run: |
-          cd .next/standalone
-          zip -r ../../nextjs-standalone-build.zip .
-          cd ../..
-          echo "Created build package: nextjs-standalone-build.zip"
+          echo "📦 Creating deployment package..."
 
-      # 8. Create a unique release tag name based on the current date and time
+          cd .next/standalone
+
+          # Create the zip file
+          zip -r ../../nextjs-standalone-build.zip . -x "*.log" "*.tmp"
+
+          cd ../..
+
+          # Verify the zip file was created
+          if [ ! -f "nextjs-standalone-build.zip" ]; then
+            echo "❌ Error: Failed to create zip file"
+            exit 1
+          fi
+
+          # Show zip file info
+          echo "✅ Created deployment package:"
+          ls -lh nextjs-standalone-build.zip
+          echo "Package contents:"
+          unzip -l nextjs-standalone-build.zip | head -20
+
+      # 11. Create a unique release tag name based on the current date and time
       - name: Create release tag
         id: create_tag
-        run: echo "TAG_NAME=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+        run: |
+          TAG_NAME="release-$(date +'%Y-%m-%d-%H-%M-%S')"
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "🏷️  Created release tag: $TAG_NAME"
 
-      # 9. Create a new GitHub Release using the updated action
+      # 12. Create a new GitHub Release using the updated action
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -107,24 +186,50 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           name: Release ${{ env.TAG_NAME }}
           body: |
-            🚀 Automated release of the Next.js standalone application.
+            🚀 **Automated Release - Next.js Standalone Application**
 
-            **Release Details:**
-            - Commit: ${{ github.sha }}
-            - Branch: ${{ github.ref_name }}
-            - Author: ${{ github.actor }}
-            - Timestamp: ${{ env.TAG_NAME }}
+            This release contains a production-ready standalone build of the web-mi-polsri application.
 
-            **What's included:**
-            - Next.js standalone build optimized for production
-            - All dependencies bundled and optimized
-            - Ready for deployment
+            ## 📋 Release Information
+            - **Commit:** ${{ github.sha }}
+            - **Branch:** ${{ github.ref_name }}
+            - **Author:** ${{ github.actor }}
+            - **Build Time:** ${{ env.TAG_NAME }}
+            - **Node.js Version:** 20.x
+            - **Package Manager:** pnpm 9
 
-            **Deployment Instructions:**
-            1. Download and extract `nextjs-standalone-build.zip`
-            2. Set required environment variables
-            3. Run with `node server.js`
+            ## 📦 What's Included
+            - ✅ Next.js standalone build optimized for production
+            - ✅ All dependencies bundled and optimized
+            - ✅ Static assets and public files
+            - ✅ Server-side rendering capabilities
+            - ✅ Ready for deployment
+
+            ## 🚀 Deployment Instructions
+
+            1. **Download** the `nextjs-standalone-build.zip` file
+            2. **Extract** the contents to your server
+            3. **Set environment variables:**
+               ```bash
+               export PAYLOAD_SECRET="your-secret-key"
+               export DATABASE_URI="your-database-connection-string"
+               export NEXT_PUBLIC_SERVER_URL="https://your-domain.com"
+               ```
+            4. **Run the application:**
+               ```bash
+               node server.js
+               ```
+            5. **Access** your application at `http://localhost:3000`
+
+            ## 🔧 Environment Variables Required
+            - `PAYLOAD_SECRET` - Secret key for Payload CMS
+            - `DATABASE_URI` - Database connection string
+            - `NEXT_PUBLIC_SERVER_URL` - Public URL of your application
+
+            ## 📞 Support
+            If you encounter any issues, please check the [repository documentation](https://github.com/${{ github.repository }}) or create an issue.
           files: |
             nextjs-standalone-build.zip
           draft: false
           prerelease: false
+          fail_on_unmatched_files: true
