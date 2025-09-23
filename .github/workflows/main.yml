@@ -27,9 +27,9 @@ jobs:
 
       # 2. Set up pnpm for package management
       - name: Set up pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: 8 # You can specify your desired pnpm version
+          version: 9 # Updated to latest stable pnpm version
 
       # 3. Set up Node.js environment
       - name: Set up Node.js
@@ -40,55 +40,91 @@ jobs:
 
       # 4. Install project dependencies using pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       # 5. Build the Next.js application for standalone output
       # Ensure your next.config.mjs has `output: 'standalone'`
       - name: Build Next.js app
         env:
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }} # Example of using a secret
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
           DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          NEXT_PUBLIC_SERVER_URL: ${{ vars.NEXT_PUBLIC_SERVER_URL || 'https://manajemeninformatika.polsri.ac.id' }}
         run: pnpm build
+
+      # 6. Verify standalone build exists before post-processing
+      - name: Verify standalone build
+        run: |
+          if [ ! -d ".next/standalone" ]; then
+            echo "Error: .next/standalone directory not found!"
+            echo "Build may have failed or standalone output is not configured."
+            exit 1
+          fi
+          echo "Standalone build directory found ✓"
 
       - name: Running post build scripts
         run: |
-          pnpm post-build
-          cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
+          echo "Running post-build script..."
+          pnpm run post-build
+          echo "Post-build script completed ✓"
 
-      # 6. Create a zip archive of the standalone build output
+          echo "Copying additional files..."
+          if [ -d "public" ]; then
+            cp -r public .next/standalone/
+            echo "Copied public directory ✓"
+          else
+            echo "No public directory found, skipping..."
+          fi
+
+          if [ -d ".next/static" ]; then
+            cp -r .next/static .next/standalone/.next/
+            echo "Copied .next/static directory ✓"
+          else
+            echo "No .next/static directory found, skipping..."
+          fi
+
+          echo "All post-build operations completed ✓"
+
+      # 7. Create a zip archive of the standalone build output
       - name: Package standalone output
         run: |
           cd .next/standalone
           zip -r ../../nextjs-standalone-build.zip .
           cd ../..
+          echo "Created build package: nextjs-standalone-build.zip"
 
-      # 7. Create a unique release tag name based on the current date and time
+      # 8. Create a unique release tag name based on the current date and time
       - name: Create release tag
         id: create_tag
         run: echo "TAG_NAME=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
 
-      # 8. Create a new GitHub Release
+      # 9. Create a new GitHub Release using the updated action
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
-        with:
-          tag_name: ${{ env.TAG_NAME }}
-          release_name: Release ${{ env.TAG_NAME }}
-          body: |
-            Automated release of the Next.js standalone application.
-            Commit: ${{ github.sha }}
-          draft: false
-          prerelease: false
-
-      # 9. Upload the zip archive as an asset to the created GitHub Release
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL for uploading assets
-          asset_path: ./nextjs-standalone-build.zip # Path to the file to upload
-          asset_name: nextjs-standalone-build.zip # Name of the asset in the release
-          asset_content_type: application/zip
+          tag_name: ${{ env.TAG_NAME }}
+          name: Release ${{ env.TAG_NAME }}
+          body: |
+            🚀 Automated release of the Next.js standalone application.
+
+            **Release Details:**
+            - Commit: ${{ github.sha }}
+            - Branch: ${{ github.ref_name }}
+            - Author: ${{ github.actor }}
+            - Timestamp: ${{ env.TAG_NAME }}
+
+            **What's included:**
+            - Next.js standalone build optimized for production
+            - All dependencies bundled and optimized
+            - Ready for deployment
+
+            **Deployment Instructions:**
+            1. Download and extract `nextjs-standalone-build.zip`
+            2. Set required environment variables
+            3. Run with `node server.js`
+          files: |
+            nextjs-standalone-build.zip
+          draft: false
+          prerelease: false
