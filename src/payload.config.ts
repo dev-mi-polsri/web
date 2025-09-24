@@ -3,7 +3,8 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+// import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Partner } from './collections/Partners'
@@ -30,9 +31,11 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || '',
+  db: postgresAdapter({
+    // Postgres-specific arguments go here.
+    // `pool` is required.
+    pool: {
+      connectionString: process.env.POSTGRESQL_DATABASE_URI,
     },
   }),
 })
