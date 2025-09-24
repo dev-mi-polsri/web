@@ -119,7 +119,7 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           <div className="flex flex-col gap-4 w-full">
             <Image
               src={(post.thumbnail as Media).url || '/placeholder.png'}
-              alt={post.name}
+              alt={post.name} 
               width={1280}
               height={720}
               className="w-full aspect-video object-cover rounded-lg mb-6"
