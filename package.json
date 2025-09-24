@@ -86,6 +86,12 @@
     "vaul": "^1.1.2",
     "zustand": "^5.0.3"
   },
+  "optionalDependencies": {
+    "libsql": "^0.5.22",
+    "@libsql/darwin-arm64": "^0.5.22",
+    "@libsql/linux-arm64-gnu": "^0.5.22",
+    "@libsql/linux-x64-gnu": "^0.5.22"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@tailwindcss/typography": "^0.5.16",

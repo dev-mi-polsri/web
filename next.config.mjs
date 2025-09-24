@@ -1,7 +1,5 @@
-import path from 'path'
 import { fileURLToPath } from 'url'
 import { withPayload } from '@payloadcms/next/withPayload'
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
@@ -10,11 +8,6 @@ const withNextIntl = createNextIntlPlugin()
 const nextConfig = {
   // Your Next.js config here
   output: 'standalone',
-  outputFileTracingRoot: path.join(__dirname, '../../'),
-  outputFileTracingIncludes: {
-    '/admin/*': ['../../node_modules/@libsql/**/*'],
-    '/admin/*': ['../../node_modules/libsql/**/*'],
-  },
   images: {
     remotePatterns: [
       {
