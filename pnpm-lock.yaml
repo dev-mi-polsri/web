@@ -137,9 +137,6 @@ importers:
       langchain:
         specifier: ^0.3.24
         version: 0.3.24(@langchain/core@0.3.55(openai@4.98.0(ws@8.18.1)(zod@3.24.2)))(@langchain/google-genai@0.2.8(@langchain/core@0.3.55(openai@4.98.0(ws@8.18.1)(zod@3.24.2)))(zod@3.24.2))(axios@1.9.0)(openai@4.98.0(ws@8.18.1)(zod@3.24.2))(ws@8.18.1)
-      libsql:
-        specifier: ^0.5.22
-        version: 0.5.22
       lucide-react:
         specifier: ^0.487.0
         version: 0.487.0(react@19.0.0)
@@ -246,6 +243,19 @@ importers:
       typescript:
         specifier: 5.7.3
         version: 5.7.3
+    optionalDependencies:
+      '@libsql/darwin-arm64':
+        specifier: ^0.5.22
+        version: 0.5.22
+      '@libsql/linux-arm64-gnu':
+        specifier: ^0.5.22
+        version: 0.5.22
+      '@libsql/linux-x64-gnu':
+        specifier: ^0.5.22
+        version: 0.5.22
+      libsql:
+        specifier: ^0.5.22
+        version: 0.5.22
 
 packages:
 
