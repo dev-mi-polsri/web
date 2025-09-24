@@ -148,27 +148,32 @@ const liftModulesFromPnpm = () => {
 const main = async () => {
   // console.log('Starting to lift modules from .pnpm to root node_modules...');
 
-  if (!fs.existsSync(standaloneDir)) {
-    // console.error(`Standalone directory not found: ${standaloneDir}`);
+  try {
+    if (!fs.existsSync(standaloneDir)) {
+      // console.error(`Standalone directory not found: ${standaloneDir}`);
+      process.exit(1)
+    }
+
+    if (!fs.existsSync(nodeModulesDir)) {
+      // console.error(`node_modules directory not found: ${nodeModulesDir}`);
+      process.exit(1)
+    }
+
+    console.log('Converting symlinks to hard copies recursively...')
+    await convertSymlinksToHardCopies(nodeModulesDir)
+    console.log('Finished converting symlinks to hard copies.')
+
+    console.log('Lifting modules from .pnpm to root node_modules...')
+    liftModulesFromPnpm()
+    console.log('Finished lifting modules from .pnpm to root node_modules.')
+
+    console.log('Removing .pnpm directory...')
+    fs.removeSync(pnpmDir)
+    console.log('Finished removing .pnpm directory.')
+  } catch (ex) {
+    console.error('Error during processing:', ex)
     process.exit(1)
   }
-
-  if (!fs.existsSync(nodeModulesDir)) {
-    // console.error(`node_modules directory not found: ${nodeModulesDir}`);
-    process.exit(1)
-  }
-
-  console.log('Converting symlinks to hard copies recursively...')
-  await convertSymlinksToHardCopies(nodeModulesDir)
-  console.log('Finished converting symlinks to hard copies.')
-
-  console.log('Lifting modules from .pnpm to root node_modules...')
-  liftModulesFromPnpm()
-  console.log('Finished lifting modules from .pnpm to root node_modules.')
-
-  console.log('Removing .pnpm directory...')
-  fs.removeSync(pnpmDir)
-  console.log('Finished removing .pnpm directory.')
 }
 
 // Run the script
