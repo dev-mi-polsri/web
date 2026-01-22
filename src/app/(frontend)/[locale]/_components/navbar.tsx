@@ -415,7 +415,9 @@ export function Navbar() {
                             <div
                               className={cn(
                                 'w-full flex items-center justify-between',
-                                openMenus['profil'] ? 'text-foreground' : 'text-muted-foreground',
+                                openMenus['studyPrograms']
+                                  ? 'text-foreground'
+                                  : 'text-muted-foreground',
                               )}
                             >
                               {t('studyPrograms.title')}
