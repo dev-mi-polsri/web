@@ -330,20 +330,21 @@ export function Navbar() {
                         onOpenChange={() => toggleMenu('profil')}
                       >
                         <CollapsibleTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className={cn(
-                              'w-full justify-between',
-                              openMenus['profil'] ? 'text-foreground' : 'text-muted-foreground',
-                            )}
-                          >
-                            {t('profile.title')}
-                            {openMenus['profil'] ? (
-                              <ChevronUp className="h-4 w-4" />
-                            ) : (
-                              <ChevronDown className="h-4 w-4" />
-                            )}
-                          </Button>
+                          <div className="block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground hover:cursor-pointer">
+                            <div
+                              className={cn(
+                                'w-full flex items-center justify-between',
+                                openMenus['profil'] ? 'text-foreground' : 'text-muted-foreground',
+                              )}
+                            >
+                              {t('profile.title')}
+                              {openMenus['profil'] ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </div>
+                          </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <ul className="ml-4 flex flex-col gap-2">
@@ -394,7 +395,7 @@ export function Navbar() {
                         onOpenChange={() => toggleMenu('studyPrograms')}
                       >
                         <CollapsibleTrigger asChild>
-                          <Button
+                          {/* <Button
                             variant="ghost"
                             className={cn(
                               'w-full justify-between',
@@ -409,7 +410,22 @@ export function Navbar() {
                             ) : (
                               <ChevronDown className="h-4 w-4" />
                             )}
-                          </Button>
+                          </Button> */}
+                          <div className="block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground hover:cursor-pointer">
+                            <div
+                              className={cn(
+                                'w-full flex items-center justify-between',
+                                openMenus['profil'] ? 'text-foreground' : 'text-muted-foreground',
+                              )}
+                            >
+                              {t('studyPrograms.title')}
+                              {openMenus['studyPrograms'] ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </div>
+                          </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <ul className="ml-4 flex flex-col gap-2">
