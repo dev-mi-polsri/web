@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'url'
-import { withPayload } from '@payloadcms/next/withPayload'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
@@ -23,4 +21,4 @@ const nextConfig = {
   },
 }
 
-export default withNextIntl(withPayload(nextConfig, { devBundleServerPackages: false }))
+export default withNextIntl(nextConfig);

@@ -1,17 +1,14 @@
 {
   "name": "mi-polsri",
   "version": "1.0.0",
-  "description": "A blank template to get started with Payload 3.0",
+  "description": "Official website of MI Polsri - Politeknik Negeri Sriwijaya",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "dev": "next dev --turbopack",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
-    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "post-build": "node ./lift-pnpm-dependencies.cjs"
   },
@@ -27,12 +24,6 @@
     "@langchain/openai": "^0.5.10",
     "@langchain/textsplitters": "^0.1.0",
     "@libsql/client": "^0.15.15",
-    "@payloadcms/db-sqlite": "3.72.0",
-    "@payloadcms/db-postgres": "3.72.0",
-    "@payloadcms/next": "3.72.0",
-    "@payloadcms/payload-cloud": "3.72.0",
-    "@payloadcms/richtext-lexical": "3.72.0",
-    "@payloadcms/storage-azure": "3.72.0",
     "@radix-ui/react-aspect-ratio": "^1.1.3",
     "@radix-ui/react-checkbox": "^1.1.5",
     "@radix-ui/react-collapsible": "^1.1.4",
@@ -62,16 +53,15 @@
     "langchain": "^0.3.24",
     "libsql": "^0.5.22",
     "lucide-react": "^0.487.0",
-    "next": "15.2.3",
-    "next-intl": "^4.0.2",
+    "next": "16.1.6",
+    "next-intl": "^4.8.2",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.4.6",
-    "payload": "3.72.0",
     "postcss": "^8.5.3",
     "qs-esm": "^7.0.2",
-    "react": "19.0.0",
+    "react": "19.2.4",
     "react-day-picker": "^9.6.5",
-    "react-dom": "19.0.0",
+    "react-dom": "19.2.4",
     "react-fast-marquee": "^1.6.5",
     "react-markdown": "^10.1.0",
     "react-query": "^3.39.3",
@@ -94,13 +84,12 @@
     "@libsql/linux-x64-gnu": "^0.5.22"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.5.4",
-    "@types/react": "19.0.12",
-    "@types/react-dom": "19.0.4",
+    "@types/react": "19.2.13",
+    "@types/react-dom": "19.2.3",
     "eslint": "^9.16.0",
-    "eslint-config-next": "15.2.3",
+    "eslint-config-next": "16.1.6",
     "prettier": "^3.4.2",
     "tw-animate-css": "^1.2.9",
     "typescript": "5.7.3"
@@ -111,6 +100,10 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp"
-    ]
+    ],
+    "overrides": {
+      "@types/react": "19.2.13",
+      "@types/react-dom": "19.2.3"
+    }
   }
 }
