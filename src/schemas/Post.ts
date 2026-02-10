@@ -27,6 +27,7 @@ export interface Tag {
 }
 
 export interface Post {
+  id: string,
   thumbnail: ImageMedia
   title: string,
   content: RichText,
