@@ -1,3 +1,5 @@
+import { Generated, Insertable, Selectable, Updateable } from 'kysely'
+
 export type MimeType =
   | 'image/jpeg'
   | 'image/png'
@@ -11,14 +13,22 @@ export enum MediaType {
   PDF = 'pdf',
 }
 
-export interface Media {
-  id: string
+export interface MediaTable {
+  id: Generated<string>
   type: MediaType
   mime: MimeType
 
-  url: string
+  url: MediaUrl
   altText?: string
 }
+
+/// A unique identifier for a media
+export type MediaUrl = string
+
+export type Media = Selectable<MediaTable>
+export type MediaInsert = Insertable<MediaTable>
+export type MediaUpdate = Updateable<MediaTable>
+
 
 export interface ImageMedia extends Media {
   type: MediaType.IMAGE

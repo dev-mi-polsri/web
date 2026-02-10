@@ -1,0 +1,61 @@
+import { PostScope, RichText } from '@/schemas/_common'
+import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysely'
+import { MediaUrl } from '@/schemas/MediaTable'
+
+export enum PostType {
+  BERITA_UMUM = 'berita-umum',
+  PENGUMUMAN = 'pengumuman',
+  HMJ = 'hmj',
+  AKADEMIK = 'akademik',
+  PRESTASI = 'prestasi',
+}
+
+export class PostUtility {
+  static generateSlug(post: Post) {
+    return (
+      post.createdAt.toDateString() +
+      '-' +
+      post.title
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '')
+    )
+  }
+
+  static generateTagSlug(tag: Tag) {
+    return tag.name
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '')
+  }
+}
+
+export interface TagTable {
+  id: string
+  name: string
+  slug: string
+}
+
+export interface PostTable {
+  id: Generated<string>
+  thumbnail: MediaUrl
+  title: string
+  content: RichText
+  type: PostType
+  slug: string
+  tags: TagTable[]
+
+  isFeatured: boolean
+
+  scope: PostScope
+
+  createdAt: ColumnType<Date, string | undefined, never>
+  updatedAt: ColumnType<Date, string | undefined, never>
+}
+
+export type Post = Selectable<PostTable>
+export type Tag = Selectable<TagTable>
+export type NewPost = Insertable<PostTable>
+export type NewTag = Insertable<TagTable>
+export type UpdatePost = Updateable<PostTable>
+export type UpdateTag = Updateable<TagTable>

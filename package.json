@@ -50,9 +50,11 @@
     "framer-motion": "^11.18.2",
     "fs-extra": "^11.3.2",
     "graphql": "^16.8.1",
+    "kysely": "^0.28.11",
     "langchain": "^0.3.24",
     "libsql": "^0.5.22",
     "lucide-react": "^0.487.0",
+    "mysql2": "^3.16.3",
     "next": "16.1.6",
     "next-intl": "^4.8.2",
     "next-sitemap": "^4.2.3",
@@ -78,10 +80,10 @@
     "zustand": "^5.0.3"
   },
   "optionalDependencies": {
-    "libsql": "^0.5.22",
     "@libsql/darwin-arm64": "^0.5.22",
     "@libsql/linux-arm64-gnu": "^0.5.22",
-    "@libsql/linux-x64-gnu": "^0.5.22"
+    "@libsql/linux-x64-gnu": "^0.5.22",
+    "libsql": "^0.5.22"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",

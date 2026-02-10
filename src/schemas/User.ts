@@ -1,20 +1,25 @@
 import { HashedString } from '@/schemas/_common'
+import { ColumnType, Insertable, Selectable, Updateable } from 'kysely'
 
 export enum UserRole {
   ADMIN = 'admin',
   WRITER = 'writer',
 }
 
-export interface User {
+export interface UserTable {
   id: string
   name: string
   email: string
   role: UserRole
   password: HashedString
 
-  createdAt: Date
-  updatedAt: Date
+  createdAt: ColumnType<Date, string | undefined, never>
+  updatedAt: ColumnType<Date, string | undefined, never>
 }
+
+export type User = Selectable<UserTable>
+export type NewUser = Insertable<UserTable>
+export type UpdateUser = Updateable<NewUser>
 
 export interface Admin extends User {
   role: UserRole.ADMIN
