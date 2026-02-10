@@ -21,7 +21,7 @@ export function FeaturedNewsCard({
   //       <AspectRatio ratio={16 / 9}>
   //         <Image
   //           fill
-  //           src={(thumbnail as Media)?.url ?? '/placeholder.svg'}
+  //           src={(thumbnail as Media.ts)?.url ?? '/placeholder.svg'}
   //           alt={name}
   //           className="rounded-lg object-cover hover:brightness-50 hover:scale-105 transition-all duration-300 ease-in-out"
   //         />
