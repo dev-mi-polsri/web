@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: webmi_mysql
+    restart: unless-stopped
+    environment:
+      # Use environment variable values when provided, otherwise fall back to safe local defaults
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-local_root_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-devdb}
+      MYSQL_USER: ${MYSQL_USER:-devuser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-devpass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      # Maps host port (default 3306) to container 3306. Change MYSQL_HOST_PORT to avoid conflicts.
+      - "${MYSQL_HOST_PORT:-3306}:3306"
+    healthcheck:
+      # Uses mysqladmin inside the container to report readiness
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - webmi_default
+
+volumes:
+  mysql_data:
+
+networks:
+  webmi_default:
+    driver: bridge
+
