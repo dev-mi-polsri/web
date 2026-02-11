@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `media`
     `url`      VARCHAR(2048) NOT NULL,
     `alt_text` VARCHAR(255)  NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `media_url_uq` (`url`),
     KEY `media_type_idx` (`type`),
     KEY `media_mime_idx` (`mime`)
 ) ENGINE = InnoDB

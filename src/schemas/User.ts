@@ -21,6 +21,7 @@ export interface UserTable {
 export type User = Selectable<UserTable>
 export type NewUser = Insertable<UserTable>
 export type RegisterUser = Omit<NewUser, 'role' | 'passwordSalt'> & { role?: UserRole }
+export type MaskedUser = Omit<User, 'password' | 'passwordSalt'>
 export type UpdateUser = Updateable<UserTable>
 
 export interface Admin extends User {

@@ -1,16 +1,16 @@
 import { UserCriteria, UserRepository } from '@/repository/UserRepository'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
-import { NewUser, RegisterUser, UpdateUser, User, UserRole } from '@/schemas/User'
+import { MaskedUser, NewUser, RegisterUser, UpdateUser, UserRole } from '@/schemas/User'
 import type { Database } from '@/lib/db'
 import type { Kysely } from 'kysely'
 import { normalizePagination, ServiceError } from './_common'
 import { generatePasswordHash, verifyPassword } from '@/lib/auth-utils'
 
 export interface IUserService {
-  getUser(criteria: UserCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<User>>
-  getUserById(id: string): Promise<User | null>
-  getUserByEmail(email: string): Promise<User | null>
-  validateCredentials(email: string, password: string): Promise<User>
+  getUser(criteria: UserCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<MaskedUser>>
+  getUserById(id: string): Promise<MaskedUser>
+  getUserByEmail(email: string): Promise<MaskedUser>
+  validateCredentials(email: string, password: string): Promise<boolean>
   createUser(data: RegisterUser): Promise<boolean>
   updateUser(id: string, data: Omit<UpdateUser, 'password' | 'passwordSalt'>): Promise<boolean>
   updateUserPassword(id: string, password: string): Promise<boolean>
@@ -47,24 +47,35 @@ export class UserService implements IUserService {
   async getUser(
     criteria: UserCriteria,
     pageable?: PaginationRequest,
-  ): Promise<PaginatedResult<User>> {
-    return await this.repository.getAll(criteria, normalizePagination(pageable))
+  ): Promise<PaginatedResult<MaskedUser>> {
+    const user = await this.repository.getAll(criteria, normalizePagination(pageable))
+    return {
+      page: user.page,
+      size: user.size,
+      total: user.total,
+      results: user.results.map((u) => {
+        const { password, passwordSalt, ...maskedUser } = u
+        return maskedUser
+      }),
+    }
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<MaskedUser> {
     const user = await this.repository.getById(id)
     if (!user) {
       throw new UserNotFoundError(`User with id ${id} not found`)
     }
-    return user
+    const { password, passwordSalt, ...maskedUser } = user
+    return maskedUser
   }
 
-  async getUserByEmail(email: string): Promise<User | null> {
+  async getUserByEmail(email: string): Promise<MaskedUser> {
     const user = await this.repository.getByEmail(email)
     if (!user) {
       throw new UserNotFoundError(`User with email ${email} not found`)
     }
-    return user
+    const { password, passwordSalt, ...maskedUser } = user
+    return maskedUser
   }
 
   async createUser(data: RegisterUser): Promise<boolean> {
@@ -95,7 +106,7 @@ export class UserService implements IUserService {
     return true
   }
 
-  async validateCredentials(email: string, password: string): Promise<User> {
+  async validateCredentials(email: string, password: string): Promise<boolean> {
     const user = await this.repository.getByEmail(email)
     if (!user) {
       throw new InvalidCredentialsError('Invalid email or password')
@@ -106,7 +117,7 @@ export class UserService implements IUserService {
       throw new InvalidCredentialsError('Invalid email or password')
     }
 
-    return user
+    return true
   }
 
   async updateUserPassword(id: string, password: string): Promise<boolean> {
