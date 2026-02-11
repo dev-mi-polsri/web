@@ -1,6 +1,6 @@
 import { MediaUrl } from '@/schemas/MediaTable'
 import { PostScope, RichText } from '@/schemas/_common'
-import { ColumnType, Generated, Insertable, Selectable } from 'kysely'
+import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysely'
 
 export interface ProfileTable {
   id: Generated<string>
@@ -17,5 +17,5 @@ export interface ProfileTable {
 }
 
 export type Profile = Selectable<ProfileTable>
-export type NewProfile = Insertable<ProfileTable>
-export type UpdateProfile = Insertable<ProfileTable>
+export type NewProfile = Omit<Insertable<ProfileTable>, 'thumbnail'> & { thumbnail: File }
+export type UpdateProfile = Omit<Updateable<ProfileTable>, 'thumbnail'> & { thumbnail?: File }

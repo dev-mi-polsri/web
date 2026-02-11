@@ -3,7 +3,7 @@ import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysel
 export interface AgendaTable {
   id: Generated<string>
   title: string
-  en__title: string
+  enTitle: string
   description: string
 
   startDate: ColumnType<Date, string | undefined, never>
@@ -15,4 +15,3 @@ export interface AgendaTable {
 export type Agenda = Selectable<AgendaTable>
 export type NewAgenda = Insertable<AgendaTable>
 export type UpdateAgenda = Updateable<AgendaTable>
-

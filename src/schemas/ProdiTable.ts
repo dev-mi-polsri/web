@@ -17,5 +17,5 @@ export interface ProdiTable {
 }
 
 export type Prodi = Selectable<ProdiTable>
-export type NewProdi = Insertable<ProdiTable>
-export type UpdateProdi = Updateable<ProdiTable>
+export type NewProdi = Omit<Insertable<ProdiTable>, 'thumbnail'> & { thumbnail: File }
+export type UpdateProdi = Omit<Updateable<ProdiTable>, 'thumbnail'> & { thumbnail?: File }

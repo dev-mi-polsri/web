@@ -55,7 +55,7 @@ export interface PostTable {
 
 export type Post = Selectable<PostTable>
 export type Tag = Selectable<TagTable>
-export type NewPost = Insertable<PostTable>
+export type NewPost = Omit<Insertable<PostTable>, 'thumbnail'> & { thumbnail: File }
 export type NewTag = Insertable<TagTable>
-export type UpdatePost = Updateable<PostTable>
+export type UpdatePost = Omit<Updateable<PostTable>, 'thumbnail'> & { thumbnail?: File }
 export type UpdateTag = Updateable<TagTable>

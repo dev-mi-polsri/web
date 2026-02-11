@@ -1,12 +1,6 @@
 import { Generated, Insertable, Selectable, Updateable } from 'kysely'
 
-export type MimeType =
-  | 'image/jpeg'
-  | 'image/png'
-  | 'image/gif'
-  | 'video/mp4'
-  | 'application/pdf'
-
+export type MimeType = string
 export enum MediaType {
   IMAGE = 'image',
   VIDEO = 'video',
@@ -26,8 +20,8 @@ export interface MediaTable {
 export type MediaUrl = string
 
 export type Media = Selectable<MediaTable>
-export type MediaInsert = Insertable<MediaTable>
-export type MediaUpdate = Updateable<MediaTable>
+export type NewMedia = Insertable<MediaTable>
+export type UpdateMedia = Updateable<MediaTable>
 
 
 export interface ImageMedia extends Media {

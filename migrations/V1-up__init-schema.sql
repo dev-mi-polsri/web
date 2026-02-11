@@ -31,12 +31,13 @@ CREATE TABLE IF NOT EXISTS `users`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `media`
 (
-    `id`       VARCHAR(36)  NOT NULL,
-    `type`     VARCHAR(16)  NOT NULL,
-    `mime`     VARCHAR(64)  NOT NULL,
-    `url`      TEXT         NOT NULL,
-    `alt_text` VARCHAR(255) NULL,
+    `id`       VARCHAR(36)   NOT NULL,
+    `type`     VARCHAR(16)   NOT NULL,
+    `mime`     VARCHAR(64)   NOT NULL,
+    `url`      VARCHAR(2048) NOT NULL,
+    `alt_text` VARCHAR(255)  NULL,
     PRIMARY KEY (`id`),
+    UNIQUE KEY `media_url_uq` (`url`),
     KEY `media_type_idx` (`type`),
     KEY `media_mime_idx` (`mime`)
 ) ENGINE = InnoDB
@@ -50,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `agenda`
 (
     `id`          VARCHAR(36)  NOT NULL,
     `title`       VARCHAR(255) NOT NULL,
-    `en__title`   VARCHAR(255) NOT NULL,
+  `enTitle`     VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
     `start_date`  DATETIME(3)  NOT NULL,
     `end_date`    DATETIME(3)  NOT NULL,
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `fasilitas`
     `id`       VARCHAR(36)  NOT NULL,
     `image`    TEXT         NOT NULL,
     `name`     VARCHAR(255) NOT NULL,
-    `en__name` VARCHAR(255) NOT NULL,
+  `enName`   VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -192,4 +193,3 @@ CREATE TABLE IF NOT EXISTS `profile`
   COLLATE = utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
-

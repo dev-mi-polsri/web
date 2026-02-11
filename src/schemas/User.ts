@@ -19,7 +19,7 @@ export interface UserTable {
 
 export type User = Selectable<UserTable>
 export type NewUser = Insertable<UserTable>
-export type UpdateUser = Updateable<NewUser>
+export type UpdateUser = Updateable<UserTable>
 
 export interface Admin extends User {
   role: UserRole.ADMIN
