@@ -1,9 +1,9 @@
 import { PaginatedResult, PaginationRequest } from '@/repository/_common'
 import { Agenda, NewAgenda, UpdateAgenda } from '@/schemas/AgendaTable'
 import { Database } from '@/lib/db'
-import { DeleteResult, InsertResult, Kysely, sql, UpdateResult } from 'kysely'
+import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
 
-type AgendaCriteria = {
+export type AgendaCriteria = {
   searchKeyword?: string
   location?: string
   startDate?: Date

@@ -4,20 +4,20 @@ import { MimeType } from '@/schemas/MediaTable'
 
 export type FilePath = string
 
-export interface FileIO {
+export interface IOAdapter {
   write(file: File): Promise<FilePath>
   read(path: FilePath, type: MimeType): Promise<Blob | undefined>
   delete(path: FilePath): Promise<void>
 }
 
-export class NodeFileIOException extends Error {
+export class NodeIOAdapterException extends Error {
   constructor(message: string) {
     super(message)
-    this.name = 'NodeFileIOException'
+    this.name = 'NodeIOAdapterException'
   }
 }
 
-export class NodeFileIO implements FileIO {
+export class NodeIOAdapter implements IOAdapter {
   async write(file: Blob): Promise<FilePath> {
 
     const extension = file.type.split('/')[1] || 'bin'
@@ -35,7 +35,7 @@ export class NodeFileIO implements FileIO {
 
       return resolvedPath
     } catch (e) {
-      throw new NodeFileIOException(`Failed to write file: ${(e as Error).message}`)
+      throw new NodeIOAdapterException(`Failed to write file: ${(e as Error).message}`)
     }
   }
 
@@ -46,7 +46,7 @@ export class NodeFileIO implements FileIO {
     } catch (e) {
       const err = e as NodeJS.ErrnoException
       if (err?.code === 'ENOENT') return undefined
-      throw new NodeFileIOException(`Failed to read file: ${err?.message ?? String(e)}`)
+      throw new NodeIOAdapterException(`Failed to read file: ${err?.message ?? String(e)}`)
     }
   }
 
@@ -56,7 +56,7 @@ export class NodeFileIO implements FileIO {
     unlink(filePath).catch((e: unknown) => {
       const err = e as NodeJS.ErrnoException
       if (err?.code === 'ENOENT') return
-      throw new NodeFileIOException(`Failed to delete file: ${err?.message ?? String(e)}`)
+      throw new NodeIOAdapterException(`Failed to delete file: ${err?.message ?? String(e)}`)
     })
   }
 }

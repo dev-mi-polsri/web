@@ -1,6 +1,6 @@
 import { PaginatedResult, PaginationRequest } from '@/repository/_common'
 import { Database } from '@/lib/db'
-import { FileIO, NodeFileIO } from '@/lib/io'
+import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
 import {
   Homebase,
@@ -31,11 +31,11 @@ export interface ITenagaAjarRepository {
 
 export class TenagaAjarRepository implements ITenagaAjarRepository {
   private db: Kysely<Database>
-  private io: FileIO
+  private io: IOAdapter
 
-  constructor(database: Kysely<Database>, io?: FileIO) {
+  constructor(database: Kysely<Database>, io?: IOAdapter) {
     this.db = database
-    this.io = io ?? new NodeFileIO()
+    this.io = io ?? new NodeIOAdapter()
   }
 
   async getAll(

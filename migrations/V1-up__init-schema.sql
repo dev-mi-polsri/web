@@ -12,13 +12,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `users`
 (
-    `id`         VARCHAR(36)  NOT NULL,
-    `name`       VARCHAR(255) NOT NULL,
-    `email`      VARCHAR(255) NOT NULL,
-    `role`       VARCHAR(32)  NOT NULL,
-    `password`   VARCHAR(255) NOT NULL,
-    `created_at` DATETIME(3)  NOT NULL,
-    `updated_at` DATETIME(3)  NOT NULL,
+    `id`            VARCHAR(36)  NOT NULL,
+    `name`          VARCHAR(255) NOT NULL,
+    `email`         VARCHAR(255) NOT NULL,
+    `role`          VARCHAR(32)  NOT NULL,
+    `password`      VARCHAR(255) NOT NULL,
+    `password_salt` VARCHAR(255) NOT NULL,
+    `created_at`    DATETIME(3)  NOT NULL,
+    `updated_at`    DATETIME(3)  NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `users_email_uq` (`email`),
     KEY `users_role_idx` (`role`)
@@ -51,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `agenda`
 (
     `id`          VARCHAR(36)  NOT NULL,
     `title`       VARCHAR(255) NOT NULL,
-  `enTitle`     VARCHAR(255) NOT NULL,
+    `enTitle`     VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
     `start_date`  DATETIME(3)  NOT NULL,
     `end_date`    DATETIME(3)  NOT NULL,
@@ -68,10 +69,10 @@ CREATE TABLE IF NOT EXISTS `agenda`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fasilitas`
 (
-    `id`       VARCHAR(36)  NOT NULL,
-    `image`    TEXT         NOT NULL,
-    `name`     VARCHAR(255) NOT NULL,
-  `enName`   VARCHAR(255) NOT NULL,
+    `id`     VARCHAR(36)  NOT NULL,
+    `image`  TEXT         NOT NULL,
+    `name`   VARCHAR(255) NOT NULL,
+    `enName` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

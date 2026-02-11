@@ -2,10 +2,10 @@ import { PaginatedResult, PaginationRequest } from '@/repository/_common'
 import { Fasilitas, NewFasilitas, UpdateFasilitas } from '@/schemas/FasilitasTable'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
 import { Database } from '@/lib/db'
-import { FileIO, NodeFileIO } from '@/lib/io'
+import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
 
-interface FasilitasCriteria {
+export interface FasilitasCriteria {
   searchKeyword?: string
 }
 
@@ -22,11 +22,11 @@ interface IFasilitasRepository {
 
 export class FasilitasRepository implements IFasilitasRepository {
   private db: Kysely<Database>
-  private io: FileIO
+  private io: IOAdapter
 
-  constructor(database: Kysely<Database>, io: FileIO) {
+  constructor(database: Kysely<Database>, io: IOAdapter) {
     this.db = database
-    this.io = io ?? new NodeFileIO()
+    this.io = io ?? new NodeIOAdapter()
   }
 
   async create(fasilitas: NewFasilitas): Promise<InsertResult> {

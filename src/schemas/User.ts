@@ -12,6 +12,7 @@ export interface UserTable {
   email: string
   role: UserRole
   password: HashedString
+  passwordSalt: string
 
   createdAt: ColumnType<Date, string | undefined, never>
   updatedAt: ColumnType<Date, string | undefined, never>
@@ -19,6 +20,7 @@ export interface UserTable {
 
 export type User = Selectable<UserTable>
 export type NewUser = Insertable<UserTable>
+export type RegisterUser = Omit<NewUser, 'role' | 'passwordSalt'> & { role?: UserRole }
 export type UpdateUser = Updateable<UserTable>
 
 export interface Admin extends User {
