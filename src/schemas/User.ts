@@ -1,5 +1,5 @@
 import { HashedString } from '@/schemas/_common'
-import { ColumnType, Insertable, Selectable, Updateable } from 'kysely'
+import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysely'
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -7,7 +7,7 @@ export enum UserRole {
 }
 
 export interface UserTable {
-  id: string
+  id: Generated<string>
   name: string
   email: string
   role: UserRole

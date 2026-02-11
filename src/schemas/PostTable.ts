@@ -31,7 +31,7 @@ export class PostUtility {
 }
 
 export interface TagTable {
-  id: string
+  id: Generated<string>
   name: string
   slug: string
 }
