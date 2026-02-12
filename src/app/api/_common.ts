@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
 import { ServiceError } from '@/services/_common'
 
-export type StandardApiResponse<T> = T | {
+export type StandardErrorResponse = {
   error: string
   code: string
 }
+
+export type StandardApiResponse<T> = T | StandardErrorResponse
 
 export class ApiError extends Error {
   public errorCode?: string
