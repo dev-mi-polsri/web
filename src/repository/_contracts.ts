@@ -5,6 +5,9 @@ export interface PaginatedResult<T> {
   page: number
   size: number
   total: number
+  hasPrevPage: boolean
+  hasNextPage: boolean
+  totalPages: number
 }
 
 export interface PaginationRequest {
@@ -25,4 +28,3 @@ export interface IRepository<T, NewT, UpdateT, CriteriaT = BaseCriteria, IdT = I
   update(id: IdT, data: UpdateT): Promise<UpdateResult>
   delete(id: IdT): Promise<DeleteResult>
 }
-

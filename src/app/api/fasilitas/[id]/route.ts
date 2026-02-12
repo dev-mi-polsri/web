@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cacheLife } from 'next/cache'
 
-import db from '@/lib/db'
-import { FasilitasService } from '@/services/FasilitasService'
 import { handleApiError, StandardApiResponse } from '@/app/api/_common'
 import type { Fasilitas } from '@/schemas/FasilitasTable'
+import { getFasilitasById } from '@/server-actions/fasilitas'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/fasilitas/[id]'>) {
   try {
@@ -18,4 +16,3 @@ export async function GET(_: NextRequest, ctx: RouteContext<'/api/fasilitas/[id]
     return handleApiError(error)
   }
 }
-

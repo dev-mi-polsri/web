@@ -61,7 +61,7 @@ export interface PostTagTable {
 export type Post = Selectable<PostTable>
 export type PostSummary = Pick<
   PostWithTags,
-  'id' | 'title' | 'slug' | 'thumbnail' | 'createdAt' | 'isPublished' | 'scope'
+  'id' | 'title' | 'slug' | 'thumbnail' | 'createdAt' | 'isPublished' | 'scope' | 'tags'
 >
 export type PostWithTags = Post & { tags: Tag[] }
 export type NewPost = Omit<Insertable<PostTable>, 'thumbnail'> & {

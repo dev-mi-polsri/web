@@ -3,17 +3,17 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
-import { Dosentendik, Media } from '@/payload-types'
-import { PaginatedDocs } from 'payload'
+import { TenagaAjar } from '@/schemas/TenagaAjarTable'
+import { PaginatedResult } from '@/repository/_contracts'
 
-const DosenCard = ({ dosen }: { dosen: Dosentendik }) => {
+const DosenCard = ({ dosen }: { dosen: TenagaAjar }) => {
   return (
     <div className="bg-card rounded-lg border overflow-hidden flex flex-col h-full">
-      {dosen.image && typeof dosen.image === 'object' && (
+      {dosen.foto && (
         <div className="relative w-full">
           <Image
-            src={(dosen.image as Media).url || ''}
-            alt={dosen.name}
+            src={dosen.foto || ''}
+            alt={dosen.nama}
             width={800}
             height={800}
             className="object-cover aspect-square w-full"
@@ -22,7 +22,7 @@ const DosenCard = ({ dosen }: { dosen: Dosentendik }) => {
       )}
       <div className="p-4 flex flex-col justify-between h-full">
         <div className="text-center">
-          <h2 className="font-bold">{dosen.name}</h2>
+          <h2 className="font-bold">{dosen.nama}</h2>
           <p className="text-muted-foreground text-sm">NIP: {dosen.nip ?? '-'}</p>
           <p className="text-muted-foreground text-sm">NUPTK: {dosen.nuptk ?? '-'}</p>
           <p className="text-muted-foreground text-sm">NIDN: {dosen.nidn ?? '-'}</p>
@@ -32,14 +32,14 @@ const DosenCard = ({ dosen }: { dosen: Dosentendik }) => {
   )
 }
 
-function DosenList({ dosen }: { dosen: PaginatedDocs<Dosentendik> }) {
+function DosenList({ dosen }: { dosen: PaginatedResult<TenagaAjar> }) {
   const [page, setPage] = useState(1)
   const ITEMS_PER_PAGE = 12
 
   const getCurrentPageData = () => {
-    if (!dosen?.docs) return []
+    if (!dosen?.results) return []
     const startIndex = (page - 1) * ITEMS_PER_PAGE
-    return dosen.docs
+    return dosen.results
       .sort((a, b) => {
         const parameterA = Number(a.nip.split('').splice(8, 4).join(''))
         const parameterB = Number(b.nip.split('').splice(8, 4).join(''))
@@ -49,7 +49,7 @@ function DosenList({ dosen }: { dosen: PaginatedDocs<Dosentendik> }) {
     // .map(({ nip, ...data }) => ({ nip: parseInt(nip), ...data }))
   }
 
-  const totalPages = dosen?.docs ? Math.ceil(dosen.docs.length / ITEMS_PER_PAGE) : 0
+  const totalPages = dosen?.results ? Math.ceil(dosen.results.length / ITEMS_PER_PAGE) : 0
 
   return (
     <>
