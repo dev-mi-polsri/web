@@ -1,11 +1,12 @@
-import { getPayload } from 'payload'
-
-import config from '@payload-config'
 import { addDays, subDays } from 'date-fns'
+import { createAgenda } from '@/server-actions/agenda'
+import { parseDate } from '@/lib/date'
+import { AgendaService } from '@/services/AgendaService'
+import db from '@/lib/db'
 
 /**
  *
- * @returns Number From 1 - 30
+ * @returns Number From 1 to 30
  */
 function generateRandomNumber(): number {
   // Math.random() generates a number between 0 (inclusive) and 1 (exclusive)
@@ -24,7 +25,7 @@ function smallGenerateRandomNumber(): number {
 }
 
 const seed = async () => {
-  const payload = await getPayload({ config })
+  const service = new AgendaService(db)
 
   for (let i = 0; i < 10; i++) {
     const isEven = i % 2 === 0
@@ -35,20 +36,17 @@ const seed = async () => {
       ? addDays(startDate, randomNumberEnd)
       : subDays(startDate, randomNumberEnd)
 
-    const newData = await payload.create({
-      collection: 'agenda',
-      data: {
-        name: 'Agenda Manajemen Informatika ' + i,
-        enName: 'English Agenda ' + i,
-        description: 'Agenda Khusus Jurusan Manajemen Informatika',
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        location: isEven ? 'Gedung Manajemen Informatika' : 'Graha Politeknik Negeri Sriwijaya',
-      },
+    service.createAgenda({
+      title: 'Agenda Manajemen Informatika ' + i,
+      enTitle: 'English Agenda ' + i,
+      description: 'Agenda Khusus Jurusan Manajemen Informatika',
+      startDate: parseDate(startDate),
+      endDate: parseDate(endDate),
+      location: isEven ? 'Gedung Manajemen Informatika' : 'Graha Politeknik Negeri Sriwijaya',
     })
 
-    console.log(`Successfully Created Data for ${newData.name}!`)
+    console.log(`Successfully Created Data for loop ${i + 1}!`)
   }
 }
 
-seed()
+seed().then()

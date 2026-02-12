@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { handleError, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, StandardApiResponse } from '@/app/api/_common'
 import { cacheLife } from 'next/cache'
 import { ProdiService } from '@/services/ProdiService'
 import db from '@/lib/db'
@@ -14,7 +14,7 @@ export async function GET(_: NextRequest, ctx: RouteContext<'/api/prodi/slug/[sl
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
 }
 

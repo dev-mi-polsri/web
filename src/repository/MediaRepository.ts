@@ -7,6 +7,7 @@ export type MediaCriteria = {
   searchKeyword?: string
   type?: Media['type']
   mime?: Media['mime']
+  isDownloadable?: boolean
 }
 
 export interface IMediaRepository {
@@ -38,6 +39,10 @@ export class MediaRepository implements IMediaRepository {
         'like',
         `%${criteria.searchKeyword.toLowerCase()}%`,
       )
+    }
+
+    if (criteria.isDownloadable) {
+      baseQuery = baseQuery.where('media.isDownloadable', '=', criteria.isDownloadable)
     }
 
     if (criteria.type) {

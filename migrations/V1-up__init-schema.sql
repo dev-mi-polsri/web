@@ -10,19 +10,19 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- -----------------------------------------------------------------------------
 -- users
 -- -----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `users`
+CREATE TABLE IF NOT EXISTS `user`
 (
-    `id`            VARCHAR(36)  NOT NULL,
+    `id`            VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `name`          VARCHAR(255) NOT NULL,
     `email`         VARCHAR(255) NOT NULL,
     `role`          VARCHAR(32)  NOT NULL,
     `password`      VARCHAR(255) NOT NULL,
     `password_salt` VARCHAR(255) NOT NULL,
-    `created_at`    DATETIME(3)  NOT NULL,
-    `updated_at`    DATETIME(3)  NOT NULL,
+    `created_at`    DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at`    DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     PRIMARY KEY (`id`),
-    UNIQUE KEY `users_email_uq` (`email`),
-    KEY `users_role_idx` (`role`)
+    UNIQUE KEY `user_email_uq` (`email`),
+    KEY `user_role_idx` (`role`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
@@ -32,11 +32,12 @@ CREATE TABLE IF NOT EXISTS `users`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `media`
 (
-    `id`       VARCHAR(36)   NOT NULL,
-    `type`     VARCHAR(16)   NOT NULL,
-    `mime`     VARCHAR(64)   NOT NULL,
-    `url`      VARCHAR(2048) NOT NULL,
-    `alt_text` VARCHAR(255)  NULL,
+    `id`              VARCHAR(36)   NOT NULL DEFAULT (UUID()),
+    `type`            VARCHAR(16)   NOT NULL,
+    `mime`            VARCHAR(64)   NOT NULL,
+    `url`             VARCHAR(2048) NOT NULL,
+    `alt_text`        VARCHAR(255)  NULL,
+    `is_downloadable` TINYINT(1)    NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     KEY `media_type_idx` (`type`),
     KEY `media_mime_idx` (`mime`)
@@ -49,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `media`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `agenda`
 (
-    `id`          VARCHAR(36)  NOT NULL,
+    `id`          VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `title`       VARCHAR(255) NOT NULL,
-    `enTitle`     VARCHAR(255) NOT NULL,
+    `en_title`    VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
     `start_date`  DATETIME(3)  NOT NULL,
     `end_date`    DATETIME(3)  NOT NULL,
@@ -68,10 +69,10 @@ CREATE TABLE IF NOT EXISTS `agenda`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fasilitas`
 (
-    `id`     VARCHAR(36)  NOT NULL,
-    `image`  TEXT         NOT NULL,
-    `name`   VARCHAR(255) NOT NULL,
-    `enName` VARCHAR(255) NOT NULL,
+    `id`      VARCHAR(36)  NOT NULL DEFAULT (UUID()),
+    `image`   TEXT         NOT NULL,
+    `name`    VARCHAR(255) NOT NULL,
+    `en_name` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -80,9 +81,9 @@ CREATE TABLE IF NOT EXISTS `fasilitas`
 -- -----------------------------------------------------------------------------
 -- tenaga_ajar
 -- -----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tenaga_ajar`
+CREATE TABLE IF NOT EXISTS `tenagaAjar`
 (
-    `id`         VARCHAR(36)  NOT NULL,
+    `id`         VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `nama`       VARCHAR(255) NOT NULL,
     `jenis`      VARCHAR(16)  NOT NULL,
     `foto`       TEXT         NOT NULL,
@@ -102,49 +103,49 @@ CREATE TABLE IF NOT EXISTS `tenaga_ajar`
 -- -----------------------------------------------------------------------------
 -- posts + tags
 -- -----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tags`
+CREATE TABLE IF NOT EXISTS `tag`
 (
-    `id`   VARCHAR(36)  NOT NULL,
+    `id`   VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `name` VARCHAR(255) NOT NULL,
     `slug` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `tags_slug_uq` (`slug`),
-    KEY `tags_name_idx` (`name`)
+    UNIQUE KEY `tag_slug_uq` (`slug`),
+    KEY `tag_name_idx` (`name`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `posts`
+CREATE TABLE IF NOT EXISTS `post`
 (
-    `id`           VARCHAR(36)  NOT NULL,
+    `id`           VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `thumbnail`    TEXT         NOT NULL,
     `title`        VARCHAR(255) NOT NULL,
-    `content`      LONGTEXT     NOT NULL,
+    `content`      JSON         NOT NULL,
     `type`         VARCHAR(32)  NOT NULL,
     `slug`         VARCHAR(255) NOT NULL,
     `is_featured`  TINYINT(1)   NOT NULL DEFAULT 0,
     `is_published` TINYINT(1)   NOT NULL DEFAULT 0,
     `scope`        VARCHAR(32)  NOT NULL,
-    `created_at`   DATETIME(3)  NOT NULL,
-    `updated_at`   DATETIME(3)  NOT NULL,
+    `created_at`   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at`   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     PRIMARY KEY (`id`),
-    UNIQUE KEY `posts_slug_uq` (`slug`),
-    KEY `posts_type_idx` (`type`),
-    KEY `posts_scope_idx` (`scope`),
-    KEY `posts_is_featured_idx` (`is_featured`),
-    KEY `posts_created_at_idx` (`created_at`)
+    UNIQUE KEY `post_slug_uq` (`slug`),
+    KEY `post_type_idx` (`type`),
+    KEY `post_scope_idx` (`scope`),
+    KEY `post_is_featured_idx` (`is_featured`),
+    KEY `post_created_at_idx` (`created_at`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `post_tags`
+CREATE TABLE IF NOT EXISTS `postTag`
 (
     `post_id` VARCHAR(36) NOT NULL,
     `tag_id`  VARCHAR(36) NOT NULL,
     PRIMARY KEY (`post_id`, `tag_id`),
     KEY `post_tags_tag_id_idx` (`tag_id`),
-    CONSTRAINT `post_tags_post_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `post_tags_tag_fk` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT `postTag_post_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `postTag_tag_fk` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
@@ -154,15 +155,15 @@ CREATE TABLE IF NOT EXISTS `post_tags`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `prodi`
 (
-    `id`          VARCHAR(36)  NOT NULL,
+    `id`          VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `thumbnail`   TEXT         NOT NULL,
     `title`       VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
-    `content`     LONGTEXT     NOT NULL,
+    `content`     JSON         NOT NULL,
     `slug`        VARCHAR(255) NOT NULL,
     `scope`       VARCHAR(32)  NOT NULL,
-    `created_at`  DATETIME(3)  NOT NULL,
-    `updated_at`  DATETIME(3)  NOT NULL,
+    `created_at`  DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at`  DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     PRIMARY KEY (`id`),
     UNIQUE KEY `prodi_slug_uq` (`slug`),
     KEY `prodi_scope_idx` (`scope`),
@@ -176,15 +177,15 @@ CREATE TABLE IF NOT EXISTS `prodi`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `profile`
 (
-    `id`          VARCHAR(36)  NOT NULL,
+    `id`          VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `thumbnail`   TEXT         NOT NULL,
     `title`       VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
-    `content`     LONGTEXT     NOT NULL,
+    `content`     JSON         NOT NULL,
     `slug`        VARCHAR(255) NOT NULL,
     `scope`       VARCHAR(32)  NOT NULL,
-    `created_at`  DATETIME(3)  NOT NULL,
-    `updated_at`  DATETIME(3)  NOT NULL,
+    `created_at`  DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at`  DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     PRIMARY KEY (`id`),
     UNIQUE KEY `profile_slug_uq` (`slug`),
     KEY `profile_scope_idx` (`scope`),

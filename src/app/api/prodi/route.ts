@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ProdiService } from '@/services/ProdiService'
 import db from '@/lib/db'
 import { ProdiCriteria } from '@/repository/ProdiRepository'
-import { handleError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { Prodi } from '@/schemas/ProdiTable'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import { cacheLife } from 'next/cache'
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
 }
 

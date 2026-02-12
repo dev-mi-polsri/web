@@ -40,6 +40,7 @@ export class FasilitasRepository implements IFasilitasRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: fasilitas.image.type,
+          isDownloadable: false,
         })
         .executeTakeFirst()
 
@@ -120,20 +121,24 @@ export class FasilitasRepository implements IFasilitasRepository {
     const { image: _image, ...rest } = fasilitas
 
     return await this.db.transaction().execute(async (trx) => {
-      await trx
-        .insertInto('media')
-        .values({
-          url: uploadedFilePath,
-          type: MediaType.IMAGE,
-          mime: fasilitas.image!.type,
-        })
-        .executeTakeFirst()
+      let media
+      if (fasilitas.image) {
+        media = await trx
+          .insertInto('media')
+          .values({
+            url: uploadedFilePath,
+            type: MediaType.IMAGE,
+            mime: fasilitas.image.type,
+            isDownloadable: false,
+          })
+          .executeTakeFirst()
+      }
 
       return await trx
         .updateTable('fasilitas')
         .set({
           ...rest,
-          image: uploadedFilePath,
+          image: media ? uploadedFilePath : undefined,
         })
         .where('fasilitas.id', '=', id)
         .executeTakeFirst()

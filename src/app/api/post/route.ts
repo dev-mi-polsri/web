@@ -4,9 +4,9 @@ import { cacheLife } from 'next/cache'
 import db from '@/lib/db'
 import { PostService } from '@/services/PostService'
 import { PostCriteria } from '@/repository/PostRepository'
-import { handleError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
-import type { Post } from '@/schemas/PostTable'
+import type { Post, PostSummary } from '@/schemas/PostTable'
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,13 +28,16 @@ export async function GET(request: NextRequest) {
       isPublished: true,
     }
 
-    const paginatedResult: PaginatedResult<Post> = await getPost(criteria, { page, size })
+    const paginatedResult: PaginatedResult<PostSummary> = await getPost(criteria, { page, size })
 
-    return NextResponse.json(paginatedResult satisfies StandardApiResponse<PaginatedResult<Post>>, {
-      status: 200,
-    })
+    return NextResponse.json(
+      paginatedResult satisfies StandardApiResponse<PaginatedResult<PostSummary>>,
+      {
+        status: 200,
+      },
+    )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
 }
 

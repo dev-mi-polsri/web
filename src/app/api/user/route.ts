@@ -4,7 +4,7 @@ import { cacheLife } from 'next/cache'
 import db from '@/lib/db'
 import { UserService } from '@/services/UserService'
 import { UserCriteria } from '@/repository/UserRepository'
-import { handleError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { MaskedUser, UserRole } from '@/schemas/User'
 
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
 }
 

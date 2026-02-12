@@ -36,7 +36,7 @@ export function parsePagination(searchParams: URLSearchParams): { page: number; 
 }
 
 
-export function handleError(error: unknown): NextResponse {
+export function handleApiError(error: unknown): NextResponse<StandardApiResponse<unknown>> {
   if (error instanceof ApiError) {
     return NextResponse.json(
       { code: 'BAD_REQUEST', error: error.message } satisfies StandardApiResponse<unknown>,
@@ -51,7 +51,7 @@ export function handleError(error: unknown): NextResponse {
     )
   }
 
-  console.error('Unexpected error in GET /api/agenda:', error)
+  console.error('Unhandled API error: ', error)
   return NextResponse.json(
     { code: 'INTERNAL_SERVER_ERROR', error: 'An unexpected error occurred' } satisfies StandardApiResponse<unknown>,
     { status: 500 },

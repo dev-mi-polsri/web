@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { handleError, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, StandardApiResponse } from '@/app/api/_common'
 import { cacheLife } from 'next/cache'
 import { AgendaService } from '@/services/AgendaService'
 import db from '@/lib/db'
 import { Agenda } from '@/schemas/AgendaTable'
+import { getAgendaById } from '@/server-actions/agenda'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/agenda/[id]'>) {
   try {
@@ -14,14 +15,6 @@ export async function GET(_: NextRequest, ctx: RouteContext<'/api/agenda/[id]'>)
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
-}
-
-async function getAgendaById(id: string) {
-  'use cache'
-  cacheLife('hours')
-
-  const agendaService = new AgendaService(db)
-  return agendaService.getAgendaById(id)
 }

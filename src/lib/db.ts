@@ -1,7 +1,7 @@
 import { AgendaTable } from '@/schemas/AgendaTable'
 import { FasilitasTable } from '@/schemas/FasilitasTable'
 import { MediaTable } from '@/schemas/MediaTable'
-import { PostTable } from '@/schemas/PostTable'
+import { PostTable, PostTagTable, TagTable } from '@/schemas/PostTable'
 import { ProdiTable } from '@/schemas/ProdiTable'
 import { ProfileTable } from '@/schemas/ProfileTable'
 import { TenagaAjarTable } from '@/schemas/TenagaAjarTable'
@@ -14,10 +14,12 @@ export interface Database {
   fasilitas: FasilitasTable
   media: MediaTable
   post: PostTable
+  tag: TagTable
   prodi: ProdiTable
   profile: ProfileTable
   tenagaAjar: TenagaAjarTable
   user: UserTable
+  postTag: PostTagTable
 }
 
 declare global {

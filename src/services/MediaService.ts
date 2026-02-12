@@ -4,10 +4,12 @@ import type { Database } from '@/lib/db'
 import type { Media, MediaUrl, NewMedia, UpdateMedia } from '@/schemas/MediaTable'
 import type { Kysely } from 'kysely'
 import { normalizePagination, ServiceError } from './_common'
+import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 
 export interface IMediaService {
   getMedia(criteria: MediaCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<Media>>
   getMediaByUrl(url: MediaUrl): Promise<Media>
+  getMediaUploadUrl(url: string): Promise<File>
   createMedia(data: NewMedia): Promise<boolean>
   updateMediaByUrl(url: MediaUrl, data: UpdateMedia): Promise<boolean>
   deleteMediaByUrl(url: MediaUrl): Promise<boolean>
@@ -22,9 +24,11 @@ export class MediaNotFoundError extends ServiceError {
 
 export class MediaService implements IMediaService {
   private repository: MediaRepository
+  private io: IOAdapter
 
-  constructor(db: Kysely<Database>) {
+  constructor(db: Kysely<Database>, io?: IOAdapter) {
     this.repository = new MediaRepository(db)
+    this.io = io ?? new NodeIOAdapter()
   }
 
   async getMedia(
@@ -32,6 +36,25 @@ export class MediaService implements IMediaService {
     pageable?: PaginationRequest,
   ): Promise<PaginatedResult<Media>> {
     return await this.repository.getAll(criteria, normalizePagination(pageable))
+  }
+
+  async getMediaUploadUrl(url: string): Promise<File> {
+    const media = await this.getMediaByUrl(url)
+
+    if (!media) {
+      throw new MediaNotFoundError(`Media with url ${url} not found`)
+    }
+
+    // Get name from url '/api/media/uploads/filename.jpg' => 'filename.jpg'
+    const fileName = url.substring(url.lastIndexOf('/') + 1)
+    const blob = await this.io.read(fileName, media.mime)
+
+    if (!blob) {
+      throw new MediaNotFoundError(`Media file at url ${url} could not be read`)
+    }
+
+    const file = new File([blob], fileName, { type: media.mime })
+    return file
   }
 
   async getMediaByUrl(url: MediaUrl): Promise<Media> {

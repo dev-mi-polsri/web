@@ -12,6 +12,8 @@ export interface MediaTable {
   type: MediaType
   mime: MimeType
 
+  isDownloadable: boolean
+
   url: MediaUrl
   altText?: string
 }
@@ -22,7 +24,6 @@ export type MediaUrl = string
 export type Media = Selectable<MediaTable>
 export type NewMedia = Insertable<MediaTable>
 export type UpdateMedia = Updateable<MediaTable>
-
 
 export interface ImageMedia extends Media {
   type: MediaType.IMAGE

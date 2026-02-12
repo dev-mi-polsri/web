@@ -2,7 +2,15 @@ import { PaginatedResult, PaginationRequest } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
-import { NewPost, Post, PostType, UpdatePost } from '@/schemas/PostTable'
+import {
+  NewPost,
+  Post,
+  PostSummary,
+  PostType,
+  PostUtility,
+  Tag,
+  UpdatePost,
+} from '@/schemas/PostTable'
 import { PostScope } from '@/schemas/_common'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
 
@@ -15,12 +23,22 @@ export type PostCriteria = {
 }
 
 export interface IPostRepository {
-  getAll(criteria: PostCriteria, pageable: PaginationRequest): Promise<PaginatedResult<Post>>
+  getAll(criteria: PostCriteria, pageable: PaginationRequest): Promise<PaginatedResult<PostSummary>>
+  getByTag(tagId: string, pageable: PaginationRequest): Promise<PaginatedResult<PostSummary>>
   getById(id: string): Promise<Post | undefined>
   getBySlug(slug: string): Promise<Post | undefined>
   create(data: NewPost): Promise<InsertResult>
   update(id: string, data: UpdatePost): Promise<UpdateResult>
   delete(id: string): Promise<DeleteResult>
+  removeTag(postId: string, tagId: string): Promise<void>
+}
+
+export interface ITagRepository {
+  getAll(): Promise<Tag[]>
+  getById(id: string): Promise<Tag | undefined>
+  getBySlug(slug: string): Promise<Tag | undefined>
+  create(name: string): Promise<string> // returns new tag ID
+  delete(id: string): Promise<void>
 }
 
 export class PostRepository implements IPostRepository {
@@ -35,25 +53,32 @@ export class PostRepository implements IPostRepository {
   async getAll(
     criteria: PostCriteria,
     pageable: PaginationRequest,
-  ): Promise<PaginatedResult<Post>> {
-    let query = this.db.selectFrom('post')
+  ): Promise<PaginatedResult<PostSummary>> {
+    let baseQuery = this.db.selectFrom('post')
 
     if (criteria.searchKeyword) {
-      query = query.where(
+      baseQuery = baseQuery.where(
         (eb) => eb.fn('lower', ['post.title']),
         'like',
         `%${criteria.searchKeyword.toLowerCase()}%`,
       )
     }
-    if (criteria.type) query = query.where('post.type', '=', criteria.type)
-    if (criteria.scope) query = query.where('post.scope', '=', criteria.scope)
+    if (criteria.type) baseQuery = baseQuery.where('post.type', '=', criteria.type)
+    if (criteria.scope) baseQuery = baseQuery.where('post.scope', '=', criteria.scope)
     if (typeof criteria.isFeatured === 'boolean')
-      query = query.where('post.isFeatured', '=', criteria.isFeatured)
+      baseQuery = baseQuery.where('post.isFeatured', '=', criteria.isFeatured)
     if (typeof criteria.isPublished === 'boolean')
-      query = query.where('post.isPublished', '=', criteria.isPublished)
+      baseQuery = baseQuery.where('post.isPublished', '=', criteria.isPublished)
 
-    const results = await query
-      .selectAll()
+    const results = await baseQuery
+      .select([
+        'post.id',
+        'post.title',
+        'post.slug',
+        'post.thumbnail',
+        'post.createdAt',
+        'post.isPublished',
+      ])
       .orderBy('post.createdAt', 'desc')
       .offset((pageable.page - 1) * pageable.size)
       .limit(pageable.size)
@@ -73,6 +98,46 @@ export class PostRepository implements IPostRepository {
       .$if(typeof criteria.isFeatured === 'boolean', (qb) =>
         qb.where('post.isFeatured', '=', criteria.isFeatured!),
       )
+      .$if(typeof criteria.isPublished === 'boolean', (qb) =>
+        qb.where('post.isPublished', '=', criteria.isPublished!),
+      )
+      .select(({ fn }) => fn.count<number>('post.id').as('total'))
+      .executeTakeFirstOrThrow()
+
+    return {
+      ...totalRow,
+      ...pageable,
+      results,
+    }
+  }
+
+  async getByTag(
+    tagId: string,
+    pageable: PaginationRequest,
+  ): Promise<PaginatedResult<PostSummary>> {
+    const baseQuery = this.db
+      .selectFrom('post')
+      .innerJoin('postTag as pt', 'post.id', 'pt.postId')
+      .where('pt.tagId', '=', tagId)
+
+    const results = await baseQuery
+      .select([
+        'post.id',
+        'post.title',
+        'post.slug',
+        'post.thumbnail',
+        'post.createdAt',
+        'post.isPublished',
+      ])
+      .orderBy('post.createdAt', 'desc')
+      .offset((pageable.page - 1) * pageable.size)
+      .limit(pageable.size)
+      .execute()
+
+    const totalRow = await this.db
+      .selectFrom('post')
+      .innerJoin('postTag as pt', 'post.id', 'pt.postId')
+      .where('pt.tagId', '=', tagId)
       .select(({ fn }) => fn.count<number>('post.id').as('total'))
       .executeTakeFirstOrThrow()
 
@@ -97,7 +162,7 @@ export class PostRepository implements IPostRepository {
 
   async create(data: NewPost): Promise<InsertResult> {
     const uploadedFilePath = await this.io.write(data.thumbnail)
-    const { thumbnail: _thumbnail, ...rest } = data
+    const { thumbnail: _thumbnail, tagIds, ...rest } = data
 
     return await this.db.transaction().execute(async (trx) => {
       await trx
@@ -106,54 +171,133 @@ export class PostRepository implements IPostRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.thumbnail.type,
+          isDownloadable: false,
         })
         .executeTakeFirst()
 
-      return await trx
+      const insertResult = await trx
         .insertInto('post')
         .values({
           ...rest,
           thumbnail: uploadedFilePath,
         })
         .executeTakeFirst()
+
+      if (tagIds && tagIds.length > 0) {
+        // We fetch the post ID by slug to avoid relying on INSERT RETURNING in MySQL.
+        const insertedPost = await trx
+          .selectFrom('post')
+          .select(['post.id'])
+          .where('post.slug', '=', rest.slug)
+          .executeTakeFirstOrThrow()
+
+        await trx
+          .insertInto('postTag')
+          .values(tagIds.map((id) => ({ postId: insertedPost.id, tagId: id })))
+          .execute()
+      }
+
+      return insertResult
     })
   }
 
   async update(id: string, data: UpdatePost): Promise<UpdateResult> {
-    if (!data.thumbnail) {
-      const { thumbnail: _thumbnail, ...rest } = data
-      return await this.db
-        .updateTable('post')
-        .set(rest)
-        .where('post.id', '=', id)
-        .executeTakeFirst()
-    }
-
-    const uploadedFilePath = await this.io.write(data.thumbnail)
-    const { thumbnail: _thumbnail, ...rest } = data
+    const { thumbnail: _thumbnail, tagIds, ...rest } = data
 
     return await this.db.transaction().execute(async (trx) => {
-      await trx
-        .insertInto('media')
-        .values({
-          url: uploadedFilePath,
-          type: MediaType.IMAGE,
-          mime: data.thumbnail!.type,
-        })
-        .executeTakeFirst()
+      let updateResult: UpdateResult
 
-      return await trx
-        .updateTable('post')
-        .set({
-          ...rest,
-          thumbnail: uploadedFilePath,
-        })
-        .where('post.id', '=', id)
-        .executeTakeFirst()
+      if (!data.thumbnail) {
+        updateResult = await trx
+          .updateTable('post')
+          .set(rest)
+          .where('post.id', '=', id)
+          .executeTakeFirst()
+      } else {
+        const uploadedFilePath = await this.io.write(data.thumbnail)
+
+        await trx
+          .insertInto('media')
+          .values({
+            url: uploadedFilePath,
+            type: MediaType.IMAGE,
+            mime: data.thumbnail.type,
+            isDownloadable: false,
+          })
+          .executeTakeFirst()
+
+        updateResult = await trx
+          .updateTable('post')
+          .set({
+            ...rest,
+            thumbnail: uploadedFilePath,
+          })
+          .where('post.id', '=', id)
+          .executeTakeFirst()
+      }
+
+      if (tagIds) {
+        await trx.deleteFrom('postTag').where('postTag.postId', '=', id).execute()
+        if (tagIds.length > 0) {
+          await trx
+            .insertInto('postTag')
+            .values(tagIds.map((tagId) => ({ postId: id, tagId })))
+            .execute()
+        }
+      }
+
+      return updateResult
     })
   }
 
   async delete(id: string): Promise<DeleteResult> {
     return await this.db.deleteFrom('post').where('post.id', '=', id).executeTakeFirst()
+  }
+
+  async removeTag(postId: string, tagId: string): Promise<void> {
+    await this.db
+      .deleteFrom('postTag')
+      .where('postTag.postId', '=', postId)
+      .where('postTag.tagId', '=', tagId)
+      .execute()
+  }
+}
+
+export class TagRepository implements ITagRepository {
+  private db: Kysely<Database>
+
+  constructor(database: Kysely<Database>) {
+    this.db = database
+  }
+
+  async getAll(): Promise<Tag[]> {
+    return await this.db.selectFrom('tag').selectAll().execute()
+  }
+
+  async getById(id: string): Promise<Tag | undefined> {
+    return await this.db.selectFrom('tag').where('tag.id', '=', id).selectAll().executeTakeFirst()
+  }
+
+  async create(name: string): Promise<string> {
+    const slug = PostUtility.generateTagSlug({ name })
+
+    const insertResult = await this.db.insertInto('tag').values({ name, slug }).executeTakeFirst()
+
+    if (!insertResult.insertId) {
+      throw new Error('Failed to create tag')
+    }
+    return insertResult.insertId.toString()
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.db.deleteFrom('tag').where('tag.id', '=', id).execute()
+  }
+
+  async getBySlug(slug: string): Promise<Tag | undefined> {
+    return await this.db
+      .selectFrom('tag')
+      .where('tag.slug', '=', slug)
+      .selectAll()
+      .executeTakeFirst()
   }
 }

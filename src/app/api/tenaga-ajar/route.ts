@@ -4,7 +4,7 @@ import { cacheLife } from 'next/cache'
 import db from '@/lib/db'
 import { TenagaAjarService } from '@/services/TenagaAjarService'
 import { TenagaAjarCriteria } from '@/repository/TenagaAjarRepository'
-import { handleError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { TenagaAjar } from '@/schemas/TenagaAjarTable'
 
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
 }
 

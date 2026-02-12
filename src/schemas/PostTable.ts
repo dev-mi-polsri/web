@@ -11,7 +11,7 @@ export enum PostType {
 }
 
 export class PostUtility {
-  static generateSlug(post: Post) {
+  static generateSlug(post: { createdAt: Date; title: string }) {
     return (
       post.createdAt.toDateString() +
       '-' +
@@ -22,7 +22,7 @@ export class PostUtility {
     )
   }
 
-  static generateTagSlug(tag: Tag) {
+  static generateTagSlug(tag: { name: string }) {
     return tag.name
       .toLowerCase()
       .replace(/ /g, '-')
@@ -43,7 +43,6 @@ export interface PostTable {
   content: RichText
   type: PostType
   slug: string
-  tags: TagTable[]
 
   isFeatured: boolean
   isPublished: boolean
@@ -54,9 +53,30 @@ export interface PostTable {
   updatedAt: ColumnType<Date, string | undefined, never>
 }
 
+export interface PostTagTable {
+  postId: string
+  tagId: string
+}
+
 export type Post = Selectable<PostTable>
 export type Tag = Selectable<TagTable>
-export type NewPost = Omit<Insertable<PostTable>, 'thumbnail'> & { thumbnail: File }
+export type PostTag = Selectable<PostTagTable>
+export type NewPostTag = Insertable<PostTagTable>
+export type PostWithTags = Post & { tags: Tag[] }
+export type PostSummary = Pick<
+  PostWithTags,
+  'id' | 'title' | 'slug' | 'thumbnail' | 'createdAt' | 'isPublished'
+>
+
+export type NewPost = Omit<Insertable<PostTable>, 'thumbnail'> & {
+  thumbnail: File
+  /** Optional list of tag IDs to associate with the post. */
+  tagIds?: string[]
+}
 export type NewTag = Insertable<TagTable>
-export type UpdatePost = Omit<Updateable<PostTable>, 'thumbnail'> & { thumbnail?: File }
+export type UpdatePost = Omit<Updateable<PostTable>, 'thumbnail'> & {
+  thumbnail?: File
+  /** Optional list of tag IDs to associate with the post (replaces existing when provided). */
+  tagIds?: string[]
+}
 export type UpdateTag = Updateable<TagTable>

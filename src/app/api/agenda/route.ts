@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { AgendaService } from '@/services/AgendaService'
 import db from '@/lib/db'
 import { AgendaCriteria } from '@/repository/AgendaRepository'
-import { ApiError, handleError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { ApiError, handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import { Agenda } from '@/schemas/AgendaTable'
 import { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
-import { cacheLife } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
+import { getAgenda } from '@/server-actions/agenda'
 
 export async function GET(request: NextRequest) {
  try {
@@ -28,16 +29,8 @@ export async function GET(request: NextRequest) {
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
  }
-}
-
-async function getAgenda(criteria: AgendaCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheLife('hours')
-
-  const agendaService = new AgendaService(db)
-  return agendaService.getAgenda(criteria, pageable)
 }
 
 /// Validate date format YYYY-MM-DD

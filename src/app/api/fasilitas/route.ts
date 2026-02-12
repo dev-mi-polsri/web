@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cacheLife } from 'next/cache'
 
-import db from '@/lib/db'
-import { FasilitasService } from '@/services/FasilitasService'
 import { FasilitasCriteria } from '@/repository/FasilitasRepository'
-import { handleError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { Fasilitas } from '@/schemas/FasilitasTable'
+import { getFasilitas } from '@/server-actions/fasilitas'
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,14 +24,6 @@ export async function GET(request: NextRequest) {
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
-}
-
-async function getFasilitas(criteria: FasilitasCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheLife('hours')
-
-  const fasilitasService = new FasilitasService(db)
-  return fasilitasService.getFasilitas(criteria, pageable)
 }

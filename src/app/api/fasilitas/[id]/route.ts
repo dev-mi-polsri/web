@@ -3,7 +3,7 @@ import { cacheLife } from 'next/cache'
 
 import db from '@/lib/db'
 import { FasilitasService } from '@/services/FasilitasService'
-import { handleError, StandardApiResponse } from '@/app/api/_common'
+import { handleApiError, StandardApiResponse } from '@/app/api/_common'
 import type { Fasilitas } from '@/schemas/FasilitasTable'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/fasilitas/[id]'>) {
@@ -15,15 +15,7 @@ export async function GET(_: NextRequest, ctx: RouteContext<'/api/fasilitas/[id]
       { status: 200 },
     )
   } catch (error: unknown) {
-    return handleError(error)
+    return handleApiError(error)
   }
-}
-
-async function getFasilitasById(id: string) {
-  'use cache'
-  cacheLife('hours')
-
-  const fasilitasService = new FasilitasService(db)
-  return fasilitasService.getFasilitasById(id)
 }
 
