@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import Sidebar from './_components/sidebar'
+import Sidebar from './_components/sidebar/sidebar'
 
 const fontSans = FontSans({
   variable: '--font-sans',

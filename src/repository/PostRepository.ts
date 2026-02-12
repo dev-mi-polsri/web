@@ -78,6 +78,7 @@ export class PostRepository implements IPostRepository {
         'post.thumbnail',
         'post.createdAt',
         'post.isPublished',
+        'post.scope',
       ])
       .orderBy('post.createdAt', 'desc')
       .offset((pageable.page - 1) * pageable.size)
@@ -128,6 +129,7 @@ export class PostRepository implements IPostRepository {
         'post.thumbnail',
         'post.createdAt',
         'post.isPublished',
+        'post.scope',
       ])
       .orderBy('post.createdAt', 'desc')
       .offset((pageable.page - 1) * pageable.size)

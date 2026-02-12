@@ -156,8 +156,8 @@ export function Navbar() {
                               <Skeleton key={idx} className="h-16 w-full bg-destructive/20" />
                             ))
                           : [
-                              ...profiles.docs.map((profile) => ({
-                                label: profile.name,
+                              ...profiles.results.map((profile) => ({
+                                label: profile.title,
                                 desc: profile.description,
                                 href: `/${params.locale}/profile/${profile.slug}`,
                               })),
@@ -195,8 +195,8 @@ export function Navbar() {
                               <Skeleton key={idx} className="h-16 w-full bg-destructive/20" />
                             ))
                           : [
-                              ...studyPrograms.docs.map((program) => ({
-                                label: program.name,
+                              ...studyPrograms.results.map((program) => ({
+                                label: program.title,
                                 desc: program.description,
                                 href: `/${params.locale}/program/${program.slug}`,
                               })),
@@ -357,8 +357,8 @@ export function Navbar() {
                                     <Skeleton className="w-full h-8 bg-destructive/20" key={idx} />
                                   ))
                                 : [
-                                    ...profiles.docs.map((profile) => ({
-                                      label: profile.name,
+                                    ...profiles.results.map((profile) => ({
+                                      label: profile.title,
                                       href: `/${params.locale}/profile/${profile.slug}`,
                                     })),
                                     {
@@ -440,8 +440,8 @@ export function Navbar() {
                                     <Skeleton className="w-full h-8 bg-destructive/20" key={idx} />
                                   ))
                                 : [
-                                    ...studyPrograms.docs.map((program) => ({
-                                      label: program.name,
+                                    ...studyPrograms.results.map((program) => ({
+                                      label: program.title,
                                       href: `/${params.locale}/program/${program.slug}`,
                                     })),
                                   ].map((item) => (

@@ -1,4 +1,4 @@
-import { DASHBOARD_ROUTES, DashboardRoute } from './_components/sidebar.constants'
+import { DASHBOARD_ROUTES, DashboardRoute } from './_components/sidebar/sidebar.constants'
 import Link from 'next/link'
 
 function DashboardMenu({ href, label }: DashboardRoute) {

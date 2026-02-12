@@ -1,9 +1,10 @@
-import { Dosentendik } from '@/payload-types'
+import { StandardErrorResponse } from '@/app/api/_common'
+import { TenagaAjarCriteria } from '@/repository/TenagaAjarRepository'
+import { Homebase, TenagaAjar } from '@/schemas/TenagaAjarTable'
 import { useQuery } from '@tanstack/react-query'
-import { PaginatedDocs } from 'payload'
-import { Where } from 'payload'
-import { stringify } from 'qs-esm'
 import { RefObject } from 'react'
+import { CMSFetchError } from './_common'
+import { PaginatedResult } from '@/repository/_contracts'
 
 type useDosenTendikParameters = {
   controllerRef?: RefObject<AbortController | null>
@@ -22,32 +23,16 @@ export function useDosenTendik({
   homebase = 'd4',
   pejabat = false,
 }: useDosenTendikParameters) {
-  const query: Where = {
-    and: [
-      {
-        name: {
-          contains: searchKeyword,
-        },
-        homebase: {
-          equals: homebase,
-        },
-        pejabat: {
-          equals: pejabat,
-        },
-      },
-    ],
+  const query: TenagaAjarCriteria = {
+    homebase: homebase === 'd4' ? Homebase.D4 : Homebase.D3,
+    isPejabat: pejabat,
+    searchKeyword,
   }
-
-  const stringifiedQuery = stringify(
-    {
-      where: query,
-      limit,
-      page,
-    },
-    {
-      addQueryPrefix: true,
-    },
-  )
+  const querySearchParams = new URLSearchParams({
+    ...Object.fromEntries(Object.entries(query).filter(([_, value]) => value !== undefined)),
+    limit: String(limit),
+    page: String(page),
+  }).toString
 
   let signal: AbortSignal | null = null
 
@@ -60,15 +45,17 @@ export function useDosenTendik({
     signal = controllerRef.current.signal
   }
 
-  const fetchData = () =>
-    fetch(`/api/dosentendik${stringifiedQuery}`, {
+  const fetchData = async () => {
+    const res = await fetch(`/api/tenaga-ajar?${querySearchParams.toString()}`, {
       signal: signal ?? undefined,
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Fetch Failed')
-        return res.json()
-      })
-      .then((data) => data as PaginatedDocs<Dosentendik>)
+    if (!res.ok) {
+      const parsedResponse = (await res.json()) as StandardErrorResponse
+      throw new CMSFetchError(parsedResponse.code, parsedResponse.error)
+    }
+
+    return (await res.json()) as Promise<PaginatedResult<TenagaAjar>>
+  }
 
   return useQuery({
     queryKey: ['dosen-tendik', searchKeyword, limit, page],

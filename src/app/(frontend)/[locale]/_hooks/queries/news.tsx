@@ -1,10 +1,12 @@
-import { News } from '@/payload-types'
+import { StandardErrorResponse } from '@/app/api/_common'
+import { PostCriteria } from '@/repository/PostRepository'
+import { PostScope } from '@/schemas/_common'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import { PaginatedDocs } from 'payload'
-import { Where } from 'payload'
-import { stringify } from 'qs-esm'
 import { RefObject } from 'react'
+import { CMSFetchError } from './_common'
+import { PostSummary } from '@/schemas/PostTable'
+import { PaginatedResult } from '@/repository/_common'
 
 type useNewsParameters = {
   controllerRef?: RefObject<AbortController | null>
@@ -23,36 +25,40 @@ export function useNews({
 }: useNewsParameters) {
   const params = useParams<{ locale: string }>()
 
-  const query: Where = {
-    and: [
-      {
-        global: {
-          equals: params.locale === 'id' ? false : true,
-        },
-      },
-      {
-        featured: {
-          equals: featured,
-        },
-      },
-      {
-        name: {
-          contains: searchKeyword,
-        },
-      },
-    ],
+  // const query: Where = {
+  //   and: [
+  //     {
+  //       global: {
+  //         equals: params.locale === 'id' ? false : true,
+  //       },
+  //     },
+  //     {
+  //       featured: {
+  //         equals: featured,
+  //       },
+  //     },
+  //     {
+  //       name: {
+  //         contains: searchKeyword,
+  //       },
+  //     },
+  //   ],
+  // }
+  const query: PostCriteria = {
+    scope: params.locale === 'id' ? PostScope.NATIONAL : PostScope.INTERNATIONAL,
+    isFeatured: featured,
+    searchKeyword,
   }
+  const querySearchParams = new URLSearchParams()
 
-  const stringifiedQuery = stringify(
-    {
-      where: query,
-      limit,
-      page,
-    },
-    {
-      addQueryPrefix: true,
-    },
-  )
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      querySearchParams.append(key, String(value))
+    }
+  })
+
+  querySearchParams.append('limit', String(limit))
+  querySearchParams.append('page', String(page))
 
   let signal: AbortSignal | null = null
 
@@ -65,15 +71,17 @@ export function useNews({
     signal = controllerRef.current.signal
   }
 
-  const fetchData = () =>
-    fetch(`/api/news${stringifiedQuery}`, {
+  const fetchData = async () => {
+    const res = await fetch(`/api/post?${querySearchParams.toString()}`, {
       signal: signal ?? undefined,
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Fetch Failed')
-        return res.json()
-      })
-      .then((data) => data as PaginatedDocs<News>)
+    if (!res.ok) {
+      const parsedResponse = (await res.json()) as StandardErrorResponse
+      throw new CMSFetchError(parsedResponse.code, parsedResponse.error)
+    }
+
+    return (await res.json()) as Promise<PaginatedResult<PostSummary>>
+  }
 
   return useQuery({
     queryKey: ['news', params.locale, searchKeyword, limit, page],
