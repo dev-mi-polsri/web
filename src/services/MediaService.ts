@@ -1,7 +1,13 @@
 import { MediaCriteria, MediaRepository } from '@/repository/MediaRepository'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { Database } from '@/lib/db'
-import type { Media, MediaUrl, NewMedia, UpdateMedia } from '@/schemas/MediaTable'
+import {
+  MediaTypeFactory,
+  type Media,
+  type MediaUrl,
+  type NewMedia,
+  type UpdateMedia,
+} from '@/schemas/MediaTable'
 import type { Kysely } from 'kysely'
 import { normalizePagination, ServiceError } from './_common'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
@@ -66,7 +72,10 @@ export class MediaService implements IMediaService {
   }
 
   async createMedia(data: NewMedia): Promise<boolean> {
-    await this.repository.create(data)
+    await this.repository.create({
+      ...data,
+      type: data.type ?? MediaTypeFactory.fromMimeType(data.mime),
+    })
     return true
   }
 

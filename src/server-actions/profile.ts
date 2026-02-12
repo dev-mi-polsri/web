@@ -15,6 +15,8 @@ import {
   validateInput,
 } from '@/server-actions/_common'
 import { Base64Utils } from '@/lib/base64'
+import { PostScope } from '@/schemas/_common'
+import { PostUtility } from '@/schemas/PostTable'
 
 const slugSchema = z
   .string()
@@ -26,7 +28,7 @@ const profileSchema = z.object({
   title: z.string().min(3, 'Judul minimal 3 karakter').max(255),
   description: z.string().min(10, 'Deskripsi minimal 10 karakter').max(5000),
   content: richtextschema,
-  scope: z.string().min(1, 'Scope tidak boleh kosong'),
+  scope: z.enum(PostScope),
 })
 
 const createProfileSchema = profileSchema
@@ -81,6 +83,7 @@ export async function createProfile(
     await service.createProfile({
       ...parsed,
       thumbnail,
+      slug: PostUtility.generateSlug({ createdAt: new Date(), title: parsed.title }),
     })
 
     updateTag('profile')

@@ -6,6 +6,19 @@ export enum MediaType {
   VIDEO = 'video',
   PDF = 'pdf',
 }
+export class MediaTypeFactory {
+  static fromMimeType(mimeType: MimeType): MediaType | undefined {
+    if (mimeType.startsWith('image/')) {
+      return MediaType.IMAGE
+    } else if (mimeType.startsWith('video/')) {
+      return MediaType.VIDEO
+    } else if (mimeType === 'application/pdf') {
+      return MediaType.PDF
+    } else {
+      return undefined
+    }
+  }
+}
 
 export interface MediaTable {
   id: Generated<string>

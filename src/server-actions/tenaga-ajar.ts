@@ -66,6 +66,7 @@ export async function createTenagaAjar(
     await service.createTenagaAjar({
       ...parsed,
       foto,
+      isPejabat: parsed.isPejabat ?? false,
     })
 
     updateTag('tenagaAjar')

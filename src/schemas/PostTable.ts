@@ -59,24 +59,25 @@ export interface PostTagTable {
 }
 
 export type Post = Selectable<PostTable>
-export type Tag = Selectable<TagTable>
-export type PostTag = Selectable<PostTagTable>
-export type NewPostTag = Insertable<PostTagTable>
-export type PostWithTags = Post & { tags: Tag[] }
 export type PostSummary = Pick<
   PostWithTags,
   'id' | 'title' | 'slug' | 'thumbnail' | 'createdAt' | 'isPublished'
 >
-
+export type PostWithTags = Post & { tags: Tag[] }
 export type NewPost = Omit<Insertable<PostTable>, 'thumbnail'> & {
   thumbnail: File
   /** Optional list of tag IDs to associate with the post. */
   tagIds?: string[]
 }
-export type NewTag = Insertable<TagTable>
 export type UpdatePost = Omit<Updateable<PostTable>, 'thumbnail'> & {
   thumbnail?: File
   /** Optional list of tag IDs to associate with the post (replaces existing when provided). */
   tagIds?: string[]
 }
+
+export type Tag = Selectable<TagTable>
+export type NewTag = Insertable<TagTable>
 export type UpdateTag = Updateable<TagTable>
+
+export type PostTag = Selectable<PostTagTable>
+export type NewPostTag = Insertable<PostTagTable>
