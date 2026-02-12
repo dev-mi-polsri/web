@@ -18,22 +18,21 @@ export async function GET(request: NextRequest) {
     const scope = (searchParams.get('scope') || undefined) as PostCriteria['scope']
 
     const isFeaturedRaw = searchParams.get('isFeatured')
-    const isFeatured =
-      typeof isFeaturedRaw === 'string' ? isFeaturedRaw === 'true' : undefined
+    const isFeatured = typeof isFeaturedRaw === 'string' ? isFeaturedRaw === 'true' : undefined
 
     const criteria: PostCriteria = {
       ...(searchKeyword ? { searchKeyword } : {}),
       ...(type ? { type } : {}),
       ...(scope ? { scope } : {}),
       ...(typeof isFeatured === 'boolean' ? { isFeatured } : {}),
+      isPublished: true,
     }
 
     const paginatedResult: PaginatedResult<Post> = await getPost(criteria, { page, size })
 
-    return NextResponse.json(
-      paginatedResult satisfies StandardApiResponse<PaginatedResult<Post>>,
-      { status: 200 },
-    )
+    return NextResponse.json(paginatedResult satisfies StandardApiResponse<PaginatedResult<Post>>, {
+      status: 200,
+    })
   } catch (error: unknown) {
     return handleError(error)
   }
@@ -46,4 +45,3 @@ async function getPost(criteria: PostCriteria, pageable: PaginationRequest) {
   const postService = new PostService(db)
   return postService.getPost(criteria, pageable)
 }
-

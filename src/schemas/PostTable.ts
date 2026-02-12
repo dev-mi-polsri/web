@@ -46,6 +46,7 @@ export interface PostTable {
   tags: TagTable[]
 
   isFeatured: boolean
+  isPublished: boolean
 
   scope: PostScope
 

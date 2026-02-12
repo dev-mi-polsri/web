@@ -11,6 +11,7 @@ export type PostCriteria = {
   type?: PostType
   scope?: PostScope
   isFeatured?: boolean
+  isPublished?: boolean
 }
 
 export interface IPostRepository {
@@ -48,6 +49,8 @@ export class PostRepository implements IPostRepository {
     if (criteria.scope) query = query.where('post.scope', '=', criteria.scope)
     if (typeof criteria.isFeatured === 'boolean')
       query = query.where('post.isFeatured', '=', criteria.isFeatured)
+    if (typeof criteria.isPublished === 'boolean')
+      query = query.where('post.isPublished', '=', criteria.isPublished)
 
     const results = await query
       .selectAll()
