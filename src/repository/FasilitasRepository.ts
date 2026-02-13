@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Fasilitas, NewFasilitas, UpdateFasilitas } from '@/schemas/FasilitasTable'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
 import { Database } from '@/lib/db'
@@ -92,11 +92,12 @@ export class FasilitasRepository implements IFasilitasRepository {
       .select(({ fn }) => fn.count<number>('fasilitas.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow!.total,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getById(id: string): Promise<Fasilitas | undefined> {

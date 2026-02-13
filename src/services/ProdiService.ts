@@ -4,7 +4,7 @@ import type { NewProdi, Prodi, UpdateProdi } from '@/schemas/ProdiTable'
 import type { Database } from '@/lib/db'
 import type { IOAdapter } from '@/lib/io'
 import type { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 
 export interface IProdiService {
   getProdi(criteria: ProdiCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<Prodi>>
@@ -67,4 +67,3 @@ export class ProdiService implements IProdiService {
     return true
   }
 }
-

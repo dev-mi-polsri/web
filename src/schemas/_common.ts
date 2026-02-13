@@ -10,7 +10,7 @@ export enum PostScope {
   INTERNATIONAL = 'international',
 }
 
-class JsonValue<T> implements Expression<T> {
+export class JsonValue<T> implements Expression<T> {
   #value: T
 
   constructor(value: T) {

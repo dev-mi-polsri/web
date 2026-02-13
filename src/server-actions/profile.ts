@@ -83,6 +83,7 @@ export async function createProfile(
     await service.createProfile({
       ...parsed,
       thumbnail,
+      content: JSON.stringify(parsed.content),
       slug: PostUtility.generateSlug({ createdAt: new Date(), title: parsed.title }),
     })
 
@@ -108,6 +109,7 @@ export async function updateProfile(
     await service.updateProfile(parsed.id, {
       ...parsed,
       thumbnail,
+      content: JSON.stringify(parsed.content),
     })
 
     updateTag('profile')

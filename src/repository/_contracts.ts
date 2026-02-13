@@ -28,3 +28,25 @@ export interface IRepository<T, NewT, UpdateT, CriteriaT = BaseCriteria, IdT = I
   update(id: IdT, data: UpdateT): Promise<UpdateResult>
   delete(id: IdT): Promise<DeleteResult>
 }
+
+export function processPagination<T>({
+  page,
+  size,
+  total,
+  results,
+}: {
+  page: number
+  size: number
+  total: number
+  results: T[]
+}): PaginatedResult<T> {
+  return {
+    page,
+    size,
+    total,
+    results,
+    hasPrevPage: page > 1,
+    hasNextPage: page * size < total,
+    totalPages: Math.ceil(total / size),
+  }
+}

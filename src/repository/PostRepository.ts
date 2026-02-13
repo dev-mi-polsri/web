@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
@@ -11,8 +11,25 @@ import {
   Tag,
   UpdatePost,
 } from '@/schemas/PostTable'
-import { PostScope } from '@/schemas/_common'
+import { JsonValue, PostScope } from '@/schemas/_common'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
+import { jsonArrayFrom } from 'kysely/helpers/mysql'
+
+function parseTagsJson(tagsJson: unknown): Tag[] {
+  if (!tagsJson) return []
+  if (Array.isArray(tagsJson)) return tagsJson as Tag[]
+
+  if (typeof tagsJson === 'string') {
+    try {
+      const parsed = JSON.parse(tagsJson) as unknown
+      return Array.isArray(parsed) ? (parsed as Tag[]) : []
+    } catch {
+      return []
+    }
+  }
+
+  return []
+}
 
 export type PostCriteria = {
   searchKeyword?: string
@@ -37,7 +54,7 @@ export interface ITagRepository {
   getAll(): Promise<Tag[]>
   getById(id: string): Promise<Tag | undefined>
   getBySlug(slug: string): Promise<Tag | undefined>
-  create(name: string): Promise<string> // returns new tag ID
+  create(name: string): Promise<void> // returns new tag ID
   delete(id: string): Promise<void>
 }
 
@@ -70,7 +87,7 @@ export class PostRepository implements IPostRepository {
     if (typeof criteria.isPublished === 'boolean')
       baseQuery = baseQuery.where('post.isPublished', '=', criteria.isPublished)
 
-    const results = await baseQuery
+    const rows = await baseQuery
       .select([
         'post.id',
         'post.title',
@@ -80,10 +97,24 @@ export class PostRepository implements IPostRepository {
         'post.isPublished',
         'post.scope',
       ])
+      .select((eb) => [
+        jsonArrayFrom(
+          eb
+            .selectFrom('postTag as pt')
+            .innerJoin('tag as t', 't.id', 'pt.tagId')
+            .select(['t.id', 't.name', 't.slug'])
+            .whereRef('pt.postId', '=', 'post.id'),
+        ).as('tags'),
+      ])
       .orderBy('post.createdAt', 'desc')
       .offset((pageable.page - 1) * pageable.size)
       .limit(pageable.size)
       .execute()
+
+    const results: PostSummary[] = rows.map((row) => ({
+      ...(row as Omit<PostSummary, 'tags'> & { tags: unknown }),
+      tags: parseTagsJson((row as { tags: unknown }).tags),
+    }))
 
     const totalRow = await this.db
       .selectFrom('post')
@@ -105,11 +136,12 @@ export class PostRepository implements IPostRepository {
       .select(({ fn }) => fn.count<number>('post.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow!.total,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getByTag(
@@ -121,7 +153,7 @@ export class PostRepository implements IPostRepository {
       .innerJoin('postTag as pt', 'post.id', 'pt.postId')
       .where('pt.tagId', '=', tagId)
 
-    const results = await baseQuery
+    const rows = await baseQuery
       .select([
         'post.id',
         'post.title',
@@ -131,10 +163,24 @@ export class PostRepository implements IPostRepository {
         'post.isPublished',
         'post.scope',
       ])
+      .select((eb) => [
+        jsonArrayFrom(
+          eb
+            .selectFrom('postTag as pt2')
+            .innerJoin('tag as t', 't.id', 'pt2.tagId')
+            .select(['t.id', 't.name', 't.slug'])
+            .whereRef('pt2.postId', '=', 'post.id'),
+        ).as('tags'),
+      ])
       .orderBy('post.createdAt', 'desc')
       .offset((pageable.page - 1) * pageable.size)
       .limit(pageable.size)
       .execute()
+
+    const results: PostSummary[] = rows.map((row) => ({
+      ...(row as Omit<PostSummary, 'tags'> & { tags: unknown }),
+      tags: parseTagsJson((row as { tags: unknown }).tags),
+    }))
 
     const totalRow = await this.db
       .selectFrom('post')
@@ -143,11 +189,12 @@ export class PostRepository implements IPostRepository {
       .select(({ fn }) => fn.count<number>('post.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow!.total,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getById(id: string): Promise<Post | undefined> {
@@ -181,6 +228,7 @@ export class PostRepository implements IPostRepository {
         .insertInto('post')
         .values({
           ...rest,
+          content: new JsonValue(data.content),
           thumbnail: uploadedFilePath,
         })
         .executeTakeFirst()
@@ -280,15 +328,10 @@ export class TagRepository implements ITagRepository {
     return await this.db.selectFrom('tag').where('tag.id', '=', id).selectAll().executeTakeFirst()
   }
 
-  async create(name: string): Promise<string> {
+  async create(name: string): Promise<void> {
     const slug = PostUtility.generateTagSlug({ name })
 
-    const insertResult = await this.db.insertInto('tag').values({ name, slug }).executeTakeFirst()
-
-    if (!insertResult.insertId) {
-      throw new Error('Failed to create tag')
-    }
-    return insertResult.insertId.toString()
+    await this.db.insertInto('tag').values({ name, slug }).executeTakeFirst()
   }
 
   async delete(id: string): Promise<void> {

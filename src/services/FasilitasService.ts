@@ -4,7 +4,7 @@ import { FasilitasCriteria, FasilitasRepository } from '@/repository/FasilitasRe
 import { Database } from '@/lib/db'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 
 export interface IFasilitasService {
   getFasilitas(

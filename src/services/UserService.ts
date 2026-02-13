@@ -1,13 +1,20 @@
 import { UserCriteria, UserRepository } from '@/repository/UserRepository'
-import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
+import {
+  processPagination,
+  type PaginatedResult,
+  type PaginationRequest,
+} from '@/repository/_contracts'
 import { MaskedUser, NewUser, RegisterUser, UpdateUser, UserRole } from '@/schemas/User'
 import type { Database } from '@/lib/db'
 import type { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 import { generatePasswordHash, verifyPassword } from '@/lib/auth-utils'
 
 export interface IUserService {
-  getUser(criteria: UserCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<MaskedUser>>
+  getUser(
+    criteria: UserCriteria,
+    pageable?: PaginationRequest,
+  ): Promise<PaginatedResult<MaskedUser>>
   getUserById(id: string): Promise<MaskedUser>
   getUserByEmail(email: string): Promise<MaskedUser>
   validateCredentials(email: string, password: string): Promise<boolean>
@@ -49,15 +56,18 @@ export class UserService implements IUserService {
     pageable?: PaginationRequest,
   ): Promise<PaginatedResult<MaskedUser>> {
     const user = await this.repository.getAll(criteria, normalizePagination(pageable))
-    return {
-      page: user.page,
-      size: user.size,
-      total: user.total,
-      results: user.results.map((u) => {
-        const { password, passwordSalt, ...maskedUser } = u
-        return maskedUser
-      }),
-    }
+    // return {
+    //   page: user.page,
+    //   size: user.size,
+    //   total: user.total,
+    //   results: user.results.map((u) => {
+    //     const { password, passwordSalt, ...maskedUser } = u
+    //     return maskedUser
+    //   }),
+    // }
+    return processPagination({
+      ...user,
+    })
   }
 
   async getUserById(id: string): Promise<MaskedUser> {

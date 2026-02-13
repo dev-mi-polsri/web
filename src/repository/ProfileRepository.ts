@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
@@ -67,11 +67,12 @@ export class ProfileRepository implements IProfileRepository {
       .select(({ fn }) => fn.count<number>('profile.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow ? totalRow.total : 0,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getById(id: string): Promise<Profile | undefined> {
@@ -101,6 +102,7 @@ export class ProfileRepository implements IProfileRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.thumbnail.type,
+          isDownloadable: false
         })
         .executeTakeFirst()
 
@@ -134,6 +136,7 @@ export class ProfileRepository implements IProfileRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.thumbnail!.type,
+          isDownloadable: false
         })
         .executeTakeFirst()
 

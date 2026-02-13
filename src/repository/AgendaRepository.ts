@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Agenda, NewAgenda, UpdateAgenda } from '@/schemas/AgendaTable'
 import { Database } from '@/lib/db'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
@@ -76,11 +76,12 @@ export class AgendaRepository implements IAgendaRepository {
       .select(({ fn }) => fn.count<number>('agenda.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...total,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: total!.total,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getById(id: string): Promise<Agenda | undefined> {

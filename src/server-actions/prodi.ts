@@ -80,6 +80,7 @@ export async function createProdi(input: CreateProdiInput): Promise<ServerAction
     const service = new ProdiService(db)
     await service.createProdi({
       ...parsed,
+      content: JSON.stringify(parsed.content),
       slug: PostUtility.generateSlug({ createdAt: new Date(), title: parsed.title }),
       thumbnail,
     })
@@ -103,6 +104,7 @@ export async function updateProdi(input: UpdateProdiInput): Promise<ServerAction
     const service = new ProdiService(db)
     await service.updateProdi(parsed.id, {
       ...parsed,
+      content: JSON.stringify(parsed.content),
       thumbnail,
     })
 

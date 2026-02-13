@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { Media, NewMedia, UpdateMedia, MediaUrl } from '@/schemas/MediaTable'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
@@ -74,11 +74,12 @@ export class MediaRepository implements IMediaRepository {
 
     const totalRow = await countQuery.executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow!.total,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getByUrl(url: MediaUrl): Promise<Media | undefined> {

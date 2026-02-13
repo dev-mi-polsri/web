@@ -4,7 +4,7 @@ import type { NewProfile, Profile, UpdateProfile } from '@/schemas/ProfileTable'
 import type { Database } from '@/lib/db'
 import type { IOAdapter } from '@/lib/io'
 import type { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 
 export interface IProfileService {
   getProfile(
@@ -70,4 +70,3 @@ export class ProfileService implements IProfileService {
     return true
   }
 }
-

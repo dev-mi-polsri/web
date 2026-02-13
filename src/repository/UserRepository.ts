@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { NewUser, UpdateUser, User, UserRole } from '@/schemas/User'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
@@ -62,11 +62,11 @@ export class UserRepository implements IUserRepository {
       .select(({ fn }) => fn.count<number>('user.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow.total,
+      ...pageable,
+    })
   }
 
   async getById(id: string): Promise<User | undefined> {

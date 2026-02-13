@@ -3,7 +3,7 @@ import { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import { Agenda, NewAgenda, UpdateAgenda } from '@/schemas/AgendaTable'
 import { Kysely } from 'kysely'
 import { Database } from '@/lib/db'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 
 export interface IAgendaService {
   getAgenda(criteria: AgendaCriteria, pageable: PaginationRequest): Promise<PaginatedResult<Agenda>>

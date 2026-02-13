@@ -9,7 +9,7 @@ import {
   type UpdateMedia,
 } from '@/schemas/MediaTable'
 import type { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 
 export interface IMediaService {

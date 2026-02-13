@@ -4,7 +4,7 @@ import type { NewTenagaAjar, TenagaAjar, UpdateTenagaAjar } from '@/schemas/Tena
 import type { Database } from '@/lib/db'
 import type { IOAdapter } from '@/lib/io'
 import type { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 
 export interface ITenagaAjarService {
   getTenagaAjar(
@@ -61,4 +61,3 @@ export class TenagaAjarService implements ITenagaAjarService {
     return true
   }
 }
-

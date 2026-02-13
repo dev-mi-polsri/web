@@ -1,6 +1,7 @@
 import { PostScope, RichText } from '@/schemas/_common'
-import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysely'
+import { ColumnType, Generated, Insertable, JSONColumnType, Selectable, Updateable } from 'kysely'
 import { MediaUrl } from '@/schemas/MediaTable'
+import { parseDate } from '@/lib/date'
 
 export enum PostType {
   BERITA_UMUM = 'berita-umum',
@@ -13,7 +14,7 @@ export enum PostType {
 export class PostUtility {
   static generateSlug(post: { createdAt: Date; title: string }) {
     return (
-      post.createdAt.toDateString() +
+      parseDate(post.createdAt) +
       '-' +
       post.title
         .toLowerCase()
@@ -40,7 +41,7 @@ export interface PostTable {
   id: Generated<string>
   thumbnail: MediaUrl
   title: string
-  content: RichText
+  content: JSONColumnType<RichText>
   type: PostType
   slug: string
 

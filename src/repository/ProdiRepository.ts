@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
@@ -67,11 +67,16 @@ export class ProdiRepository implements IProdiRepository {
       .select(({ fn }) => fn.count<number>('prodi.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
+    // return {
+    //   ...totalRow,
+    //   ...pageable,
+    //   results,
+    // }
+    return processPagination({
+      total: totalRow.total,
       ...pageable,
       results,
-    }
+    })
   }
 
   async getById(id: string): Promise<Prodi | undefined> {
@@ -101,6 +106,7 @@ export class ProdiRepository implements IProdiRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.thumbnail.type,
+          isDownloadable: false,
         })
         .executeTakeFirst()
 
@@ -134,6 +140,7 @@ export class ProdiRepository implements IProdiRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.thumbnail!.type,
+          isDownloadable: false,
         })
         .executeTakeFirst()
 

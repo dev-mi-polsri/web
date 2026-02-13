@@ -4,7 +4,7 @@ import type { NewPost, Post, PostSummary, Tag, UpdatePost } from '@/schemas/Post
 import type { Database } from '@/lib/db'
 import type { IOAdapter } from '@/lib/io'
 import type { Kysely } from 'kysely'
-import { normalizePagination, ServiceError } from './_common'
+import { normalizePagination, ServiceError } from '@/services/_common'
 
 export interface IPostService {
   getPost(
@@ -24,7 +24,7 @@ export interface ITagService {
   getTags(): Promise<Tag[]>
   getTagById(id: string): Promise<Tag>
   getTagBySlug(slug: string): Promise<Tag>
-  createTag(name: string): Promise<string>
+  createTag(name: string): Promise<void>
   deleteTag(id: string): Promise<void>
 }
 
@@ -121,8 +121,8 @@ export class TagService implements ITagService {
     return tag
   }
 
-  async createTag(name: string): Promise<string> {
-    return await this.repository.create(name)
+  async createTag(name: string): Promise<void> {
+    await this.repository.create(name)
   }
 
   async deleteTag(id: string): Promise<void> {

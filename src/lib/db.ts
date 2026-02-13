@@ -6,7 +6,7 @@ import { ProdiTable } from '@/schemas/ProdiTable'
 import { ProfileTable } from '@/schemas/ProfileTable'
 import { TenagaAjarTable } from '@/schemas/TenagaAjarTable'
 import { UserTable } from '@/schemas/User'
-import { CamelCasePlugin, Kysely, MysqlDialect } from 'kysely'
+import { CamelCasePlugin, Kysely, MysqlDialect, ParseJSONResultsPlugin } from 'kysely'
 import { createPool } from 'mysql2'
 
 export interface Database {
@@ -43,7 +43,7 @@ const dialect = new MysqlDialect({
 
 const db = new Kysely<Database>({
   dialect,
-  plugins: [new CamelCasePlugin()],
+  plugins: [new CamelCasePlugin(), new ParseJSONResultsPlugin()],
 })
 
 if (process.env.NODE_ENV !== 'production') {

@@ -119,7 +119,7 @@ export async function createPost(input: CreatePostInput): Promise<ServerActionRe
     const service = new PostService(db)
     await service.createPost({
       title: parsed.title,
-      content: parsed.content,
+      content: JSON.stringify(parsed.content),
       type: parsed.type,
       scope: parsed.scope,
       thumbnail,
@@ -148,7 +148,7 @@ export async function updatePost(input: UpdatePostInput): Promise<ServerActionRe
     const service = new PostService(db)
     await service.updatePost(parsed.id, {
       title: parsed.title,
-      content: parsed.content,
+      content: JSON.stringify(parsed.content),
       type: parsed.type,
       scope: parsed.scope,
       isFeatured: parsed.isFeatured,

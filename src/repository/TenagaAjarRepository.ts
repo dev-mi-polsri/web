@@ -1,4 +1,4 @@
-import { PaginatedResult, PaginationRequest } from '@/repository/_common'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
 import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
@@ -83,11 +83,12 @@ export class TenagaAjarRepository implements ITenagaAjarRepository {
       .select(({ fn }) => fn.count<number>('tenagaAjar.id').as('total'))
       .executeTakeFirstOrThrow()
 
-    return {
-      ...totalRow,
-      ...pageable,
+    return processPagination({
       results,
-    }
+      total: totalRow ? totalRow.total : 0,
+      page: pageable.page,
+      size: pageable.size,
+    })
   }
 
   async getById(id: string): Promise<TenagaAjar | undefined> {
@@ -109,6 +110,7 @@ export class TenagaAjarRepository implements ITenagaAjarRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.foto.type,
+          isDownloadable: false
         })
         .executeTakeFirst()
 
@@ -142,6 +144,7 @@ export class TenagaAjarRepository implements ITenagaAjarRepository {
           url: uploadedFilePath,
           type: MediaType.IMAGE,
           mime: data.foto!.type,
+          isDownloadable: false
         })
         .executeTakeFirst()
 
