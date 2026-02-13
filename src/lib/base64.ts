@@ -9,6 +9,23 @@ export class Base64Utils {
   private static readonly DATA_URL_REGEX =
     /^data:(?<mime>[\w\/\-\+\.]+);base64,(?<data>[a-zA-Z0-9\/+\n=]+)$/
 
+  // Instance wrappers exist for convenience/back-compat with call sites that
+  // construct `new Base64Utils()`.
+  public async parseBase64(base64: string, opts?: { filename?: string }): Promise<File> {
+    return Base64Utils.parseBase64(base64, opts)
+  }
+
+  public async toBase64(input: Blob | File | ArrayBuffer | Uint8Array | Buffer): Promise<string> {
+    return Base64Utils.toBase64(input)
+  }
+
+  public async toDataUrl(
+    input: Blob | File | ArrayBuffer | Uint8Array | Buffer,
+    mime?: string,
+  ): Promise<string> {
+    return Base64Utils.toDataUrl(input, mime)
+  }
+
   private static isNodeLike(): boolean {
     // Next.js server/edge can vary; Buffer is a good Node indicator.
     return typeof Buffer !== 'undefined'
@@ -60,10 +77,12 @@ export class Base64Utils {
    * - On Node.js (no global File), returns a File-like object (Blob with name/type/lastModified).
    * - Newlines/whitespace in payload are tolerated.
    */
-  async parseBase64(base64: string, opts?: { filename?: string }): Promise<File> {
+  public static async parseBase64(base64: string, opts?: { filename?: string }): Promise<File> {
     const match = Base64Utils.DATA_URL_REGEX.exec(base64)
     if (!match?.groups?.mime || !match?.groups?.data) {
-      throw new Base64UtilException('Invalid base64 string format, expected data:<mime>;base64,<data>')
+      throw new Base64UtilException(
+        'Invalid base64 string format, expected data:<mime>;base64,<data>',
+      )
     }
 
     const mime = match.groups.mime
@@ -71,6 +90,7 @@ export class Base64Utils {
     const bytes = Base64Utils.decodeBase64ToBytes(payload)
 
     const filename = opts?.filename ?? 'file'
+    // @ts-expect-error Blob constructor exists
     const blob = new Blob([bytes], { type: mime })
 
     // Prefer a real File when available (browser, some runtimes)
@@ -87,7 +107,9 @@ export class Base64Utils {
   }
 
   /** Convert a Blob/File (or Node Buffer / byte arrays) to a base64 payload (no data-url prefix). */
-  async toBase64(input: Blob | File | ArrayBuffer | Uint8Array | Buffer): Promise<string> {
+  public static async toBase64(
+    input: Blob | File | ArrayBuffer | Uint8Array | Buffer,
+  ): Promise<string> {
     // Buffer
     if (typeof Buffer !== 'undefined' && input instanceof Buffer) {
       return input.toString('base64')
@@ -109,7 +131,7 @@ export class Base64Utils {
   }
 
   /** Convert input into `data:<mime>;base64,<payload>`. Mime is taken from Blob/File when possible. */
-  async toDataUrl(
+  public static async toDataUrl(
     input: Blob | File | ArrayBuffer | Uint8Array | Buffer,
     mime?: string,
   ): Promise<string> {
@@ -121,7 +143,7 @@ export class Base64Utils {
 
     if (!resolvedMime) resolvedMime = 'application/octet-stream'
 
-    const payload = await this.toBase64(input)
+    const payload = await Base64Utils.toBase64(input)
     return `data:${resolvedMime};base64,${payload}`
   }
 }

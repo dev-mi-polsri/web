@@ -48,6 +48,7 @@ export function validateInput<T extends z.ZodTypeAny>(schema: T, input: unknown)
 
 export function handleServerActionError(error: unknown): ServerActionErrorResponse {
   if (error instanceof ValidationError) {
+    console.log('Validation error:', error.issues)
     return {
       error: error.message,
       code: error.code,
@@ -55,6 +56,7 @@ export function handleServerActionError(error: unknown): ServerActionErrorRespon
   }
 
   if (error instanceof ServerActionError) {
+    console.log('Server action error:', error.message)
     return {
       error: error.message,
       code: error.code,
@@ -62,6 +64,7 @@ export function handleServerActionError(error: unknown): ServerActionErrorRespon
   }
 
   if (error instanceof ServiceError) {
+    console.log('Service error:', error.message)
     return {
       error: error.message,
       code: error.errorCode,

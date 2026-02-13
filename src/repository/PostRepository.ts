@@ -96,6 +96,7 @@ export class PostRepository implements IPostRepository {
         'post.createdAt',
         'post.isPublished',
         'post.scope',
+        'post.isFeatured',
       ])
       .select((eb) => [
         jsonArrayFrom(
@@ -162,6 +163,7 @@ export class PostRepository implements IPostRepository {
         'post.createdAt',
         'post.isPublished',
         'post.scope',
+        'post.isFeatured',
       ])
       .select((eb) => [
         jsonArrayFrom(

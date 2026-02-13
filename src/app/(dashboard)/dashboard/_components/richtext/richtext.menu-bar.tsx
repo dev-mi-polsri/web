@@ -1,176 +1,221 @@
-import type { Editor } from "@tiptap/core";
-import { useEditorState } from "@tiptap/react";
+import type { Editor } from '@tiptap/core'
+import { useEditorState } from '@tiptap/react'
 import { menuBarStateSelector } from '@/app/(dashboard)/dashboard/_components/richtext/richtext.menu-bar.util'
+import {
+  Bold,
+  Code,
+  Eraser,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Redo2,
+  Strikethrough,
+  Undo2,
+} from 'lucide-react'
 
-export const MenuBar = ({ editor }: { editor: Editor }) => {
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { cn } from '@/lib/utils'
+
+export const MenuBar = ({ editor, className }: { editor: Editor; className?: string }) => {
   const editorState = useEditorState({
     editor,
     selector: menuBarStateSelector,
-  });
+  })
 
   if (!editor) {
-    return null;
+    return null
   }
 
-  const buttonClass = (active?: boolean) =>
-    [
-      "inline-flex items-center justify-center rounded px-2 py-1 text-xs font-medium",
-      "border border-foreground/15",
-      "bg-background",
-      "hover:bg-foreground/5",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30",
-      "disabled:cursor-not-allowed disabled:opacity-50",
-      active ? "bg-foreground/10" : "",
-    ].join(" ");
+  const iconButtonClassName = (active?: boolean) =>
+    cn(
+      'rounded-md',
+      'text-foreground/80',
+      'hover:bg-foreground/5 hover:text-foreground',
+      'focus-visible:border-foreground/30 focus-visible:ring-foreground/30',
+      active && 'bg-foreground/10 text-foreground',
+    )
+
+  const headingValue =
+    (editorState.isHeading1 && 'h1') ||
+    (editorState.isHeading2 && 'h2') ||
+    (editorState.isHeading3 && 'h3') ||
+    (editorState.isHeading4 && 'h4') ||
+    (editorState.isHeading5 && 'h5') ||
+    (editorState.isHeading6 && 'h6') ||
+    ''
+
+  const headingLevelByValue = {
+    h1: 1,
+    h2: 2,
+    h3: 3,
+    h4: 4,
+    h5: 5,
+    h6: 6,
+  } as const
 
   return (
-    <div className="rounded-md border border-foreground/15 bg-background p-2">
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
+    <div className={cn('rounded-md border border-foreground/15 bg-background p-2', className)}>
+      <div className="flex items-center gap-1 overflow-x-auto">
+        <Select
+          value={headingValue}
+          onValueChange={(value) => {
+            if (!value || value === headingValue) return
+            const level = headingLevelByValue[value as keyof typeof headingLevelByValue]
+            if (!level) return
+            editor.chain().focus().setHeading({ level }).run()
+          }}
+        >
+          <SelectTrigger className="h-8 w-40 px-2">
+            <SelectValue placeholder="Paragraph" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="h1">Heading 1</SelectItem>
+            <SelectItem value="h2">Heading 2</SelectItem>
+            <SelectItem value="h3">Heading 3</SelectItem>
+            <SelectItem value="h4">Heading 4</SelectItem>
+            <SelectItem value="h5">Heading 5</SelectItem>
+            <SelectItem value="h6">Heading 6</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Bold"
+          title="Bold"
           disabled={!editorState.canBold}
-          className={buttonClass(editorState.isBold)}
+          className={iconButtonClassName(editorState.isBold)}
+          onClick={() => editor.chain().focus().toggleBold().run()}
         >
-          Bold
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          <Bold />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Italic"
+          title="Italic"
           disabled={!editorState.canItalic}
-          className={buttonClass(editorState.isItalic)}
+          className={iconButtonClassName(editorState.isItalic)}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
         >
-          Italic
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
+          <Italic />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Strikethrough"
+          title="Strikethrough"
           disabled={!editorState.canStrike}
-          className={buttonClass(editorState.isStrike)}
+          className={iconButtonClassName(editorState.isStrike)}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
         >
-          Strike
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
+          <Strikethrough />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Inline code"
+          title="Inline code"
           disabled={!editorState.canCode}
-          className={buttonClass(editorState.isCode)}
+          className={iconButtonClassName(editorState.isCode)}
+          onClick={() => editor.chain().focus().toggleCode().run()}
         >
-          Code
-        </button>
-        <button
+          <Code />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Clear marks"
+          title="Clear marks"
+          disabled={!editorState.canClearMarks}
+          className={iconButtonClassName(false)}
           onClick={() => editor.chain().focus().unsetAllMarks().run()}
-          className={buttonClass(false)}
         >
-          Clear marks
-        </button>
-        <button
-          onClick={() => editor.chain().focus().clearNodes().run()}
-          className={buttonClass(false)}
-        >
-          Clear nodes
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          className={buttonClass(editorState.isParagraph)}
-        >
-          Paragraph
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={buttonClass(editorState.isHeading1)}
-        >
-          H1
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={buttonClass(editorState.isHeading2)}
-        >
-          H2
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={buttonClass(editorState.isHeading3)}
-        >
-          H3
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 4 }).run()
-          }
-          className={buttonClass(editorState.isHeading4)}
-        >
-          H4
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 5 }).run()
-          }
-          className={buttonClass(editorState.isHeading5)}
-        >
-          H5
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 6 }).run()
-          }
-          className={buttonClass(editorState.isHeading6)}
-        >
-          H6
-        </button>
-        <button
+          <Eraser />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Bullet list"
+          title="Bullet list"
+          disabled={!editorState.canBulletList}
+          className={iconButtonClassName(editorState.isBulletList)}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={buttonClass(editorState.isBulletList)}
         >
-          Bullet list
-        </button>
-        <button
+          <List />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Ordered list"
+          title="Ordered list"
+          disabled={!editorState.canOrderedList}
+          className={iconButtonClassName(editorState.isOrderedList)}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={buttonClass(editorState.isOrderedList)}
         >
-          Ordered list
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={buttonClass(editorState.isCodeBlock)}
-        >
-          Code block
-        </button>
-        <button
+          <ListOrdered />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Blockquote"
+          title="Blockquote"
+          disabled={!editorState.canBlockquote}
+          className={iconButtonClassName(editorState.isBlockquote)}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={buttonClass(editorState.isBlockquote)}
         >
-          Blockquote
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          className={buttonClass(false)}
-        >
-          Horizontal rule
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setHardBreak().run()}
-          className={buttonClass(false)}
-        >
-          Hard break
-        </button>
-        <button
-          onClick={() => editor.chain().focus().undo().run()}
+          <Quote />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Undo"
+          title="Undo"
           disabled={!editorState.canUndo}
-          className={buttonClass(false)}
+          className={iconButtonClassName(false)}
+          onClick={() => editor.chain().focus().undo().run()}
         >
-          Undo
-        </button>
-        <button
-          onClick={() => editor.chain().focus().redo().run()}
+          <Undo2 />
+        </Button>
+
+        <Button
+          type="button"
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Redo"
+          title="Redo"
           disabled={!editorState.canRedo}
-          className={buttonClass(false)}
+          className={iconButtonClassName(false)}
+          onClick={() => editor.chain().focus().redo().run()}
         >
-          Redo
-        </button>
+          <Redo2 />
+        </Button>
       </div>
     </div>
-  );
-};
+  )
+}

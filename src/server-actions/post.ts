@@ -113,8 +113,7 @@ export async function createPost(input: CreatePostInput): Promise<ServerActionRe
   try {
     const parsed = validateInput(createPostSchema, input)
 
-    const base64utils = new Base64Utils()
-    const thumbnail = await base64utils.parseBase64(parsed.thumbnail)
+    const thumbnail = await Base64Utils.parseBase64(parsed.thumbnail)
 
     const service = new PostService(db)
     await service.createPost({
@@ -141,8 +140,7 @@ export async function updatePost(input: UpdatePostInput): Promise<ServerActionRe
 
     let thumbnail: File | undefined
     if (parsed.thumbnail) {
-      const base64utils = new Base64Utils()
-      thumbnail = await base64utils.parseBase64(parsed.thumbnail, { filename: 'post-thumbnail' })
+      thumbnail = await Base64Utils.parseBase64(parsed.thumbnail, { filename: 'post-thumbnail' })
     }
 
     const service = new PostService(db)

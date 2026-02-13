@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import Footer from './_components/footer'
 import { Metadata } from 'next'
+import { Toaster } from '@/components/ui/sonner'
 // import FabButton from './_widgets/fab/button'
 
 const fontSans = FontSans({
@@ -62,6 +63,7 @@ export default async function RootLayout(props: {
               <main>{children}</main>
               {/* <FabButton /> */}
               <Footer params={props.params} />
+              <Toaster />
             </ThemeProvider>
           </NextIntlClientProvider>
         </Providers>

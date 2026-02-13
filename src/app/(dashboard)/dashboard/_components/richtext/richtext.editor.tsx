@@ -1,19 +1,28 @@
 'use client'
+import './richtext.editor.style.scss'
 
 import { TextStyleKit } from '@tiptap/extension-text-style'
+import { Placeholder } from '@tiptap/extensions'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { MenuBar } from './richtext.menu-bar'
 import { EditorContextMenu } from './richtext.context-menu'
 import { Editor, JSONContent } from '@tiptap/core'
+import { cn } from '@/lib/utils'
 
 // Define the extensions to be used in the editor
-const extensions = [TextStyleKit, StarterKit]
+const extensions = [
+  TextStyleKit,
+  StarterKit,
+  Placeholder.configure({
+    placeholder: 'Write something …',
+  }),
+]
 
 /// Define editor styles
 const editorClassName = [
   // Main editor styles
-  'rounded-md bg-background text-sm leading-6 outline-none',
+  'tiptap rounded-md bg-background text-sm leading-6 outline-none',
   // Typography styles for <p>
   '[&_p]:my-2',
   // Typography styles for <ul>
@@ -37,10 +46,20 @@ const editorClassName = [
 interface IEditorProps {
   onBlur?: (content: JSONContent) => void
   onUpdate?: (content: JSONContent) => void
+  className?: string
+  hideMenuBar?: boolean
+  value?: JSONContent
+  error?: string
 }
 
-export default function RichTextEditor({onBlur, onUpdate}: IEditorProps) {
-
+export default function RichTextEditor({
+  onBlur,
+  onUpdate,
+  className,
+  hideMenuBar,
+  value,
+  error,
+}: IEditorProps) {
   function handleBlur(editor: Editor) {
     onBlur?.(editor.getJSON())
   }
@@ -58,45 +77,17 @@ export default function RichTextEditor({onBlur, onUpdate}: IEditorProps) {
       },
     },
     onBlur: ({ editor }) => handleBlur(editor),
-    onUpdate : ({ editor }) => handleUpdate(editor),
-    content: `
-      <h2>
-        Hi there,
-      </h2>
-      <p>
-        this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you'd probably expect from a text editor. But wait until you see the lists:
-      </p>
-      <ul>
-        <li>
-          That's a bullet list with one …
-        </li>
-        <li>
-          … or two list items.
-        </li>
-      </ul>
-      <p>
-        Isn't that great? And all of that is editable. But wait, there's more. Let's try a code block:
-      </p>
-      <pre><code class="language-css">body {
-        display: none;
-      }</code></pre>
-      <p>
-        I know, I know, this is impressive. It's only the tip of the iceberg though. Give it a try and click a little bit around. Don't forget to check the other examples too.
-      </p>
-      <blockquote>
-        Wow, that's amazing. Good work, boy! 👏
-        <br />
-        — Mom
-      </blockquote>
-`,
+    onUpdate: ({ editor }) => handleUpdate(editor),
+    content: value,
   })
 
   return editor ? (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
-      <MenuBar editor={editor} />
+    <div className={cn('flex w-full flex-col gap-4 rounded-lg', className)}>
+      <MenuBar editor={editor} className={cn(hideMenuBar && 'hidden')} />
       <EditorContextMenu editor={editor}>
         <EditorContent editor={editor} />
       </EditorContextMenu>
+      {error && <p className="text-destructive">{error}</p>}
     </div>
   ) : null
 }
