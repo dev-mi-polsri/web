@@ -1,15 +1,13 @@
 'use client'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Link } from '@/i18n/navigation'
 import { PostSummary } from '@/schemas/PostTable'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
 
 export function NewsCard({ title, thumbnail, slug, createdAt }: PostSummary) {
-  const { locale } = useParams<{ locale: string }>()
   return (
-    <Link href={`/${locale}/news/${slug}`} className="flex flex-col gap-2 text-start">
+    <Link href={`/news/${slug}`} className="flex flex-col gap-2 text-start">
       <div className="w-full max-w-full overflow-hidden rounded-lg">
         <AspectRatio ratio={16 / 9}>
           <Image

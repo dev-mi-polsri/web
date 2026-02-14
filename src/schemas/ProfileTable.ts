@@ -2,6 +2,15 @@ import { MediaUrl } from '@/schemas/MediaTable'
 import { PostScope, RichText } from '@/schemas/_common'
 import { ColumnType, Generated, Insertable, JSONColumnType, Selectable, Updateable } from 'kysely'
 
+export class ProfileUtility {
+  static getSlug(title: string) {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+  }
+}
+
 export interface ProfileTable {
   id: Generated<string>
   thumbnail: MediaUrl

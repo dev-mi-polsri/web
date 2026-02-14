@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { getMessages } from 'next-intl/server'
-import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { getPost } from '@/server-actions/post'
 import { PostType } from '@/schemas/PostTable'
 import { PostScope } from '@/schemas/_common'
+import { Link } from '@/i18n/navigation'
 
 export default async function AnnouncementBanner({ locale }: { locale: string }) {
   const {
@@ -48,7 +48,7 @@ export default async function AnnouncementBanner({ locale }: { locale: string })
     return (
       <div className="bg-white/20 text-white backdrop-blur-sm rounded-full z-50 p-2 pl-4">
         <Link
-          href={`${locale}/news/${announcements.results[0].slug}`}
+          href={`/news/${announcements.results[0].slug}`}
           className="flex flex-col group justify-between gap-8 md:flex-row md:items-center"
         >
           <p className="text-sm group-hover:underline">

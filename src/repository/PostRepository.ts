@@ -8,6 +8,7 @@ import {
   PostSummary,
   PostType,
   PostUtility,
+  PostWithTags,
   Tag,
   UpdatePost,
 } from '@/schemas/PostTable'
@@ -42,8 +43,8 @@ export type PostCriteria = {
 export interface IPostRepository {
   getAll(criteria: PostCriteria, pageable: PaginationRequest): Promise<PaginatedResult<PostSummary>>
   getByTag(tagId: string, pageable: PaginationRequest): Promise<PaginatedResult<PostSummary>>
-  getById(id: string): Promise<Post | undefined>
-  getBySlug(slug: string): Promise<Post | undefined>
+  getById(id: string): Promise<PostWithTags | undefined>
+  getBySlug(slug: string): Promise<PostWithTags | undefined>
   create(data: NewPost): Promise<InsertResult>
   update(id: string, data: UpdatePost): Promise<UpdateResult>
   delete(id: string): Promise<DeleteResult>
@@ -199,15 +200,63 @@ export class PostRepository implements IPostRepository {
     })
   }
 
-  async getById(id: string): Promise<Post | undefined> {
-    return await this.db.selectFrom('post').where('post.id', '=', id).selectAll().executeTakeFirst()
+  async getById(id: string): Promise<PostWithTags | undefined> {
+    return await this.db
+      .selectFrom('post')
+      .where('post.id', '=', id)
+      .select([
+        'post.id',
+        'post.title',
+        'post.slug',
+        'post.type',
+        'post.thumbnail',
+        'post.isFeatured',
+        'post.createdAt',
+        'post.isPublished',
+        'post.scope',
+        'post.isFeatured',
+        'post.content',
+        'post.updatedAt',
+      ])
+      .select((eb) => [
+        jsonArrayFrom(
+          eb
+            .selectFrom('postTag as pt2')
+            .innerJoin('tag as t', 't.id', 'pt2.tagId')
+            .select(['t.id', 't.name', 't.slug'])
+            .whereRef('pt2.postId', '=', 'post.id'),
+        ).as('tags'),
+      ])
+      .executeTakeFirst()
   }
 
-  async getBySlug(slug: string): Promise<Post | undefined> {
+  async getBySlug(slug: string): Promise<PostWithTags | undefined> {
     return await this.db
       .selectFrom('post')
       .where('post.slug', '=', slug)
-      .selectAll()
+      .select([
+        'post.id',
+        'post.title',
+        'post.slug',
+        'post.type',
+        'post.thumbnail',
+        'post.isFeatured',
+        'post.createdAt',
+        'post.isPublished',
+        'post.scope',
+        'post.isFeatured',
+        'post.content',
+        'post.updatedAt',
+      ])
+      .select((eb) => [
+        jsonArrayFrom(
+          eb
+            .selectFrom('postTag as pt2')
+            .innerJoin('tag as t', 't.id', 'pt2.tagId')
+            .select(['t.id', 't.name', 't.slug'])
+            .whereRef('pt2.postId', '=', 'post.id'),
+        ).as('tags'),
+      ])
       .executeTakeFirst()
   }
 

@@ -1,6 +1,6 @@
-import { getSession } from '@/server-actions/_resource-access'
 import Link from 'next/link'
 import { DashboardRoute, getDashboardRoutes } from './_components/dashboard.constants'
+import getSession from './_lib/auth'
 
 function DashboardMenu({ href, label }: DashboardRoute) {
   return (

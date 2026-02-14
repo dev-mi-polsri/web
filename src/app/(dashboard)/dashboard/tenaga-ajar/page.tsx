@@ -4,12 +4,14 @@ import { getTenagaAjar } from '@/server-actions/tenaga-ajar'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import TenagaAjarTable from './_components/tenaga-ajar-table'
+import getSession from '../_lib/auth'
 
 export default async function TenagaAjarPage({
   searchParams,
 }: {
   searchParams: Promise<{ query: string; page: string; size: string }>
 }) {
+  await getSession()
   const { query, page, size } = await searchParams
 
   const tenagaAjar = await getTenagaAjar(

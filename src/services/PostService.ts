@@ -1,6 +1,6 @@
 import { PostCriteria, PostRepository, TagRepository } from '@/repository/PostRepository'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
-import type { NewPost, Post, PostSummary, Tag, UpdatePost } from '@/schemas/PostTable'
+import type { NewPost, Post, PostSummary, PostWithTags, Tag, UpdatePost } from '@/schemas/PostTable'
 import type { Database } from '@/lib/db'
 import type { IOAdapter } from '@/lib/io'
 import type { Kysely } from 'kysely'
@@ -49,7 +49,7 @@ export class PostService implements IPostService {
     return await this.repository.getAll(criteria, normalizePagination(pageable))
   }
 
-  async getPostById(id: string): Promise<Post> {
+  async getPostById(id: string): Promise<PostWithTags> {
     const post = await this.repository.getById(id)
     if (!post) {
       throw new PostNotFoundError(`Post with id ${id} not found`)
@@ -64,7 +64,7 @@ export class PostService implements IPostService {
     return await this.repository.getByTag(tagId, normalizePagination(pageable))
   }
 
-  async getPostBySlug(slug: string): Promise<Post> {
+  async getPostBySlug(slug: string): Promise<PostWithTags> {
     const post = await this.repository.getBySlug(slug)
     if (!post) {
       throw new PostNotFoundError(`Post with slug ${slug} not found`)

@@ -1,12 +1,12 @@
 import { getMessages } from 'next-intl/server'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
 import { PostScope } from '@/schemas/_common'
 import { getProdi } from '@/server-actions/prodi'
 import { Prodi } from '@/schemas/ProdiTable'
+import { Link } from '@/i18n/navigation'
 
 async function StudyPrograms({ locale }: { locale: string }) {
   const {
@@ -46,11 +46,10 @@ function StudyProgramCard({
   title,
   description,
   slug,
-  locale,
   t,
 }: Prodi & { locale: string; t: Record<string, string> }) {
   return (
-    <Link href={`/${locale}/program/${slug}`}>
+    <Link href={`/program/${slug}`}>
       <div className="group max-w-[20rem] p-2 w-full h-full bg-secondary/50 rounded-lg transition-colors duration-200 overflow-hidden">
         <AspectRatio ratio={16 / 9} className="bg-muted">
           <Image

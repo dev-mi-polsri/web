@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { BookOpen } from 'lucide-react'
-import Link from 'next/link'
 import { VideoProfile } from '../_components/video-profile'
 import { getMessages } from 'next-intl/server'
+import { Link } from '@/i18n/navigation'
 
 async function Profile({ locale }: { locale: string }) {
   // const t = useTranslations('pages.home.profile')
@@ -20,7 +20,7 @@ async function Profile({ locale }: { locale: string }) {
           <h2 className="text-2xl font-bold">{t.heading}</h2>
           <p className="text-muted-foreground text-lg text-justify">{t.description}</p>
           <div className="flex gap-2 items-center mt-4">
-            <Link href={`/${locale}/profile/${locale === 'en' ? 'about-us' : 'tentang-kami'}`}>
+            <Link href={`/profile/${locale === 'en' ? 'about-us' : 'tentang-kami'}`}>
               <Button>
                 <BookOpen />
                 {t.buttons.more}

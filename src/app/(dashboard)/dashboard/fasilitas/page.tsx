@@ -4,12 +4,14 @@ import { getFasilitas } from '@/server-actions/fasilitas'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import FasilitasTable from './_components/fasilitas-table'
+import getSession from '../_lib/auth'
 
 export default async function FasilitasPage({
   searchParams,
 }: {
   searchParams: Promise<{ query: string; page: string; size: string }>
 }) {
+  await getSession()
   const { query, page, size } = await searchParams
 
   const fasilitas = await getFasilitas(

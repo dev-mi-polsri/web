@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { ProdiTable } from './_components/prodi-table'
+import getSession from '../_lib/auth'
 
 export default async function ProdiPage({
   searchParams,
 }: {
   searchParams: Promise<{ query: string; page: string; size: string }>
 }) {
+  await getSession()
   const { query, page, size } = await searchParams
 
   const prodi = await getProdi(

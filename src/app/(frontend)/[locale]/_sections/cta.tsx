@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 import { BookOpen } from 'lucide-react'
-import Link from 'next/link'
 import { getMessages } from 'next-intl/server'
 
 async function CTA({ locale }: { locale: string }) {
@@ -22,7 +22,7 @@ async function CTA({ locale }: { locale: string }) {
           <h2 className="text-2xl font-bold">{t.title}</h2>
           <p>{t.content}</p>
         </div>
-        <Link href={`/${locale}/news`}>
+        <Link href={`/news`}>
           <div className="w-full flex justify-center relative z-20">
             <Button>
               <BookOpen className="mr-2" />

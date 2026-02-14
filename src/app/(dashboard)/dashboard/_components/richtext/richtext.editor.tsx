@@ -50,6 +50,7 @@ interface IEditorProps {
   hideMenuBar?: boolean
   value?: JSONContent
   error?: string
+  readOnly?: boolean
 }
 
 export default function RichTextEditor({
@@ -59,6 +60,7 @@ export default function RichTextEditor({
   hideMenuBar,
   value,
   error,
+  readOnly,
 }: IEditorProps) {
   function handleBlur(editor: Editor) {
     onBlur?.(editor.getJSON())
@@ -71,6 +73,7 @@ export default function RichTextEditor({
   const editor = useEditor({
     immediatelyRender: false,
     extensions,
+    editable: !readOnly,
     editorProps: {
       attributes: {
         class: editorClassName,
@@ -84,9 +87,13 @@ export default function RichTextEditor({
   return editor ? (
     <div className={cn('flex w-full flex-col gap-4 rounded-lg', className)}>
       <MenuBar editor={editor} className={cn(hideMenuBar && 'hidden')} />
-      <EditorContextMenu editor={editor}>
+      {readOnly ? (
         <EditorContent editor={editor} />
-      </EditorContextMenu>
+      ) : (
+        <EditorContextMenu editor={editor}>
+          <EditorContent editor={editor} />
+        </EditorContextMenu>
+      )}
       {error && <p className="text-destructive">{error}</p>}
     </div>
   ) : null

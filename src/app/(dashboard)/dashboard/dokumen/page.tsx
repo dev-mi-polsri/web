@@ -7,6 +7,7 @@ import { getDokumen } from '@/server-actions/dokumen'
 import DokumenTable from './_components/dokumen-table'
 import DokumenTypeFilter from './_components/dokumen-type-filter'
 import { MediaType } from '@/schemas/MediaTable'
+import getSession from '../_lib/auth'
 
 export default async function DokumenPage({
   searchParams,
@@ -18,6 +19,7 @@ export default async function DokumenPage({
     jenisDokumen?: string
   }>
 }) {
+  await getSession()
   const { query, page, size, jenisDokumen } = await searchParams
 
   const parsedJenisDokumen =

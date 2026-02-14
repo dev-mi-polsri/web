@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
-import Link from 'next/link'
 import { getMessages } from 'next-intl/server'
 import VideoHero from '../_components/video-hero'
 import AnnouncementBanner from './announcement/banner'
+import { Link } from '@/i18n/navigation'
 
 export async function Hero({ locale }: { locale: string }) {
   const {
@@ -45,7 +45,7 @@ export async function Hero({ locale }: { locale: string }) {
               </div>
               <h1 className="text-2xl md:text-5xl font-bold text-white mb-4">{t.heading}</h1>
               <p className="text-base text-white/90 mb-8">{t.description}</p>
-              <Link href={`/${locale}/profile/${locale === 'en' ? 'about-us' : 'tentang-kami'}`}>
+              <Link href={`/profile/${locale === 'en' ? 'about-us' : 'tentang-kami'}`}>
                 <Button variant="default" size="lg" className="rounded-full">
                   {t.button} <ChevronRight className="size-4" />
                 </Button>

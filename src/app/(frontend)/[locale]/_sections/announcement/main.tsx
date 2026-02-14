@@ -1,10 +1,9 @@
 import { getMessages } from 'next-intl/server'
-import * as React from 'react'
 import AnnouncementThumbnailCarousel from './carousel'
-import Link from 'next/link'
 import { PostSummary, PostType } from '@/schemas/PostTable'
 import { PostScope } from '@/schemas/_common'
 import { getPost } from '@/server-actions/post'
+import { Link } from '@/i18n/navigation'
 
 export default async function AnnouncementSection({ locale }: { locale: string }) {
   const {
@@ -76,7 +75,7 @@ function AnnouncementListItem({
 }: PostSummary & { locale: string }) {
   return (
     <Link
-      href={`/${locale}/news/${slug}`}
+      href={`/news/${slug}`}
       className="text-start flex flex-col group hover:cursor-pointer hover:bg-muted p-1.5 rounded-lg"
     >
       <h2 className="text-lg font-bold group-hover:tunderline">{title}</h2>

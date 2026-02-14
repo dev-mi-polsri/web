@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, forwardRef } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useParams, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -14,6 +13,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+import NextLink from 'next/link'
 // import { useQuery } from '@tanstack/react-query'
 // import { Skeleton } from '@/components/ui/skeleton'
 import { SheetHeader, SheetTitle } from '@/components/ui/sheet'
@@ -35,6 +35,7 @@ import {
 import { useProfiles } from '../_hooks/queries/profile'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useStudyPrograms } from '../_hooks/queries/study-programs'
+import { Link } from '@/i18n/navigation'
 
 function EnglishFlag() {
   return (
@@ -111,7 +112,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center py-4">
           <Link
-            href={`/${params.locale}/`}
+            href={`/`}
             className="text-foreground flex gap-2 items-center font-semibold text-xl"
           >
             <Image
@@ -128,25 +129,24 @@ export function Navbar() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link href={`/${params.locale}/`} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        pathname === '/'
-                          ? 'text-foreground hover:text-foreground'
-                          : 'text-muted-foreground hover:text-foreground',
-                      )}
-                    >
-                      {t('main')}
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink
+                    href="/"
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      pathname === '/'
+                        ? 'text-foreground hover:text-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {t('main')}
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-muted-foreground hover:text-foreground">
                     {t('profile.title')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                    <ul className="grid gap-3 p-6 md:w-100 lg:w-125 lg:grid-cols-2">
                       {profilesIsPending
                         ? Array.from({ length: 6 }).map((_, idx) => (
                             <Skeleton className="h-16 w-full" key={idx} />
@@ -159,17 +159,17 @@ export function Navbar() {
                               ...profiles.results.map((profile) => ({
                                 label: profile.title,
                                 desc: profile.description,
-                                href: `/${params.locale}/profile/${profile.slug}`,
+                                href: `/profile/${profile.slug}`,
                               })),
                               {
                                 label: t('profile.lecturers.title'),
                                 desc: t('profile.lecturers.desc'),
-                                href: `/${params.locale}/dosen`,
+                                href: `/dosen`,
                               },
                               // {
                               //   label: t('profile.staff.title'),
                               //   desc: t('profile.staff.desc'),
-                              //   href: `/${params.locale}/tendik`,
+                              //   href: `/tendik`,
                               // },
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
@@ -185,7 +185,7 @@ export function Navbar() {
                     {t('studyPrograms.title')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                    <ul className="grid gap-3 p-6 md:w-100 lg:w-125 lg:grid-cols-2">
                       {studyProgramsIsPending
                         ? Array.from({ length: 6 }).map((_, idx) => (
                             <Skeleton className="h-16 w-full" key={idx} />
@@ -198,7 +198,7 @@ export function Navbar() {
                               ...studyPrograms.results.map((program) => ({
                                 label: program.title,
                                 desc: program.description,
-                                href: `/${params.locale}/program/${program.slug}`,
+                                href: `/program/${program.slug}`,
                               })),
                             ].map((item) => (
                               <ListItem key={item.label} href={item.href} title={item.label}>
@@ -210,32 +210,30 @@ export function Navbar() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <Link href={`/${params.locale}/news`} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        pathname === `/${params.locale}/news`
-                          ? 'text-foreground hover:text-foreground'
-                          : 'text-muted-foreground hover:text-foreground',
-                      )}
-                    >
-                      {t('news')}
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink
+                    href={`/${params.locale}/news`}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      pathname === `/news`
+                        ? 'text-foreground hover:text-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {t('news')}
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href={`/${params.locale}/agenda`} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        pathname === `/${params.locale}/agenda`
-                          ? 'text-foreground hover:text-foreground'
-                          : 'text-muted-foreground hover:text-foreground',
-                      )}
-                    >
-                      {t('agenda')}
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink
+                    href={`/${params.locale}/agenda`}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      pathname === `${params.locale}/agenda`
+                        ? 'text-foreground hover:text-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {t('agenda')}
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -263,18 +261,18 @@ export function Navbar() {
                   {params.locale === 'en' ? 'Language' : 'Bahasa'}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href="/en">
+                <NextLink href="/en">
                   <DropdownMenuItem>
                     <EnglishFlag />
                     English
                   </DropdownMenuItem>
-                </Link>
-                <Link href="/id">
+                </NextLink>
+                <NextLink href="/id">
                   <DropdownMenuItem>
                     <IndonesianFlag />
                     Bahasa Indonesia
                   </DropdownMenuItem>
-                </Link>
+                </NextLink>
               </DropdownMenuContent>
             </DropdownMenu>
             <ThemeToggle />
@@ -292,7 +290,7 @@ export function Navbar() {
                 <SheetHeader>
                   <SheetTitle>
                     <Link
-                      href={`/${params.locale}/`}
+                      href={`/`}
                       className="text-foreground flex gap-2 justify-between items-center font-semibold text-xl"
                     >
                       <div className="flex gap-2">
@@ -313,7 +311,7 @@ export function Navbar() {
                   <ul className="flex flex-col gap-2">
                     <li onClick={() => setDrawerOpen(false)}>
                       <Link
-                        href={`/${params.locale}/`}
+                        href={`/`}
                         className={cn(
                           'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
                           pathname === '/'
@@ -359,15 +357,15 @@ export function Navbar() {
                                 : [
                                     ...profiles.results.map((profile) => ({
                                       label: profile.title,
-                                      href: `/${params.locale}/profile/${profile.slug}`,
+                                      href: `/profile/${profile.slug}`,
                                     })),
                                     {
                                       label: 'Dosen',
-                                      href: `/${params.locale}/dosen`,
+                                      href: `/dosen`,
                                     },
                                     // {
                                     //   label: 'Tenaga Didik',
-                                    //   href: `/${params.locale}/tendik`,
+                                    //   href: `/tendik`,
                                     // },
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>
@@ -442,7 +440,7 @@ export function Navbar() {
                                 : [
                                     ...studyPrograms.results.map((program) => ({
                                       label: program.title,
-                                      href: `/${params.locale}/program/${program.slug}`,
+                                      href: `/program/${program.slug}`,
                                     })),
                                   ].map((item) => (
                                     <li key={item.label} onClick={() => setDrawerOpen(false)}>
@@ -466,10 +464,10 @@ export function Navbar() {
 
                     <li onClick={() => setDrawerOpen(false)}>
                       <Link
-                        href={`/${params.locale}/news`}
+                        href={`/news`}
                         className={cn(
                           'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
-                          pathname === `/${params.locale}/news`
+                          pathname === `/news`
                             ? 'bg-accent text-accent-foreground'
                             : 'text-muted-foreground',
                         )}
@@ -479,10 +477,10 @@ export function Navbar() {
                     </li>
                     <li onClick={() => setDrawerOpen(false)}>
                       <Link
-                        href={`/${params.locale}/agenda`}
+                        href={`/agenda`}
                         className={cn(
                           'block py-2 px-4 rounded-md hover:bg-accent hover:text-accent-foreground',
-                          pathname === `/${params.locale}/agenda`
+                          pathname === `/agenda`
                             ? 'bg-accent text-accent-foreground'
                             : 'text-muted-foreground',
                         )}

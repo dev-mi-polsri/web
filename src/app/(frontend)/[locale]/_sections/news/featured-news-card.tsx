@@ -1,9 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Link } from '@/i18n/navigation'
 import { PostSummary } from '@/schemas/PostTable'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
 
 interface FeaturedNewsCardProps {
   data: PostSummary
@@ -14,10 +13,8 @@ export function FeaturedNewsCard({
   data: { title, createdAt, thumbnail, slug, tags },
   variant = 'side',
 }: FeaturedNewsCardProps) {
-  const { locale } = useParams<{ locale: string }>()
-
   return (
-    <Link href={`/${locale}/news/${slug}`}>
+    <Link href={`/news/${slug}`}>
       <div className="w-full h-full aspect-video rounded-lg relative overflow-hidden group">
         <Image
           fill

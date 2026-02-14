@@ -4,12 +4,14 @@ import { getAgenda } from '@/server-actions/agenda'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import AgendaTable from './_components/agenda-table'
+import getSession from '../_lib/auth'
 
 export default async function AgendaPage({
   searchParams,
 }: {
   searchParams: Promise<{ query: string; page: string; size: string }>
 }) {
+  await getSession()
   const { query, page, size } = await searchParams
 
   const agenda = await getAgenda(

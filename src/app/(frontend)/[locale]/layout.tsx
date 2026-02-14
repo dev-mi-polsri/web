@@ -10,6 +10,7 @@ import { getMessages } from 'next-intl/server'
 import Footer from './_components/footer'
 import { Metadata } from 'next'
 import { Toaster } from '@/components/ui/sonner'
+import { routing } from '@/i18n/routing'
 // import FabButton from './_widgets/fab/button'
 
 const fontSans = FontSans({
@@ -39,6 +40,10 @@ export async function generateMetadata({
       ],
     },
   }
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
 }
 
 export default async function RootLayout(props: {

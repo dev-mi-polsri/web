@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import DataTablePagination from '@/components/table/data-table.pagination'
+import getSession from '../_lib/auth'
 
 export default async function PostPage({
   searchParams,
 }: {
   searchParams: Promise<{ query: string; page: string; size: string }>
 }) {
+  await getSession()
   const { query, page, size } = await searchParams
 
   const posts = await getPost(

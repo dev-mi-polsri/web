@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { ProfileTable } from '@/app/(dashboard)/dashboard/profile/_components/profile-table'
+import getSession from '../_lib/auth'
 
 export default async function ProfilePage({
   searchParams,
 }: {
   searchParams: Promise<{ query: string; page: string; size: string }>
 }) {
+  await getSession()
   const { query, page, size } = await searchParams
 
   const profile = await getProfile(

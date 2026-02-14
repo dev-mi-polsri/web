@@ -16,8 +16,8 @@ import {
 } from '@/server-actions/_common'
 import { Base64Utils } from '@/lib/base64'
 import { PostScope } from '@/schemas/_common'
-import { PostUtility } from '@/schemas/PostTable'
 import { getSessionThrowable } from './_resource-access'
+import { ProfileUtility } from '@/schemas/ProfileTable'
 
 const slugSchema = z
   .string()
@@ -84,7 +84,7 @@ export async function createProdi(input: CreateProdiInput): Promise<ServerAction
     await service.createProdi({
       ...parsed,
       content: JSON.stringify(parsed.content),
-      slug: PostUtility.generateSlug({ createdAt: new Date(), title: parsed.title }),
+      slug: ProfileUtility.getSlug(parsed.title),
       thumbnail,
     })
 

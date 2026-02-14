@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Edit2Icon, Trash2Icon } from 'lucide-react'
 import {

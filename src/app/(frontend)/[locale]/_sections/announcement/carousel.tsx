@@ -3,9 +3,9 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import Image from 'next/image'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import Autoplay from 'embla-carousel-autoplay'
-import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { PostSummary } from '@/schemas/PostTable'
+import { Link } from '@/i18n/navigation'
 
 export default function AnnouncementThumbnailCarousel({ items }: { items: PostSummary[] }) {
   const { locale } = useParams<{ locale: string }>()
@@ -23,7 +23,7 @@ export default function AnnouncementThumbnailCarousel({ items }: { items: PostSu
       <CarouselContent>
         {items.map((announcement, idx) => (
           <CarouselItem key={idx}>
-            <Link href={`/${locale}/news/${announcement.slug}`}>
+            <Link href={`/news/${announcement.slug}`}>
               <AspectRatio ratio={16 / 9}>
                 <div className="w-full h-full aspect-video rounded-lg relative overflow-hidden hover:cursor-pointer group">
                   <Image
