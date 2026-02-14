@@ -5,12 +5,17 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import Sidebar from './_components/sidebar/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from './_providers/theme-provider'
+import { Metadata } from 'next'
 
 const fontSans = FontSans({
   variable: '--font-sans',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
 })
+
+export const metadata: Metadata = {
+  title: 'JuaraCMS Dashboard',
+}
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
