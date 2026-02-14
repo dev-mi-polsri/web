@@ -1,7 +1,6 @@
 import type { JSONContent } from '@tiptap/core'
 import { z, ZodError } from 'zod'
 import { ServiceError } from '@/services/_common'
-import { NodeIOAdapterException } from '@/lib/io'
 
 const ACCEPTABLE_BASE64_REGEX = /^data:(?<mime>[\w\/\-\+\.]+);base64,(?<data>[a-zA-Z0-9\/+\n=]+)$/
 const ACCEPTABLE_DATE_REGEX = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/

@@ -5,10 +5,10 @@ import { PostTable, PostTagTable, TagTable } from '@/schemas/PostTable'
 import { ProdiTable } from '@/schemas/ProdiTable'
 import { ProfileTable } from '@/schemas/ProfileTable'
 import { TenagaAjarTable } from '@/schemas/TenagaAjarTable'
-import { UserTable } from '@/schemas/User'
 import { CamelCasePlugin, Kysely, MysqlDialect, ParseJSONResultsPlugin } from 'kysely'
 import { createPool } from 'mysql2'
 import { DokumenTable } from '@/schemas/DokumenTable'
+import { DATABASE_CONFIG } from './db.config'
 
 export interface Database {
   agenda: AgendaTable
@@ -19,24 +19,12 @@ export interface Database {
   prodi: ProdiTable
   profile: ProfileTable
   tenagaAjar: TenagaAjarTable
-  user: UserTable
   postTag: PostTagTable
   dokumen: DokumenTable
 }
 
 declare global {
   var db: Kysely<Database> | undefined
-}
-
-const DATABASE_CONFIG = {
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-  port: process.env.MYSQL_PORT ? parseInt(process.env.MYSQL_PORT) : 3306,
-  connectionLimit: process.env.MYSQL_CONNECTION_LIMIT
-    ? parseInt(process.env.MYSQL_CONNECTION_LIMIT)
-    : 10,
 }
 
 const pool = createPool({
@@ -61,7 +49,5 @@ const db = new Kysely<Database>({
 if (process.env.NODE_ENV !== 'production') {
   globalThis.db = db
 }
-
-
 
 export default db
