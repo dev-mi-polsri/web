@@ -21,8 +21,8 @@ export const DASHBOARD_ROUTES: DashboardRoute[] = [
     href: '/dashboard/agenda',
   },
   {
-    label: 'Media',
-    href: '/dashboard/media',
+    label: 'Dokumen',
+    href: '/dashboard/dokumen',
   },
   {
     label: 'Fasilitas',

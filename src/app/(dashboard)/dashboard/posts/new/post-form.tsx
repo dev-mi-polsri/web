@@ -21,6 +21,8 @@ import RichTextEditor from '../../_components/richtext/richtext.editor'
 import { POST_SCOPE_LABEL, POST_TYPE_LABEL } from '../constants'
 import { toast } from 'sonner'
 
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
+
 type PostFormValues = {
   title: FormValue<string>
   content: FormValue<JSONContent | null>
@@ -37,8 +39,8 @@ type PostFormProps = {
   isLoading?: boolean
   children?: ReactNode
   skipValidation?: Record<keyof Pick<PostFormValues, 'thumbnail'>, boolean>
-  title?: string,
-  actionButtonLabel?: string,
+  title?: string
+  actionButtonLabel?: string
 }
 
 export function PostForm({
@@ -47,8 +49,8 @@ export function PostForm({
   isLoading,
   children,
   skipValidation,
-  title = "New Post",
-  actionButtonLabel = "Tambah"
+  title = 'New Post',
+  actionButtonLabel = 'Tambah',
 }: PostFormProps) {
   const form = useForm<PostFormValues>({
     title: {
@@ -102,6 +104,10 @@ export function PostForm({
         if (!value && !skipValidation?.thumbnail) {
           return 'Thumbnail wajib diupload.'
         }
+
+        if (value && value.size > MAX_FILE_SIZE_BYTES) {
+          return 'Ukuran thumbnail maksimal 10MB.'
+        }
       },
     },
   })
@@ -145,6 +151,14 @@ export function PostForm({
                 disabled={isLoading}
                 onChange={(e) => {
                   const file = e.target.files?.[0] ?? null
+
+                  if (file && file.size > MAX_FILE_SIZE_BYTES) {
+                    form.handleChange('thumbnail', null)
+                    form.setFieldError('thumbnail', 'Ukuran thumbnail maksimal 10MB.')
+                    e.target.value = ''
+                    return
+                  }
+
                   form.handleChange('thumbnail', file)
                 }}
               />

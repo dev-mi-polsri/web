@@ -1,51 +1,53 @@
 'use client'
 
+import type { ReactNode } from 'react'
+import { SaveIcon } from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { FormValue, Value, useForm } from '@/lib/form'
-import { SaveIcon } from 'lucide-react'
-import { type ReactNode } from 'react'
+import type { FormValue, Value } from '@/lib/form'
+import { useForm } from '@/lib/form'
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
 
-type PostFormValues = {
-  foto: FormValue<File | null>
+type DokumenFormValues = {
+  file: FormValue<File | null>
   name: FormValue<string>
   enName: FormValue<string>
 }
 
-type PostFormProps = {
-  initialValues?: Partial<Value<PostFormValues>>
-  onSubmit: (values: Value<PostFormValues>) => void
+type DokumenFormProps = {
+  initialValues?: Partial<Value<DokumenFormValues>>
+  onSubmit: (values: Value<DokumenFormValues>) => void
   isLoading?: boolean
   children?: ReactNode
-  skipValidation?: Record<keyof Pick<PostFormValues, 'foto'>, boolean>
+  skipValidation?: Record<keyof Pick<DokumenFormValues, 'file'>, boolean>
   title?: string
   actionButtonLabel?: string
 }
 
-export function FasilitasForm({
+export function DokumenForm({
   initialValues,
   onSubmit,
   isLoading,
   children,
   skipValidation,
-  title = 'New Fasilitas',
+  title = 'New Dokumen',
   actionButtonLabel = 'Tambah',
-}: PostFormProps) {
-  const form = useForm<PostFormValues>({
+}: DokumenFormProps) {
+  const form = useForm<DokumenFormValues>({
     name: {
       value: initialValues?.name ?? '',
       validate(value) {
         if (value.trim().length === 0) {
-          return 'Nama fasilitas wajib diisi.'
+          return 'Nama dokumen wajib diisi.'
         }
         if (value.trim().length < 1) {
-          return 'Nama fasilitas setidaknya terdiri dari 1 karakter.'
+          return 'Nama dokumen setidaknya terdiri dari 1 karakter.'
         }
         if (value.trim().length > 255) {
-          return 'Nama fasilitas maksimal terdiri dari 255 karakter.'
+          return 'Nama dokumen maksimal terdiri dari 255 karakter.'
         }
       },
     },
@@ -53,25 +55,25 @@ export function FasilitasForm({
       value: initialValues?.enName ?? '',
       validate(value) {
         if (value.trim().length === 0) {
-          return 'Nama fasilitas (English) wajib diisi.'
+          return 'Nama dokumen (English) wajib diisi.'
         }
         if (value.trim().length < 1) {
-          return 'Nama fasilitas (English) setidaknya terdiri dari 1 karakter.'
+          return 'Nama dokumen (English) setidaknya terdiri dari 1 karakter.'
         }
         if (value.trim().length > 255) {
-          return 'Nama fasilitas (English) maksimal terdiri dari 255 karakter.'
+          return 'Nama dokumen (English) maksimal terdiri dari 255 karakter.'
         }
       },
     },
-    foto: {
-      value: initialValues?.foto ?? null,
+    file: {
+      value: initialValues?.file ?? null,
       validate: (value) => {
-        if (!value && !skipValidation?.foto) {
-          return 'Foto fasilitas wajib diupload.'
+        if (!value && !skipValidation?.file) {
+          return 'Dokumen wajib diupload.'
         }
 
         if (value && value.size > MAX_FILE_SIZE_BYTES) {
-          return 'Ukuran foto maksimal 10MB.'
+          return 'Ukuran dokumen maksimal 10MB.'
         }
       },
     },
@@ -79,7 +81,6 @@ export function FasilitasForm({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Form Menu Bar */}
       <div className="flex justify-between items-center">
         <h2 className="text-xl">{title}</h2>
         <Button
@@ -94,36 +95,34 @@ export function FasilitasForm({
           {actionButtonLabel}
         </Button>
       </div>
-      {/* Form Fields */}
 
       <FieldGroup>
         <Field data-disabled={isLoading}>
-          <FieldLabel htmlFor="foto">Foto Fasilitas</FieldLabel>
+          <FieldLabel htmlFor="file">Dokumen</FieldLabel>
           <FieldContent>
             <Input
-              id="foto"
+              id="file"
               type="file"
-              accept="image/*"
               disabled={isLoading}
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null
 
                 if (file && file.size > MAX_FILE_SIZE_BYTES) {
-                  form.handleChange('foto', null)
-                  form.setFieldError('foto', 'Ukuran foto maksimal 10MB.')
+                  form.handleChange('file', null)
+                  form.setFieldError('file', 'Ukuran dokumen maksimal 10MB.')
                   e.target.value = ''
                   return
                 }
 
-                form.handleChange('foto', file)
+                form.handleChange('file', file)
               }}
             />
-            {form.values.foto.value && (
+            {form.values.file.value && (
               <p className="text-sm text-muted-foreground mt-1">
-                Selected: {form.values.foto.value?.name}
+                Selected: {form.values.file.value?.name}
               </p>
             )}
-            <FieldError>{form.values.foto.error}</FieldError>
+            <FieldError>{form.values.file.error}</FieldError>
           </FieldContent>
         </Field>
 
@@ -141,6 +140,7 @@ export function FasilitasForm({
             <FieldError>{form.values.name.error}</FieldError>
           </FieldContent>
         </Field>
+
         <Field data-disabled={isLoading} data-invalid={!!form.values.enName.error}>
           <FieldLabel htmlFor="enName">Judul (English)</FieldLabel>
           <FieldContent>
@@ -152,7 +152,7 @@ export function FasilitasForm({
               value={form.values.enName.value}
               onChange={(e) => form.handleChange('enName', e.target.value)}
             />
-            <FieldError>{form.values.name.error}</FieldError>
+            <FieldError>{form.values.enName.error}</FieldError>
           </FieldContent>
         </Field>
 

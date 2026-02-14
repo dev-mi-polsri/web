@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS `user`
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `media`
 (
-    `id`              VARCHAR(36)   NOT NULL DEFAULT (UUID()),
-    `type`            VARCHAR(16)   NOT NULL,
-    `mime`            VARCHAR(64)   NOT NULL,
-    `url`             VARCHAR(2048) NOT NULL,
-    `alt_text`        VARCHAR(255)  NULL,
-    `is_downloadable` TINYINT(1)    NOT NULL DEFAULT 0,
+    `id`              VARCHAR(36)  NOT NULL DEFAULT (UUID()),
+    `type`            VARCHAR(16)  NOT NULL,
+    `mime`            VARCHAR(64)  NOT NULL,
+    `url`             VARCHAR(255) NOT NULL,
+    `alt_text`        VARCHAR(255) NULL,
+    `is_downloadable` TINYINT(1)   NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     KEY `media_type_idx` (`type`),
     KEY `media_mime_idx` (`mime`)
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `agenda`
 CREATE TABLE IF NOT EXISTS `fasilitas`
 (
     `id`      VARCHAR(36)  NOT NULL DEFAULT (UUID()),
-    `image`   TEXT         NOT NULL,
+    `image`   VARCHAR(255) NOT NULL,
     `name`    VARCHAR(255) NOT NULL,
     `en_name` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `tenaga_ajar`
     `id`         VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `nama`       VARCHAR(255) NOT NULL,
     `jenis`      VARCHAR(16)  NOT NULL,
-    `foto`       TEXT         NOT NULL,
+    `foto`       VARCHAR(255) NOT NULL,
     `homebase`   VARCHAR(64)  NOT NULL,
     `nip`        VARCHAR(64)  NOT NULL,
     `nidn`       VARCHAR(64)  NULL,
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `tag`
 CREATE TABLE IF NOT EXISTS `post`
 (
     `id`           VARCHAR(36)  NOT NULL DEFAULT (UUID()),
-    `thumbnail`    TEXT         NOT NULL,
+    `thumbnail`    VARCHAR(255) NOT NULL,
     `title`        VARCHAR(255) NOT NULL,
     `content`      JSON         NOT NULL,
     `type`         VARCHAR(32)  NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `post_tag`
 CREATE TABLE IF NOT EXISTS `prodi`
 (
     `id`          VARCHAR(36)  NOT NULL DEFAULT (UUID()),
-    `thumbnail`   TEXT         NOT NULL,
+    `thumbnail`   VARCHAR(255) NOT NULL,
     `title`       VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
     `content`     JSON         NOT NULL,
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `prodi`
 CREATE TABLE IF NOT EXISTS `profile`
 (
     `id`          VARCHAR(36)  NOT NULL DEFAULT (UUID()),
-    `thumbnail`   TEXT         NOT NULL,
+    `thumbnail`   VARCHAR(255) NOT NULL,
     `title`       VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
     `content`     JSON         NOT NULL,
@@ -193,5 +193,8 @@ CREATE TABLE IF NOT EXISTS `profile`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+ALTER TABLE `media`
+    ADD INDEX `media_url_idx` (`url`);
 
 SET FOREIGN_KEY_CHECKS = 1;

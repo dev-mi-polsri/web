@@ -16,6 +16,8 @@ import { SaveIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Homebase, JenisTenagaAjar } from '@/schemas/TenagaAjarTable'
 
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
+
 type TenagaAjarFormValues = {
   foto: FormValue<File | null>
   nama: FormValue<string>
@@ -95,6 +97,10 @@ export function TenagaAjarForm({
         if (!value && !skipValidation?.foto) {
           return 'Foto wajib diupload.'
         }
+
+        if (value && value.size > MAX_FILE_SIZE_BYTES) {
+          return 'Ukuran foto maksimal 10MB.'
+        }
       },
     },
   })
@@ -130,6 +136,14 @@ export function TenagaAjarForm({
               disabled={isLoading}
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null
+
+                if (file && file.size > MAX_FILE_SIZE_BYTES) {
+                  form.handleChange('foto', null)
+                  form.setFieldError('foto', 'Ukuran foto maksimal 10MB.')
+                  e.target.value = ''
+                  return
+                }
+
                 form.handleChange('foto', file)
               }}
             />

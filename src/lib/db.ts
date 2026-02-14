@@ -8,6 +8,7 @@ import { TenagaAjarTable } from '@/schemas/TenagaAjarTable'
 import { UserTable } from '@/schemas/User'
 import { CamelCasePlugin, Kysely, MysqlDialect, ParseJSONResultsPlugin } from 'kysely'
 import { createPool } from 'mysql2'
+import { DokumenTable } from '@/schemas/DokumenTable'
 
 export interface Database {
   agenda: AgendaTable
@@ -20,6 +21,7 @@ export interface Database {
   tenagaAjar: TenagaAjarTable
   user: UserTable
   postTag: PostTagTable
+  dokumen: DokumenTable
 }
 
 declare global {
@@ -37,16 +39,18 @@ const DATABASE_CONFIG = {
     : 10,
 }
 
+const pool = createPool({
+  ...DATABASE_CONFIG,
+  typeCast(field, next) {
+    if (field.type === 'TINY' && field.length === 1) {
+      return field.string() === '1'
+    }
+    return next()
+  },
+})
+
 const dialect = new MysqlDialect({
-  pool: createPool({
-    ...DATABASE_CONFIG,
-    typeCast(field, next) {
-      if (field.type === 'TINY' && field.length === 1) {
-        return field.string() === '1'
-      }
-      return next()
-    },
-  }),
+  pool,
 })
 
 const db = new Kysely<Database>({
@@ -57,5 +61,7 @@ const db = new Kysely<Database>({
 if (process.env.NODE_ENV !== 'production') {
   globalThis.db = db
 }
+
+
 
 export default db

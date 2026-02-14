@@ -20,6 +20,8 @@ import { PostScope } from '@/schemas/_common'
 import RichTextEditor from '../../_components/richtext/richtext.editor'
 import { PRODI_SCOPE_LABEL } from '../constants'
 
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
+
 type ProdiFormValues = {
   title: FormValue<string>
   description: FormValue<string>
@@ -99,6 +101,10 @@ export function ProdiForm({
         if (!value && !skipValidation?.thumbnail) {
           return 'Thumbnail wajib diupload.'
         }
+
+        if (value && value.size > MAX_FILE_SIZE_BYTES) {
+          return 'Ukuran thumbnail maksimal 10MB.'
+        }
       },
     },
   })
@@ -141,6 +147,14 @@ export function ProdiForm({
                 disabled={isLoading}
                 onChange={(e) => {
                   const file = e.target.files?.[0] ?? null
+
+                  if (file && file.size > MAX_FILE_SIZE_BYTES) {
+                    form.handleChange('thumbnail', null)
+                    form.setFieldError('thumbnail', 'Ukuran thumbnail maksimal 10MB.')
+                    e.target.value = ''
+                    return
+                  }
+
                   form.handleChange('thumbnail', file)
                 }}
               />
