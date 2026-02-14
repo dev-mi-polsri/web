@@ -14,6 +14,7 @@ import {
   validateInput,
 } from '@/server-actions/_common'
 import { Base64Utils } from '@/lib/base64'
+import { getSessionThrowable } from './_resource-access'
 
 const dokumenSchema = z.object({
   file: base64schema,
@@ -57,6 +58,7 @@ export async function createDokumen(
   input: CreateDokumenInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
     const parsed = validateInput(createDokumenSchema, input)
 
     const base64utils = new Base64Utils()
@@ -79,6 +81,8 @@ export async function updateDokumen(
   input: UpdateDokumenInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const parsed = validateInput(updateDokumenSchema, input)
 
     let file: File | undefined
@@ -104,6 +108,8 @@ export async function updateDokumen(
 
 export async function deleteDokumen(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const parsedId = validateInput(idschema, id)
 
     const service = new DokumenService(db)

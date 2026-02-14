@@ -15,6 +15,7 @@ import {
 } from '@/server-actions/_common'
 import { Base64Utils } from '@/lib/base64'
 import { Homebase, JenisTenagaAjar } from '@/schemas/TenagaAjarTable'
+import { getSessionThrowable } from './_resource-access'
 
 const tenagaAjarSchema = z.object({
   nama: z.string().min(3, 'Nama minimal 3 karakter').max(255),
@@ -57,6 +58,7 @@ export async function createTenagaAjar(
   input: CreateTenagaAjarInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsed = validateInput(createTenagaAjarSchema, input)
 
     const base64utils = new Base64Utils()
@@ -79,6 +81,7 @@ export async function updateTenagaAjar(
   input: UpdateTenagaAjarInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsed = validateInput(updateTenagaAjarSchema, input)
 
     let foto: File | undefined
@@ -103,6 +106,7 @@ export async function updateTenagaAjar(
 
 export async function deleteTenagaAjar(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsedId = validateInput(idschema, id)
 
     const service = new TenagaAjarService(db)

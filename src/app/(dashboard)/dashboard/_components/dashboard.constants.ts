@@ -37,3 +37,24 @@ export const DASHBOARD_ROUTES: DashboardRoute[] = [
     href: '/dashboard/tenaga-ajar',
   },
 ]
+
+export const WRITER_DASHBOARD_ROUTES: DashboardRoute[] = [
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
+  },
+  {
+    label: 'Posts',
+    href: '/dashboard/posts',
+  },
+]
+
+export function getDashboardRoutes(role: string): DashboardRoute[] {
+  if (role === 'admin') {
+    return DASHBOARD_ROUTES
+  } else if (role === 'user') {
+    return WRITER_DASHBOARD_ROUTES
+  } else {
+    return []
+  }
+}

@@ -17,6 +17,7 @@ import {
 import { Base64Utils } from '@/lib/base64'
 import { PostType, PostUtility } from '@/schemas/PostTable'
 import { PostScope } from '@/schemas/_common'
+import { getSessionThrowable } from './_resource-access'
 
 const postSchema = z.object({
   thumbnail: base64schema,
@@ -91,6 +92,7 @@ export async function getTagById(id: string) {
 
 export async function createTag(name: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
     const service = new TagService(db)
     await service.createTag(name)
     updateTag('tags')
@@ -101,6 +103,8 @@ export async function createTag(name: string): Promise<ServerActionResponse<void
 
 export async function deleteTag(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const service = new TagService(db)
     await service.deleteTag(id)
     updateTag('tags')
@@ -111,6 +115,8 @@ export async function deleteTag(id: string): Promise<ServerActionResponse<void>>
 
 export async function createPost(input: CreatePostInput): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const parsed = validateInput(createPostSchema, input)
 
     const thumbnail = await Base64Utils.parseBase64(parsed.thumbnail)
@@ -136,6 +142,8 @@ export async function createPost(input: CreatePostInput): Promise<ServerActionRe
 
 export async function updatePost(input: UpdatePostInput): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const parsed = validateInput(updatePostSchema, input)
 
     let thumbnail: File | undefined
@@ -165,6 +173,8 @@ export async function updatePost(input: UpdatePostInput): Promise<ServerActionRe
 
 export async function deletePost(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const parsedId = validateInput(idschema, id)
 
     const service = new PostService(db)
@@ -183,6 +193,8 @@ export async function removeTagFromPost(
   tagId: string,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable()
+
     const parsedPostId = validateInput(idschema, postId)
     const parsedTagId = validateInput(idschema, tagId)
 

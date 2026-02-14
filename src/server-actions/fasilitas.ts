@@ -13,6 +13,7 @@ import { cacheLife, cacheTag, updateTag } from 'next/cache'
 import db from '@/lib/db'
 import type { FasilitasCriteria } from '@/repository/FasilitasRepository'
 import type { PaginationRequest } from '@/repository/_contracts'
+import { getSessionThrowable } from './_resource-access'
 
 const fasilitasSchema = z.object({
   image: base64schema,
@@ -54,6 +55,8 @@ export async function createFasilitas(
   input: CreateFasilitasInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsed = validateInput(createFasilitasSchema, input)
 
     const base64utils = new Base64Utils()
@@ -76,6 +79,8 @@ export async function updateFasilitas(
   input: UpdateFasilitasInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsed = validateInput(updateFasilitasSchema, input)
 
     let image: File | undefined
@@ -101,6 +106,8 @@ export async function updateFasilitas(
 
 export async function deleteFasilitas(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsedId = validateInput(idschema, id)
 
     const service = new FasilitasService(db)

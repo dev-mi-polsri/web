@@ -17,6 +17,7 @@ import {
 import { Base64Utils } from '@/lib/base64'
 import { PostScope } from '@/schemas/_common'
 import { PostUtility } from '@/schemas/PostTable'
+import { getSessionThrowable } from './_resource-access'
 
 const slugSchema = z
   .string()
@@ -72,6 +73,8 @@ export async function createProfile(
   input: CreateProfileInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsed = validateInput(createProfileSchema, input)
 
     const base64utils = new Base64Utils()
@@ -97,6 +100,8 @@ export async function updateProfile(
   input: UpdateProfileInput,
 ): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsed = validateInput(updateProfileSchema, input)
 
     let thumbnail: File | undefined
@@ -122,6 +127,7 @@ export async function updateProfile(
 
 export async function deleteProfile(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsedId = validateInput(idschema, id)
 
     const service = new ProfileService(db)

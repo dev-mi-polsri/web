@@ -1,5 +1,6 @@
-import { DASHBOARD_ROUTES, DashboardRoute } from './_components/sidebar/sidebar.constants'
+import { getSession } from '@/server-actions/_resource-access'
 import Link from 'next/link'
+import { DashboardRoute, getDashboardRoutes } from './_components/dashboard.constants'
 
 function DashboardMenu({ href, label }: DashboardRoute) {
   return (
@@ -9,12 +10,14 @@ function DashboardMenu({ href, label }: DashboardRoute) {
   )
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const user = await getSession()
+
   return (
     <div className="flex flex-col gap-8">
       <h1 className="text-xl">Dashboard</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {DASHBOARD_ROUTES.map((route) => (
+        {getDashboardRoutes(user?.role || '').map((route) => (
           <DashboardMenu key={route.href} {...route} />
         ))}
       </div>

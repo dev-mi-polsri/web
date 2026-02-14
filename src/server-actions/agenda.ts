@@ -12,6 +12,7 @@ import {
   ServerActionResponse,
   validateInput,
 } from '@/server-actions/_common'
+import { getSession, getSessionThrowable } from './_resource-access'
 
 const agendaSchema = z.object({
   title: z
@@ -61,6 +62,7 @@ export async function getAgendaById(id: string) {
 
 export async function createAgenda(input: CreateAgendaInput): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsedInput = validateInput(createAgendaSchema, input)
 
     const agendaService = new AgendaService(db)
@@ -73,6 +75,7 @@ export async function createAgenda(input: CreateAgendaInput): Promise<ServerActi
 
 export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsedInput = validateInput(updateAgendaSchema, input)
     const { id, ...payload } = parsedInput
     const agendaService = new AgendaService(db)
@@ -88,6 +91,7 @@ export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActi
 
 export async function deleteAgenda(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
     const parsedId = validateInput(idschema, id)
     const agendaService = new AgendaService(db)
 

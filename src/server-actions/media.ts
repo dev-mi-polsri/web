@@ -16,6 +16,7 @@ import {
 import { Base64Utils } from '@/lib/base64'
 import { MediaType, MediaTypeFactory } from '@/schemas/MediaTable'
 import { NodeIOAdapter } from '@/lib/io'
+import { getSessionThrowable } from './_resource-access'
 
 const createMediaSchema = z.object({
   file: base64schema,
@@ -66,6 +67,8 @@ export async function getMediaByUrl(url: string) {
 
 export async function createMedia(input: CreateMediaInput): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsed = validateInput(createMediaSchema, input)
 
     const base64utils = new Base64Utils()
@@ -91,6 +94,8 @@ export async function createMedia(input: CreateMediaInput): Promise<ServerAction
 
 export async function updateMedia(input: UpdateMediaInput): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsed = validateInput(updateMediaSchema, input)
     const { id, ...payload } = parsed
 
@@ -107,6 +112,8 @@ export async function updateMedia(input: UpdateMediaInput): Promise<ServerAction
 
 export async function deleteMedia(id: string): Promise<ServerActionResponse<void>> {
   try {
+    await getSessionThrowable(['admin'])
+
     const parsedId = validateInput(idschema, id)
 
     const service = new MediaService(db)
