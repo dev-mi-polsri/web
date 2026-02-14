@@ -14,10 +14,13 @@ import { IOAdapter, NodeIOAdapter } from '@/lib/io'
 
 export interface IMediaService {
   getMedia(criteria: MediaCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<Media>>
+  getMediaById(id: string): Promise<Media>
   getMediaByUrl(url: MediaUrl): Promise<Media>
   getMediaUploadUrl(url: string): Promise<File>
   createMedia(data: NewMedia): Promise<boolean>
+  updateMediaById(id: string, data: UpdateMedia): Promise<boolean>
   updateMediaByUrl(url: MediaUrl, data: UpdateMedia): Promise<boolean>
+  deleteMediaById(id: string): Promise<boolean>
   deleteMediaByUrl(url: MediaUrl): Promise<boolean>
 }
 
@@ -63,6 +66,14 @@ export class MediaService implements IMediaService {
     return file
   }
 
+  async getMediaById(id: string): Promise<Media> {
+    const media = await this.repository.getById(id)
+    if (!media) {
+      throw new MediaNotFoundError(`Media with id ${id} not found`)
+    }
+    return media
+  }
+
   async getMediaByUrl(url: MediaUrl): Promise<Media> {
     const media = await this.repository.getByUrl(url)
     if (!media) {
@@ -79,8 +90,18 @@ export class MediaService implements IMediaService {
     return true
   }
 
+  async updateMediaById(id: string, data: UpdateMedia): Promise<boolean> {
+    await this.repository.updateById(id, data)
+    return true
+  }
+
   async updateMediaByUrl(url: MediaUrl, data: UpdateMedia): Promise<boolean> {
     await this.repository.updateByUrl(url, data)
+    return true
+  }
+
+  async deleteMediaById(id: string): Promise<boolean> {
+    await this.repository.deleteById(id)
     return true
   }
 

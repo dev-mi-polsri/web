@@ -13,10 +13,14 @@ export type MediaCriteria = {
 export interface IMediaRepository {
   getAll(criteria: MediaCriteria, pageable: PaginationRequest): Promise<PaginatedResult<Media>>
 
+  getById(id: string): Promise<Media | undefined>
+
   /** Media is addressed by URL (business key). */
   getByUrl(url: MediaUrl): Promise<Media | undefined>
   create(data: NewMedia): Promise<InsertResult>
+  updateById(id: string, data: UpdateMedia): Promise<UpdateResult>
   updateByUrl(url: MediaUrl, data: UpdateMedia): Promise<UpdateResult>
+  deleteById(id: string): Promise<DeleteResult>
   deleteByUrl(url: MediaUrl): Promise<DeleteResult>
 }
 
@@ -41,7 +45,7 @@ export class MediaRepository implements IMediaRepository {
       )
     }
 
-    if (criteria.isDownloadable) {
+    if (typeof criteria.isDownloadable === 'boolean') {
       baseQuery = baseQuery.where('media.isDownloadable', '=', criteria.isDownloadable)
     }
 
@@ -68,6 +72,9 @@ export class MediaRepository implements IMediaRepository {
           `%${criteria.searchKeyword!.toLowerCase()}%`,
         ),
       )
+      .$if(typeof criteria.isDownloadable === 'boolean', (qb) =>
+        qb.where('media.isDownloadable', '=', criteria.isDownloadable!),
+      )
       .$if(!!criteria.type, (qb) => qb.where('media.type', '=', criteria.type!))
       .$if(!!criteria.mime, (qb) => qb.where('media.mime', '=', criteria.mime!))
       .select(({ fn }) => fn.count<number>('media.id').as('total'))
@@ -82,6 +89,14 @@ export class MediaRepository implements IMediaRepository {
     })
   }
 
+  async getById(id: string): Promise<Media | undefined> {
+    return await this.db
+      .selectFrom('media')
+      .where('media.id', '=', id)
+      .selectAll()
+      .executeTakeFirst()
+  }
+
   async getByUrl(url: MediaUrl): Promise<Media | undefined> {
     return await this.db
       .selectFrom('media')
@@ -94,12 +109,24 @@ export class MediaRepository implements IMediaRepository {
     return await this.db.insertInto('media').values(data).executeTakeFirst()
   }
 
+  async updateById(id: string, data: UpdateMedia): Promise<UpdateResult> {
+    return await this.db
+      .updateTable('media')
+      .set(data)
+      .where('media.id', '=', id)
+      .executeTakeFirst()
+  }
+
   async updateByUrl(url: MediaUrl, data: UpdateMedia): Promise<UpdateResult> {
     return await this.db
       .updateTable('media')
       .set(data)
       .where('media.url', '=', url)
       .executeTakeFirst()
+  }
+
+  async deleteById(id: string): Promise<DeleteResult> {
+    return await this.db.deleteFrom('media').where('media.id', '=', id).executeTakeFirst()
   }
 
   async deleteByUrl(url: MediaUrl): Promise<DeleteResult> {

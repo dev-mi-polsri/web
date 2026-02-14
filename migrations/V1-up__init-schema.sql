@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `fasilitas`
 -- -----------------------------------------------------------------------------
 -- tenaga_ajar
 -- -----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tenagaAjar`
+CREATE TABLE IF NOT EXISTS `tenaga_ajar`
 (
     `id`         VARCHAR(36)  NOT NULL DEFAULT (UUID()),
     `nama`       VARCHAR(255) NOT NULL,

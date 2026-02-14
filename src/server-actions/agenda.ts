@@ -8,6 +8,7 @@ import { z } from 'zod'
 import {
   dateschema,
   handleServerActionError,
+  idschema,
   ServerActionResponse,
   validateInput,
 } from '@/server-actions/_common'
@@ -15,13 +16,13 @@ import {
 const agendaSchema = z.object({
   title: z
     .string()
-    .min(10, 'Judul setidaknya terdiri dari 10 karakter')
+    .min(1, 'Judul setidaknya terdiri dari 1 karakter')
     .max(255, 'Judul tidak boleh lebih dari 255 karakter'),
   enTitle: z
     .string()
-    .min(10, 'Judul (Inggris) setidaknya terdiri dari 10 karakter')
+    .min(1, 'Judul (Inggris) setidaknya terdiri dari 1 karakter')
     .max(255, 'Judul (Inggris) tidak boleh lebih dari 255 karakter'),
-  description: z.string().min(20, 'Deskripsi setidaknya terdiri dari 20 karakter'),
+  description: z.string().min(1, 'Deskripsi setidaknya terdiri dari 1 karakter'),
   startDate: dateschema,
   endDate: dateschema,
   location: z
@@ -52,8 +53,10 @@ export async function getAgendaById(id: string) {
   cacheTag('agendaById', id)
   cacheLife('hours')
 
+  const parsedId = validateInput(idschema, id)
+
   const agendaService = new AgendaService(db)
-  return agendaService.getAgendaById(id)
+  return agendaService.getAgendaById(parsedId)
 }
 
 export async function createAgenda(input: CreateAgendaInput): Promise<ServerActionResponse<void>> {
@@ -71,12 +74,13 @@ export async function createAgenda(input: CreateAgendaInput): Promise<ServerActi
 export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActionResponse<void>> {
   try {
     const parsedInput = validateInput(updateAgendaSchema, input)
+    const { id, ...payload } = parsedInput
     const agendaService = new AgendaService(db)
 
-    await agendaService.updateAgenda(input.id, parsedInput)
+    await agendaService.updateAgenda(id, payload)
     updateTag('agenda')
     updateTag('agendaById')
-    updateTag(input.id)
+    updateTag(id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -84,13 +88,14 @@ export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActi
 
 export async function deleteAgenda(id: string): Promise<ServerActionResponse<void>> {
   try {
+    const parsedId = validateInput(idschema, id)
     const agendaService = new AgendaService(db)
 
-    await agendaService.deleteAgenda(id)
+    await agendaService.deleteAgenda(parsedId)
 
     updateTag('agenda')
     updateTag('agendaById')
-    updateTag(id)
+    updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

@@ -5,9 +5,10 @@ export enum MediaType {
   IMAGE = 'image',
   VIDEO = 'video',
   PDF = 'pdf',
+  UNKNOWN = 'unknown',
 }
 export class MediaTypeFactory {
-  static fromMimeType(mimeType: MimeType): MediaType | undefined {
+  static fromMimeType(mimeType: MimeType): MediaType {
     if (mimeType.startsWith('image/')) {
       return MediaType.IMAGE
     } else if (mimeType.startsWith('video/')) {
@@ -15,7 +16,7 @@ export class MediaTypeFactory {
     } else if (mimeType === 'application/pdf') {
       return MediaType.PDF
     } else {
-      return undefined
+      return MediaType.UNKNOWN
     }
   }
 }
