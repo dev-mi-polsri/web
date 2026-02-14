@@ -38,7 +38,15 @@ const DATABASE_CONFIG = {
 }
 
 const dialect = new MysqlDialect({
-  pool: createPool(DATABASE_CONFIG),
+  pool: createPool({
+    ...DATABASE_CONFIG,
+    typeCast(field, next) {
+      if (field.type === 'TINY' && field.length === 1) {
+        return field.string() === '1'
+      }
+      return next()
+    },
+  }),
 })
 
 const db = new Kysely<Database>({

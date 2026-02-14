@@ -32,7 +32,7 @@ export default function NewPostPage() {
               return
             }
 
-            toast.success('Post created successfully')
+            toast.success('Post berhasil dibuat')
 
             router.push('/dashboard/posts')
             router.refresh()

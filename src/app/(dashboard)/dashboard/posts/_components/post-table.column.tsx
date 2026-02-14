@@ -67,7 +67,7 @@ export const postTableColumn: ColumnDef<PostSummary>[] = [
     cell: ({ row }) => {
       return (
         <div className={'flex gap-2'}>
-          <EditButton editHref={'/dashboard/post/' + row.original.id} />
+          <EditButton editHref={'/dashboard/posts/edit/' + row.original.id} />
           <DeleteButton
             onConfirm={async () => {
               const actionRes = await deletePost(row.original.id)

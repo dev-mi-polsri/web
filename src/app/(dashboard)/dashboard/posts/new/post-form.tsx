@@ -36,7 +36,9 @@ type PostFormProps = {
   onSubmit: (values: Value<PostFormValues>) => void
   isLoading?: boolean
   children?: ReactNode
-  skipValidation?: Pick<PostFormValues, 'thumbnail'>
+  skipValidation?: Record<keyof Pick<PostFormValues, 'thumbnail'>, boolean>
+  title?: string,
+  actionButtonLabel?: string,
 }
 
 export function PostForm({
@@ -45,6 +47,8 @@ export function PostForm({
   isLoading,
   children,
   skipValidation,
+  title = "New Post",
+  actionButtonLabel = "Tambah"
 }: PostFormProps) {
   const form = useForm<PostFormValues>({
     title: {
@@ -109,7 +113,7 @@ export function PostForm({
     <div className="flex flex-col gap-4">
       {/* Form Menu Bar */}
       <div className="flex justify-between items-center">
-        <h2 className="text-xl">New Post</h2>
+        <h2 className="text-xl">{title}</h2>
         <Button
           disabled={isLoading}
           onClick={() => {
@@ -119,7 +123,7 @@ export function PostForm({
           }}
         >
           <SaveIcon />
-          Simpan
+          {actionButtonLabel}
         </Button>
       </div>
       {/* Form Fields */}
