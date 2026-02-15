@@ -9,6 +9,14 @@ export const DASHBOARD_ROUTES: DashboardRoute[] = [
     href: '/dashboard',
   },
   {
+    label: 'Profile',
+    href: '/dashboard/management',
+  },
+  {
+    label: 'Users',
+    href: '/dashboard/user',
+  },
+  {
     label: 'Posts',
     href: '/dashboard/posts',
   },
@@ -42,6 +50,10 @@ export const WRITER_DASHBOARD_ROUTES: DashboardRoute[] = [
   {
     label: 'Dashboard',
     href: '/dashboard',
+  },
+  {
+    label: 'Profile',
+    href: '/dashboard/management',
   },
   {
     label: 'Posts',

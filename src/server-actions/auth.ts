@@ -3,13 +3,13 @@ import { z } from 'zod'
 import { APP_ROLES, auth } from '@/lib/auth'
 import {
   handleServerActionError,
-  ServerActionError,
   ServerActionResponse,
   validateInput,
 } from '@/server-actions/_common'
 import { UserWithRole } from 'better-auth/plugins'
 import { headers } from 'next/headers'
 import { getSessionThrowable } from './_resource-access'
+import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_contracts'
 
 const userSchema = z.object({
   email: z.string().email(),
@@ -33,10 +33,53 @@ const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
 })
 
+const updateUserRoleSchema = z.object({
+  userId: z.string(),
+  role: z.enum(APP_ROLES),
+})
+
+const updateMyDetailsSchema = z.object({
+  name: z.string().min(1),
+})
+
 export type CreateUserInput = z.infer<typeof userSchema>
 export type UpdatePasswordAdminInput = z.infer<typeof updatePasswordAdminSchema>
 export type UpdatePasswordUserInput = z.infer<typeof updatePasswordUserSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
+export type UpdateUserRoleInput = z.infer<typeof updateUserRoleSchema>
+export type UpdateMyDetailsInput = z.infer<typeof updateMyDetailsSchema>
+
+export async function getUsers(
+  pageable: PaginationRequest,
+): Promise<ServerActionResponse<PaginatedResult<UserWithRole>>> {
+  try {
+    await getSessionThrowable(['admin'])
+    const users = await auth.api.listUsers({
+      query: {
+        limit: pageable.size,
+        offset: (pageable.page - 1) * pageable.size,
+      },
+      headers: await headers(),
+    })
+    return processPagination({
+      results: users.users,
+      total: users.total,
+      page: pageable.page,
+      size: pageable.size,
+    })
+  } catch (error) {
+    return handleServerActionError(error)
+  }
+}
+
+export async function getUserById(id: string): Promise<ServerActionResponse<UserWithRole>> {
+  try {
+    await getSessionThrowable(['admin'])
+    return await auth.api.getUser({ query: { id: id }, headers: await headers() })
+  } catch (error) {
+    return handleServerActionError(error)
+  }
+}
 
 export async function createUser(
   input: CreateUserInput,
@@ -49,6 +92,7 @@ export async function createUser(
       body: {
         ...parsedInput,
       },
+      headers: await headers(),
     })
   } catch (error) {
     return handleServerActionError(error)
@@ -67,6 +111,7 @@ export async function updateUser(input: UpdateUserInput): Promise<ServerActionRe
           name: parsedInput.name,
         },
       },
+      headers: await headers(),
     })
 
     return true
@@ -87,6 +132,7 @@ export async function updatePasswordAdmin(
         userId: parsedInput.userId,
         newPassword: parsedInput.newPassword,
       },
+      headers: await headers(),
     })
 
     return true
@@ -110,6 +156,47 @@ export async function updatePasswordUser(
       },
       headers: await headers(),
     })
+    return true
+  } catch (error) {
+    return handleServerActionError(error)
+  }
+}
+
+export async function updateUserRole(
+  input: UpdateUserRoleInput,
+): Promise<ServerActionResponse<boolean>> {
+  try {
+    await getSessionThrowable(['admin'])
+    const parsedInput = validateInput(updateUserRoleSchema, input)
+
+    await auth.api.setRole({
+      body: {
+        userId: parsedInput.userId,
+        role: parsedInput.role,
+      },
+      headers: await headers(),
+    })
+
+    return true
+  } catch (error) {
+    return handleServerActionError(error)
+  }
+}
+
+export async function updateMyDetails(
+  input: UpdateMyDetailsInput,
+): Promise<ServerActionResponse<boolean>> {
+  try {
+    await getSessionThrowable()
+    const parsedInput = validateInput(updateMyDetailsSchema, input)
+
+    await auth.api.updateUser({
+      body: {
+        name: parsedInput.name,
+      },
+      headers: await headers(),
+    })
+
     return true
   } catch (error) {
     return handleServerActionError(error)
