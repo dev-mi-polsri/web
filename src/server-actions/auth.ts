@@ -49,7 +49,12 @@ export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateUserRoleInput = z.infer<typeof updateUserRoleSchema>
 export type UpdateMyDetailsInput = z.infer<typeof updateMyDetailsSchema>
 
+export type UserCriteria = {
+  searchKeyword?: string
+}
+
 export async function getUsers(
+  criteria: UserCriteria,
   pageable: PaginationRequest,
 ): Promise<ServerActionResponse<PaginatedResult<UserWithRole>>> {
   try {
@@ -58,6 +63,8 @@ export async function getUsers(
       query: {
         limit: pageable.size,
         offset: (pageable.page - 1) * pageable.size,
+        searchField: 'email',
+        searchValue: criteria.searchKeyword,
       },
       headers: await headers(),
     })

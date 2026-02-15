@@ -5,19 +5,7 @@ import { PlusIcon } from 'lucide-react'
 
 import getSession from '../_lib/auth'
 import { getUsers } from '@/server-actions/auth'
-import { processPagination, type PaginatedResult } from '@/repository/_contracts'
-import UserTable, { type UserRow } from './_components/user-table'
-
-function matchesQuery(user: UserRow, query: string): boolean {
-  const q = query.trim().toLowerCase()
-  if (!q) return true
-
-  return (
-    user.email.toLowerCase().includes(q) ||
-    (user.name ?? '').toLowerCase().includes(q) ||
-    (user.role ?? '').toLowerCase().includes(q)
-  )
-}
+import UserTable from './_components/user-table'
 
 export default async function UserPage({
   searchParams,
@@ -40,10 +28,15 @@ export default async function UserPage({
   const pageNumber = Number(page) || 1
   const sizeNumber = Number(size) || 10
 
-  const users = await getUsers({
-    page: pageNumber,
-    size: sizeNumber,
-  })
+  const users = await getUsers(
+    {
+      searchKeyword: query,
+    },
+    {
+      page: pageNumber,
+      size: sizeNumber,
+    },
+  )
 
   if (users && 'error' in users) {
     return (
