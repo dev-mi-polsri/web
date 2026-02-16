@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { ServiceError } from '@/services/_common'
 import { ZodError } from 'zod'
-import type { ServerActionResponse } from '@/server-actions/_common'
+import { ValidationError, type ServerActionResponse } from '@/server-actions/_common'
 
 export type StandardErrorResponse = {
   error: string
@@ -24,16 +24,6 @@ export class ApiError extends Error {
     this.errorStatus = errorStatus
   }
 }
-
-export class ValidationError extends ApiError {
-  issues: ZodError['issues']
-
-  constructor(issues: ZodError['issues']) {
-    super('Validation Error', 'VALIDATION_ERROR')
-    this.issues = issues
-  }
-}
-
 export function parsePagination(searchParams: URLSearchParams): { page: number; size: number } {
   const page = parseInt(searchParams.get('page') || '1', 10)
   const size = parseInt(searchParams.get('size') || '10', 10)
@@ -60,7 +50,7 @@ export function handleApiError(error: unknown): NextResponse<StandardApiResponse
   if (error instanceof ValidationError) {
     return NextResponse.json(
       {
-        code: error.errorCode,
+        code: error.code,
         error: error.message,
         issues: error.issues,
       } satisfies StandardApiResponse<unknown>,

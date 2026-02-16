@@ -1,10 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { handleApiError, respondFromServerAction, StandardApiResponse } from '@/app/api/_common'
-import { cacheLife } from 'next/cache'
-import { AgendaService } from '@/services/AgendaService'
-import db from '@/lib/db'
 import { Agenda } from '@/schemas/AgendaTable'
 import { deleteAgenda, getAgendaById, updateAgenda } from '@/server-actions/agenda'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/agenda/[id]'>) {
   try {
