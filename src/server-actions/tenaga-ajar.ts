@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import { TenagaAjarService } from '@/services/TenagaAjarService'
 import type { TenagaAjarCriteria } from '@/repository/TenagaAjarRepository'
@@ -71,7 +71,7 @@ export async function createTenagaAjar(
       isPejabat: parsed.isPejabat ?? false,
     })
 
-    updateTag('tenagaAjar')
+    // updateTag('tenagaAjar')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -96,9 +96,9 @@ export async function updateTenagaAjar(
       foto,
     })
 
-    updateTag('tenagaAjar')
-    updateTag('tenagaAjarById')
-    updateTag(parsed.id)
+    // updateTag('tenagaAjar')
+    // updateTag('tenagaAjarById')
+    // updateTag(parsed.id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -112,9 +112,9 @@ export async function deleteTenagaAjar(id: string): Promise<ServerActionResponse
     const service = new TenagaAjarService(db)
     await service.deleteTenagaAjar(parsedId)
 
-    updateTag('tenagaAjar')
-    updateTag('tenagaAjarById')
-    updateTag(parsedId)
+    // updateTag('tenagaAjar')
+    // updateTag('tenagaAjarById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

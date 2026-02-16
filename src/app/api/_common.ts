@@ -102,14 +102,15 @@ function mapServerActionErrorStatus(code: string): number {
   }
 }
 
-export function respondFromServerAction<T>(
-  result: ServerActionResponse<T>,
-  successStatus = 200,
-): NextResponse<StandardApiResponse<T>> {
+export function respondFromServerAction<T>(result: ServerActionResponse<T>, successStatus = 200) {
   if (isServerActionErrorShape(result)) {
     return NextResponse.json(result satisfies StandardApiResponse<T>, {
       status: mapServerActionErrorStatus(result.code),
     })
+  }
+
+  if (!result) {
+    return NextResponse.json({}, { status: successStatus })
   }
 
   return NextResponse.json(result satisfies StandardApiResponse<T>, { status: successStatus })

@@ -1,11 +1,10 @@
 'use client'
 
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import type { Agenda } from '@/schemas/AgendaTable'
 import { AgendaForm } from '../../new/agenda-form'
-import { updateAgenda } from '@/server-actions/agenda'
+import { useUpdateAgenda } from '@/app/(dashboard)/_hooks/agenda'
 import { parseDate } from '@/lib/date'
 
 type EditAgendaPageProps = {
@@ -14,6 +13,7 @@ type EditAgendaPageProps = {
 
 export default function EditAgendaPage({ agenda }: EditAgendaPageProps) {
   const router = useRouter()
+  const updateMutation = useUpdateAgenda(agenda.id)
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -32,8 +32,7 @@ export default function EditAgendaPage({ agenda }: EditAgendaPageProps) {
           location: agenda.location,
         }}
         onSubmit={async (values) => {
-          const res = await updateAgenda({
-            id: agenda.id,
+          await updateMutation.mutateAsync({
             title: values.title,
             enTitle: values.enTitle,
             description: values.description,
@@ -41,13 +40,6 @@ export default function EditAgendaPage({ agenda }: EditAgendaPageProps) {
             endDate: values.endDate,
             location: values.location,
           })
-
-          if (res && 'error' in res) {
-            toast.error(res.code, { description: res.error })
-            return
-          }
-
-          toast.success('Agenda berhasil diperbarui')
 
           router.push('/dashboard/agenda')
           router.refresh()

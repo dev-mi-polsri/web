@@ -2,7 +2,7 @@ import React from 'react'
 import './globals.css'
 import { Inter as FontSans } from 'next/font/google'
 import { Navbar } from './_components/navbar'
-import { Providers } from './_providers'
+import { QueryProviders } from './_providers/query-provider'
 import { ThemeProvider } from './_providers/theme-provider'
 import { cn } from '@/lib/utils'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
@@ -68,7 +68,7 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers>
+        <QueryProviders>
           <NextIntlClientProvider>
             <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
               <Navbar />
@@ -78,7 +78,7 @@ export default async function RootLayout({
               <Toaster />
             </ThemeProvider>
           </NextIntlClientProvider>
-        </Providers>
+        </QueryProviders>
       </body>
     </html>
   )

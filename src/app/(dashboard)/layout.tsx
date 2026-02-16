@@ -5,6 +5,7 @@ import { Inter as FontSans } from 'next/font/google'
 import { ReactNode } from 'react'
 import { ThemeProvider } from '../(frontend)/[locale]/_providers/theme-provider'
 import './globals.css'
+import { QueryProviders } from '../(frontend)/[locale]/_providers/query-provider'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -25,10 +26,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           fontSans.variable,
         )}
       >
-        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <QueryProviders>
+          <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </QueryProviders>
       </body>
     </html>
   )

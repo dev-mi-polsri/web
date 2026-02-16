@@ -1,10 +1,9 @@
 'use client'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Fasilitas } from '@/schemas/FasilitasTable'
 import { FasilitasForm } from '../../new/fasilitas-form'
-import { updateFasilitas } from '@/server-actions/fasilitas'
+import { useUpdateFasilitas } from '@/app/(dashboard)/_hooks/fasilitas'
 
 type EditFasilitasPageProps = {
   fasilitas: Fasilitas
@@ -12,6 +11,7 @@ type EditFasilitasPageProps = {
 
 export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps) {
   const router = useRouter()
+  const updateMutation = useUpdateFasilitas(fasilitas.id)
 
   return (
     <>
@@ -27,18 +27,10 @@ export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps)
             enName: fasilitas.enName,
           }}
           onSubmit={async (values) => {
-            const res = await updateFasilitas({
-              id: fasilitas.id,
+            await updateMutation.mutateAsync({
               name: values.name,
               enName: values.enName,
             })
-
-            if (res && 'error' in res) {
-              toast.error(res.code, { description: res.error })
-              return
-            }
-
-            toast.success('Fasilitas berhasil diperbarui')
 
             router.push('/dashboard/fasilitas')
             router.refresh()

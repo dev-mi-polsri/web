@@ -3,9 +3,8 @@
 import type { Prodi } from '@/schemas/ProdiTable'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { ProdiForm } from '@/app/(dashboard)/dashboard/prodi/new/prodi-form'
-import { updateProdi } from '@/server-actions/prodi'
+import { useUpdateProdi } from '@/app/(dashboard)/_hooks/prodi'
 import { Base64Utils } from '@/lib/base64'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
 type EditProdiPageProps = {
@@ -14,6 +13,7 @@ type EditProdiPageProps = {
 
 export default function EditProdiPage({ prodi }: EditProdiPageProps) {
   const router = useRouter()
+  const updateMutation = useUpdateProdi(prodi.id)
 
   return (
     <div className="flex flex-col gap-4">
@@ -35,8 +35,7 @@ export default function EditProdiPage({ prodi }: EditProdiPageProps) {
             thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
           }
 
-          const res = await updateProdi({
-            id: prodi.id,
+          await updateMutation.mutateAsync({
             title: values.title,
             description: values.description,
             content: values.content!,
@@ -44,12 +43,6 @@ export default function EditProdiPage({ prodi }: EditProdiPageProps) {
             thumbnail,
           })
 
-          if (res && 'error' in res) {
-            toast.error(res.code, { description: res.error })
-            return
-          }
-
-          toast.success('Program studi berhasil diperbarui')
           router.push('/dashboard/prodi')
           router.refresh()
         }}

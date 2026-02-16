@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
 import { toast } from 'sonner'
 import type { Agenda } from '@/schemas/AgendaTable'
-import { deleteAgenda } from '@/server-actions/agenda'
+import { deleteResource } from '@/app/(dashboard)/_hooks/delete-resource'
 import { parseDate } from '@/lib/date'
 
 function formatAgendaDate(value: unknown): string {
@@ -51,14 +51,13 @@ export const agendaTableColumn: ColumnDef<Agenda>[] = [
           <EditButton editHref={'/dashboard/agenda/edit/' + row.original.id} />
           <DeleteButton
             onConfirm={async () => {
-              const actionRes = await deleteAgenda(row.original.id)
-
-              if (actionRes && 'error' in actionRes) {
-                toast.error(actionRes.code, { description: actionRes.error })
-                return
+              try {
+                await deleteResource(`/api/agenda/${row.original.id}`)
+                toast.success('Agenda berhasil dihapus')
+              } catch (error) {
+                const message = error instanceof Error ? error.message : 'Gagal menghapus agenda'
+                toast.error(message)
               }
-
-              toast.success('Agenda berhasil dihapus')
             }}
           />
         </div>

@@ -3,9 +3,8 @@
 import type { Profile } from '@/schemas/ProfileTable'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { ProfileForm } from '@/app/(dashboard)/dashboard/profile/new/profile-form'
-import { updateProfile } from '@/server-actions/profile'
+import { useUpdateProfile } from '@/app/(dashboard)/_hooks/profile'
 import { Base64Utils } from '@/lib/base64'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
 type EditProfilePageProps = {
@@ -14,6 +13,7 @@ type EditProfilePageProps = {
 
 export default function EditProfilePage({ profile }: EditProfilePageProps) {
   const router = useRouter()
+  const updateMutation = useUpdateProfile(profile.id)
 
   return (
     <div className="flex flex-col gap-4">
@@ -35,8 +35,7 @@ export default function EditProfilePage({ profile }: EditProfilePageProps) {
             thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
           }
 
-          const res = await updateProfile({
-            id: profile.id,
+          await updateMutation.mutateAsync({
             title: values.title,
             description: values.description,
             content: values.content!,
@@ -44,12 +43,6 @@ export default function EditProfilePage({ profile }: EditProfilePageProps) {
             thumbnail,
           })
 
-          if (res && 'error' in res) {
-            toast.error(res.code, { description: res.error })
-            return
-          }
-
-          toast.success('Profile berhasil diperbarui')
           router.push('/dashboard/profile')
           router.refresh()
         }}

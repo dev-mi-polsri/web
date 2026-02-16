@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import { MediaService } from '@/services/MediaService'
 import type { MediaCriteria } from '@/repository/MediaRepository'
@@ -86,7 +86,7 @@ export async function createMedia(input: CreateMediaInput): Promise<ServerAction
       isDownloadable: parsed.isDownloadable ?? false,
     })
 
-    updateTag('media')
+    // updateTag('media')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -102,9 +102,9 @@ export async function updateMedia(input: UpdateMediaInput): Promise<ServerAction
     const service = new MediaService(db)
     await service.updateMediaById(id, payload)
 
-    updateTag('media')
-    updateTag('mediaById')
-    updateTag(id)
+    // updateTag('media')
+    // updateTag('mediaById')
+    // updateTag(id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -119,9 +119,9 @@ export async function deleteMedia(id: string): Promise<ServerActionResponse<void
     const service = new MediaService(db)
     await service.deleteMediaById(parsedId)
 
-    updateTag('media')
-    updateTag('mediaById')
-    updateTag(parsedId)
+    // updateTag('media')
+    // updateTag('mediaById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

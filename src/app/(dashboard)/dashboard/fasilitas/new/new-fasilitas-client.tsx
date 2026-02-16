@@ -1,13 +1,13 @@
 'use client'
 import { FasilitasForm } from './fasilitas-form'
 import { Base64Utils } from '@/lib/base64'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import BackButton from '../../_components/back-button'
-import { createFasilitas } from '@/server-actions/fasilitas'
+import { useCreateFasilitas } from '@/app/(dashboard)/_hooks/fasilitas'
 
 export default function NewFasilitasClient() {
   const router = useRouter()
+  const createMutation = useCreateFasilitas()
 
   return (
     <>
@@ -17,18 +17,11 @@ export default function NewFasilitasClient() {
         </div>
         <FasilitasForm
           onSubmit={async (values) => {
-            const res = await createFasilitas({
+            await createMutation.mutateAsync({
               name: values.name,
               enName: values.enName,
               image: await Base64Utils.toDataUrl(values.foto!),
             })
-
-            if (res && 'error' in res) {
-              toast.error(res.code, { description: res.error })
-              return
-            }
-
-            toast.success('Fasilitas berhasil dibuat')
 
             router.push('/dashboard/fasilitas')
             router.refresh()
