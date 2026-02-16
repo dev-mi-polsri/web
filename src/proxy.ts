@@ -5,17 +5,8 @@ import { auth } from './lib/auth'
 import { headers } from 'next/headers'
 
 export default async function proxy(request: NextRequest) {
-  const handleI18nRouting = createMiddleware({
-    locales: locales,
-    defaultLocale: defaultLocale,
-    localePrefix: 'always',
-  })
-  const response = handleI18nRouting(request)
-
-  if (request.nextUrl.pathname.startsWith('/dashboard/')) {
-    // Dashboard routes
-    // Don't apply i18n middleware to dashboard routes
-
+  // Handle dashboard routes separately (no i18n)
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
     const session = await auth.api.getSession({
       headers: await headers(),
     })
@@ -24,12 +15,19 @@ export default async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL('/auth', request.url))
     }
 
-    return response
+    return NextResponse.next()
   }
 
-  return response
+  // Apply i18n middleware to all other routes
+  const handleI18nRouting = createMiddleware({
+    locales: locales,
+    defaultLocale: defaultLocale,
+    localePrefix: 'always',
+  })
+
+  return handleI18nRouting(request)
 }
 
 export const config = {
-  matcher: ['/', '/(id|en)/:path*'],
+  matcher: ['/', '/(id|en)/:path*', '/dashboard/:path*'],
 }
