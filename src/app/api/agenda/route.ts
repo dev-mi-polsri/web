@@ -1,8 +1,14 @@
-import { ApiError, handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import {
+  ApiError,
+  handleApiError,
+  parsePagination,
+  respondFromServerAction,
+  StandardApiResponse,
+} from '@/app/api/_common'
 import { PaginatedResult } from '@/repository/_contracts'
 import { AgendaCriteria } from '@/repository/AgendaRepository'
 import { Agenda } from '@/schemas/AgendaTable'
-import { getAgenda } from '@/server-actions/agenda'
+import { createAgenda, getAgenda } from '@/server-actions/agenda'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
@@ -24,6 +30,17 @@ export async function GET(request: NextRequest) {
       paginatedResult satisfies StandardApiResponse<PaginatedResult<Agenda>>,
       { status: 200 },
     )
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const payload = await request.json()
+    const result = await createAgenda(payload)
+
+    return respondFromServerAction(result, 201)
   } catch (error: unknown) {
     return handleApiError(error)
   }

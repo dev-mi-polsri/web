@@ -2,7 +2,7 @@ import { PostSummary } from '@/schemas/PostTable'
 import { ColumnDef } from '@tanstack/react-table'
 import { PostScope } from '@/schemas/_common'
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
-import { deletePost } from '@/server-actions/post'
+import { deleteResource } from '@/app/(dashboard)/_hooks/delete-resource'
 import { toast } from 'sonner'
 import { CheckIcon, XIcon } from 'lucide-react'
 
@@ -70,14 +70,13 @@ export const postTableColumn: ColumnDef<PostSummary>[] = [
           <EditButton editHref={'/dashboard/posts/edit/' + row.original.id} />
           <DeleteButton
             onConfirm={async () => {
-              const actionRes = await deletePost(row.original.id)
-
-              if (actionRes && 'error' in actionRes) {
-                toast.error(actionRes.code, { description: actionRes.error })
-                return
+              try {
+                await deleteResource(`/api/post/${row.original.id}`)
+                toast.success('Post deleted successfully')
+              } catch (error) {
+                const message = error instanceof Error ? error.message : 'Gagal menghapus post'
+                toast.error(message)
               }
-
-              toast.success('Post deleted successfully')
             }}
           />
         </div>

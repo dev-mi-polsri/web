@@ -1,9 +1,9 @@
 'use client'
 
-import { toast } from 'sonner'
+import { authClient } from '@/lib/auth.client'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import BackButton from '../../_components/back-button'
-import { createUser } from '@/server-actions/auth'
 import { UserForm } from './user-form'
 
 export default function NewUserClient() {
@@ -16,15 +16,15 @@ export default function NewUserClient() {
       </div>
       <UserForm
         onSubmit={async (values) => {
-          const res = await createUser({
+          const res = await authClient.admin.createUser({
             email: values.email,
             name: values.name,
             password: values.password,
             role: values.role,
           })
 
-          if (res && 'error' in res) {
-            toast.error(res.code, { description: res.error })
+          if (res.error) {
+            toast.error(res.error.message)
             return
           }
 

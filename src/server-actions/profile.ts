@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import { ProfileService } from '@/services/ProfileService'
 import type { ProfileCriteria } from '@/repository/ProfileRepository'
@@ -90,7 +90,7 @@ export async function createProfile(
       slug: PostUtility.generateSlug({ createdAt: new Date(), title: parsed.title }),
     })
 
-    updateTag('profile')
+    // updateTag('profile')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -117,9 +117,9 @@ export async function updateProfile(
       content: JSON.stringify(parsed.content),
     })
 
-    updateTag('profile')
-    updateTag('profileById')
-    updateTag(parsed.id)
+    // updateTag('profile')
+    // updateTag('profileById')
+    // updateTag(parsed.id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -133,9 +133,9 @@ export async function deleteProfile(id: string): Promise<ServerActionResponse<vo
     const service = new ProfileService(db)
     await service.deleteProfile(parsedId)
 
-    updateTag('profile')
-    updateTag('profileById')
-    updateTag(parsedId)
+    // updateTag('profile')
+    // updateTag('profileById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

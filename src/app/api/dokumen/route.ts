@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import {
+  handleApiError,
+  parsePagination,
+  respondFromServerAction,
+  StandardApiResponse,
+} from '@/app/api/_common'
 import type { PaginatedResult } from '@/repository/_contracts'
 import { DokumenCriteria } from '@/repository/DokumenRepository'
 import { Dokumen } from '@/schemas/DokumenTable'
-import { getDokumen } from '@/server-actions/dokumen'
+import { createDokumen, getDokumen } from '@/server-actions/dokumen'
 import { MediaType } from '@/schemas/MediaTable'
 
 export async function GET(request: NextRequest) {
@@ -29,6 +34,17 @@ export async function GET(request: NextRequest) {
       paginatedResult satisfies StandardApiResponse<PaginatedResult<Dokumen>>,
       { status: 200 },
     )
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const payload = await request.json()
+    const result = await createDokumen(payload)
+
+    return respondFromServerAction(result, 201)
   } catch (error: unknown) {
     return handleApiError(error)
   }

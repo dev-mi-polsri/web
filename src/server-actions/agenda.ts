@@ -1,7 +1,7 @@
 'use server'
 import { AgendaCriteria } from '@/repository/AgendaRepository'
 import { PaginationRequest } from '@/repository/_contracts'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import { AgendaService } from '@/services/AgendaService'
 import db from '@/lib/db'
 import { z } from 'zod'
@@ -67,7 +67,7 @@ export async function createAgenda(input: CreateAgendaInput): Promise<ServerActi
 
     const agendaService = new AgendaService(db)
     await agendaService.createAgenda(parsedInput)
-    updateTag('agenda')
+    // updateTag('agenda')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -81,9 +81,9 @@ export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActi
     const agendaService = new AgendaService(db)
 
     await agendaService.updateAgenda(id, payload)
-    updateTag('agenda')
-    updateTag('agendaById')
-    updateTag(id)
+    // updateTag('agenda')
+    // updateTag('agendaById')
+    // updateTag(id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -97,9 +97,9 @@ export async function deleteAgenda(id: string): Promise<ServerActionResponse<voi
 
     await agendaService.deleteAgenda(parsedId)
 
-    updateTag('agenda')
-    updateTag('agendaById')
-    updateTag(parsedId)
+    // updateTag('agenda')
+    // updateTag('agendaById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

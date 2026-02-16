@@ -1,19 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { handleApiError, StandardApiResponse } from '@/app/api/_common'
-import { cacheLife } from 'next/cache'
-import { AgendaService } from '@/services/AgendaService'
-import db from '@/lib/db'
+import { handleApiError, respondFromServerAction, StandardApiResponse } from '@/app/api/_common'
 import { Agenda } from '@/schemas/AgendaTable'
-import { getAgendaById } from '@/server-actions/agenda'
+import { deleteAgenda, getAgendaById, updateAgenda } from '@/server-actions/agenda'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/agenda/[id]'>) {
   try {
-  const {id} =await ctx.params
+    const { id } = await ctx.params
 
-    return NextResponse.json(
-      await getAgendaById(id) satisfies StandardApiResponse<Agenda>,
-      { status: 200 },
-    )
+    return NextResponse.json((await getAgendaById(id)) satisfies StandardApiResponse<Agenda>, {
+      status: 200,
+    })
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function PUT(request: NextRequest, ctx: RouteContext<'/api/agenda/[id]'>) {
+  try {
+    const { id } = await ctx.params
+    const payload = await request.json()
+    const result = await updateAgenda({ ...payload, id })
+
+    return respondFromServerAction(result)
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function DELETE(_: NextRequest, ctx: RouteContext<'/api/agenda/[id]'>) {
+  try {
+    const { id } = await ctx.params
+    const result = await deleteAgenda(id)
+
+    return respondFromServerAction(result)
   } catch (error: unknown) {
     return handleApiError(error)
   }

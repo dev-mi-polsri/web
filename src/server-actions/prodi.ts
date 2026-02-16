@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import { ProdiService } from '@/services/ProdiService'
 import type { ProdiCriteria } from '@/repository/ProdiRepository'
@@ -88,7 +88,7 @@ export async function createProdi(input: CreateProdiInput): Promise<ServerAction
       thumbnail,
     })
 
-    updateTag('prodi')
+    // updateTag('prodi')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -113,9 +113,9 @@ export async function updateProdi(input: UpdateProdiInput): Promise<ServerAction
       thumbnail,
     })
 
-    updateTag('prodi')
-    updateTag('prodiById')
-    updateTag(parsed.id)
+    // updateTag('prodi')
+    // updateTag('prodiById')
+    // updateTag(parsed.id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -130,9 +130,9 @@ export async function deleteProdi(id: string): Promise<ServerActionResponse<void
     const service = new ProdiService(db)
     await service.deleteProdi(parsedId)
 
-    updateTag('prodi')
-    updateTag('prodiById')
-    updateTag(parsedId)
+    // updateTag('prodi')
+    // updateTag('prodiById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

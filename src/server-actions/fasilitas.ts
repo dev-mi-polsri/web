@@ -9,7 +9,7 @@ import {
 } from '@/server-actions/_common'
 import { Base64Utils } from '@/lib/base64'
 import { FasilitasService } from '@/services/FasilitasService'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import type { FasilitasCriteria } from '@/repository/FasilitasRepository'
 import type { PaginationRequest } from '@/repository/_contracts'
@@ -69,7 +69,7 @@ export async function createFasilitas(
       enName: parsed.enName,
     })
 
-    updateTag('fasilitas')
+    // updateTag('fasilitas')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -96,9 +96,9 @@ export async function updateFasilitas(
       enName: parsed.enName,
     })
 
-    updateTag('fasilitas')
-    updateTag('fasilitasById')
-    updateTag(parsed.id)
+    // updateTag('fasilitas')
+    // updateTag('fasilitasById')
+    // updateTag(parsed.id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -113,9 +113,9 @@ export async function deleteFasilitas(id: string): Promise<ServerActionResponse<
     const service = new FasilitasService(db)
     await service.deleteFasilitas(parsedId)
 
-    updateTag('fasilitas')
-    updateTag('fasilitasById')
-    updateTag(parsedId)
+    // updateTag('fasilitas')
+    // updateTag('fasilitasById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

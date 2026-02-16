@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import { PostService, TagService } from '@/services/PostService'
 import type { PostCriteria } from '@/repository/PostRepository'
@@ -95,7 +95,7 @@ export async function createTag(name: string): Promise<ServerActionResponse<void
     await getSessionThrowable()
     const service = new TagService(db)
     await service.createTag(name)
-    updateTag('tags')
+    // updateTag('tags')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -107,7 +107,7 @@ export async function deleteTag(id: string): Promise<ServerActionResponse<void>>
 
     const service = new TagService(db)
     await service.deleteTag(id)
-    updateTag('tags')
+    // updateTag('tags')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -134,7 +134,7 @@ export async function createPost(input: CreatePostInput): Promise<ServerActionRe
       tagIds: parsed.tagIds,
     })
 
-    updateTag('post')
+    // updateTag('post')
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -163,9 +163,9 @@ export async function updatePost(input: UpdatePostInput): Promise<ServerActionRe
       thumbnail,
     })
 
-    updateTag('post')
-    updateTag('postById')
-    updateTag(parsed.id)
+    // updateTag('post')
+    // updateTag('postById')
+    // updateTag(parsed.id)
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -180,9 +180,9 @@ export async function deletePost(id: string): Promise<ServerActionResponse<void>
     const service = new PostService(db)
     await service.deletePost(parsedId)
 
-    updateTag('post')
-    updateTag('postById')
-    updateTag(parsedId)
+    // updateTag('post')
+    // updateTag('postById')
+    // updateTag(parsedId)
   } catch (error) {
     return handleServerActionError(error)
   }

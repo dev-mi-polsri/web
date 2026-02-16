@@ -2,9 +2,8 @@
 import { Post } from '@/schemas/PostTable'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { PostForm } from '@/app/(dashboard)/dashboard/posts/new/post-form'
-import {  updatePost } from '@/server-actions/post'
+import { useUpdatePost } from '@/app/(dashboard)/_hooks/post'
 import { Base64Utils } from '@/lib/base64'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
 type EditPostPageProps = {
@@ -13,6 +12,7 @@ type EditPostPageProps = {
 
 export default function EditPostPage({ post }: EditPostPageProps) {
   const router = useRouter()
+  const updateMutation = useUpdatePost(post.id)
 
   return (
     <>
@@ -37,23 +37,15 @@ export default function EditPostPage({ post }: EditPostPageProps) {
               thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
             }
 
-            const res = await updatePost({
-              id: post.id,
+            await updateMutation.mutateAsync({
               title: values.title,
               content: values.content!,
               type: values.type,
               scope: values.scope,
               isFeatured: values.isFeatured,
               isPublished: values.isPublished,
-              thumbnail
+              thumbnail,
             })
-
-            if (res && 'error' in res) {
-              toast.error(res.code, { description: res.error })
-              return
-            }
-
-            toast.success('Post berhasil diperbarui')
 
             router.push('/dashboard/posts')
             router.refresh()

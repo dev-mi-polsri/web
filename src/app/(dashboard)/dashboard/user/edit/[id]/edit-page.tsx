@@ -1,8 +1,8 @@
 'use client'
 
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
@@ -14,8 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { authClient } from '@/lib/auth.client'
 import { useForm, type FormValue } from '@/lib/form'
-import { updatePasswordAdmin, updateUser, updateUserRole } from '@/server-actions/auth'
+import { updatePasswordAdmin, updateUserRole } from '@/server-actions/auth'
 
 function isActionError(res: unknown): res is { error: string; code: string } {
   return typeof res === 'object' && res !== null && 'error' in res
@@ -89,12 +90,14 @@ export default function EditUserPage({ user }: { user: EditUser }) {
               variant="secondary"
               onClick={async () => {
                 if (!detailsForm.validate()) return
-                const res = await updateUser({
+                const res = await authClient.admin.updateUser({
                   userId: user.id,
-                  name: detailsForm.values.name.value,
+                  data: {
+                    name: detailsForm.values.name.value,
+                  },
                 })
-                if (isActionError(res)) {
-                  toast.error(res.code, { description: res.error })
+                if (res.error) {
+                  toast.error(res.error.message)
                   return
                 }
                 toast.success('User berhasil diperbarui')

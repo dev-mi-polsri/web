@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { cacheLife, cacheTag, updateTag } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import db from '@/lib/db'
 import type { PaginationRequest } from '@/repository/_contracts'
 import type { DokumenCriteria } from '@/repository/DokumenRepository'
@@ -71,7 +71,7 @@ export async function createDokumen(
       enName: parsed.enName,
     })
 
-    updateTag('dokumen')
+    // updateTag('dokumen')
   } catch (e) {
     return handleServerActionError(e)
   }
@@ -98,9 +98,9 @@ export async function updateDokumen(
       enName: parsed.enName,
     })
 
-    updateTag('dokumen')
-    updateTag('dokumenById')
-    updateTag(parsed.id)
+    // updateTag('dokumen')
+    // updateTag('dokumenById')
+    // updateTag(parsed.id)
   } catch (e) {
     return handleServerActionError(e)
   }
@@ -115,9 +115,9 @@ export async function deleteDokumen(id: string): Promise<ServerActionResponse<vo
     const service = new DokumenService(db)
     await service.deleteDokumen(parsedId)
 
-    updateTag('dokumen')
-    updateTag('dokumenById')
-    updateTag(parsedId)
+    // updateTag('dokumen')
+    // updateTag('dokumenById')
+    // updateTag(parsedId)
   } catch (e) {
     return handleServerActionError(e)
   }

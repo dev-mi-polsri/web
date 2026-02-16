@@ -1,13 +1,18 @@
 import { cacheLife } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import {
+  handleApiError,
+  parsePagination,
+  respondFromServerAction,
+  StandardApiResponse,
+} from '@/app/api/_common'
 import db from '@/lib/db'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import { PostCriteria } from '@/repository/PostRepository'
 import type { PostSummary } from '@/schemas/PostTable'
 import { PostService } from '@/services/PostService'
-import { getPost } from '@/server-actions/post'
+import { createPost, getPost } from '@/server-actions/post'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -36,6 +41,17 @@ export async function GET(request: NextRequest) {
         status: 200,
       },
     )
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const payload = await request.json()
+    const result = await createPost(payload)
+
+    return respondFromServerAction(result, 201)
   } catch (error: unknown) {
     return handleApiError(error)
   }

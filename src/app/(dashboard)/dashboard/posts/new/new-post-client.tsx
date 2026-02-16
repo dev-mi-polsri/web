@@ -1,13 +1,13 @@
 'use client'
-import { createPost } from '@/server-actions/post'
 import { PostForm } from './post-form'
 import { Base64Utils } from '@/lib/base64'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import BackButton from '../../_components/back-button'
+import { useCreatePost } from '@/app/(dashboard)/_hooks/post'
 
 export default function NewPostClient() {
   const router = useRouter()
+  const createMutation = useCreatePost()
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function NewPostClient() {
         </div>
         <PostForm
           onSubmit={async (values) => {
-            const res = await createPost({
+            await createMutation.mutateAsync({
               title: values.title,
               content: values.content!,
               type: values.type,
@@ -26,13 +26,6 @@ export default function NewPostClient() {
               isPublished: values.isPublished,
               thumbnail: await Base64Utils.toDataUrl(values.thumbnail!),
             })
-
-            if (res && 'error' in res) {
-              toast.error(res.code, { description: res.error })
-              return
-            }
-
-            toast.success('Post berhasil dibuat')
 
             router.push('/dashboard/posts')
             router.refresh()
