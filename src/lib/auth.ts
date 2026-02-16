@@ -18,7 +18,11 @@ export const auth = betterAuth({
   sendResetPassword: async () => {
     // TODO: Password Reset
   },
-  trustedOrigins: ['http://localhost:3000', 'https://manajemeninformatika.polsri.ac.id'],
+  trustedOrigins: [
+    'http://localhost:3000',
+    'https://manajemeninformatika.polsri.ac.id',
+    'https://www.manajemeninformatika.polsri.ac.id',
+  ],
   advanced: {
     defaultCookieAttributes: {
       sameSite: 'none', // Required for cross-origin cookies
