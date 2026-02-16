@@ -4,10 +4,15 @@ import { cacheLife } from 'next/cache'
 import db from '@/lib/db'
 import { ProfileService } from '@/services/ProfileService'
 import { ProfileCriteria } from '@/repository/ProfileRepository'
-import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import {
+  handleApiError,
+  parsePagination,
+  respondFromServerAction,
+  StandardApiResponse,
+} from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { Profile } from '@/schemas/ProfileTable'
-import { getProfile } from '@/server-actions/profile'
+import { createProfile, getProfile } from '@/server-actions/profile'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -29,6 +34,17 @@ export async function GET(request: NextRequest) {
       paginatedResult satisfies StandardApiResponse<PaginatedResult<Profile>>,
       { status: 200 },
     )
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const payload = await request.json()
+    const result = await createProfile(payload)
+
+    return respondFromServerAction(result, 201)
   } catch (error: unknown) {
     return handleApiError(error)
   }

@@ -4,10 +4,15 @@ import { cacheLife } from 'next/cache'
 import db from '@/lib/db'
 import { TenagaAjarService } from '@/services/TenagaAjarService'
 import { TenagaAjarCriteria } from '@/repository/TenagaAjarRepository'
-import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import {
+  handleApiError,
+  parsePagination,
+  respondFromServerAction,
+  StandardApiResponse,
+} from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { TenagaAjar } from '@/schemas/TenagaAjarTable'
-import { getTenagaAjar } from '@/server-actions/tenaga-ajar'
+import { createTenagaAjar, getTenagaAjar } from '@/server-actions/tenaga-ajar'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -37,6 +42,17 @@ export async function GET(request: NextRequest) {
       paginatedResult satisfies StandardApiResponse<PaginatedResult<TenagaAjar>>,
       { status: 200 },
     )
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const payload = await request.json()
+    const result = await createTenagaAjar(payload)
+
+    return respondFromServerAction(result, 201)
   } catch (error: unknown) {
     return handleApiError(error)
   }

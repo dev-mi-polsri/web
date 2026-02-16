@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { handleApiError, parsePagination, StandardApiResponse } from '../_common'
+import {
+  handleApiError,
+  parsePagination,
+  respondFromServerAction,
+  StandardApiResponse,
+} from '../_common'
 import { MediaCriteria } from '@/repository/MediaRepository'
 import { Media } from '@/schemas/MediaTable'
 import { PaginatedResult } from '@/repository/_contracts'
-import { getMedia } from '@/server-actions/media'
+import { createMedia, getMedia } from '@/server-actions/media'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
