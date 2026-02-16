@@ -18,6 +18,7 @@ export const auth = betterAuth({
   sendResetPassword: async () => {
     // TODO: Password Reset
   },
+  trustedOrigins: ['http://localhost:3000', 'https://manajemeninformatika.polsri.ac.id'],
   resetPasswordTokenExpiresIn: 3600,
   plugins: [admin(), organization()],
 })
