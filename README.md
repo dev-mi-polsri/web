@@ -15,9 +15,9 @@ A modern, multilingual website for the Informatics Management Department of Sriv
 ## Tech Stack
 
 - **Next.js** - React framework for production
-- **Payload CMS** - Headless CMS for content management
+- **Juara CMS** - CMS for content management
 - **next-intl** - Internationalization framework
-- **PostgreSQL** - Robust relational database
+- **MySQL** - Robust relational database
 - **Tailwind CSS** - Utility-first CSS framework
 
 ## Getting Started
@@ -42,10 +42,25 @@ cp .env.example .env
 
 Required environment variables:
 
-- `DATABASE_URI`: PostgreSQL connection string
-- `PAYLOAD_SECRET`: Secret key for Payload CMS
+- `MYSQL_DATABASE`: MySQL database
+- `MYSQL_USER`: MySQL username
+- `MYSQL_PASSWORD`: MySQL password
+- `MYSQL_PORT`: MySQL port (default: 3306)
+- `MYSQL_HOST`: MySQL host (default: localhost)
 
-4. Start development server
+4. Migrate database
+
+```bash
+pnpm run schema:migrate
+```
+
+5. Seed initial user
+
+```bash
+pnpm run auth:seed
+```
+
+6. Start development server
 
 ```bash
 pnpm dev
@@ -53,8 +68,8 @@ pnpm dev
 
 ## Infrastructure
 
-- **Database**: Hosted on Neon PostgreSQL
-- **File Storage**: Local disk storage (Dev Environment)
+- **Database**: Hosted on cPanel
+- **File Storage**: Local disk storage (Dev Environment) with fs
 
 ## Contributing
 
