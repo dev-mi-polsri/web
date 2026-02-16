@@ -41,18 +41,18 @@ export type CreateAgendaInput = z.infer<typeof createAgendaSchema>
 export type UpdateAgendaInput = z.infer<typeof updateAgendaSchema>
 
 export async function getAgenda(criteria: AgendaCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('agenda')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('agenda')
+  // cacheLife('hours')
 
   const agendaService = new AgendaService(db)
   return agendaService.getAgenda(criteria, pageable)
 }
 
 export async function getAgendaById(id: string) {
-  'use cache'
-  cacheTag('agendaById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('agendaById', id)
+  // cacheLife('hours')
 
   const parsedId = validateInput(idschema, id)
 

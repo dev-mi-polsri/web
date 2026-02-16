@@ -5,7 +5,6 @@ const withNextIntl = createNextIntlPlugin()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Your Next.js config here
-  cacheComponents: true,
   output: 'standalone',
   images: {
     remotePatterns: [

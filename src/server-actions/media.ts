@@ -37,18 +37,18 @@ export type CreateMediaInput = z.infer<typeof createMediaSchema>
 export type UpdateMediaInput = z.infer<typeof updateMediaSchema>
 
 export async function getMedia(criteria: MediaCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('media')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('media')
+  // cacheLife('hours')
 
   const service = new MediaService(db)
   return service.getMedia(criteria, pageable)
 }
 
 export async function getMediaById(id: string) {
-  'use cache'
-  cacheTag('mediaById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('mediaById', id)
+  // cacheLife('hours')
 
   const parsedId = validateInput(idschema, id)
 
@@ -57,9 +57,9 @@ export async function getMediaById(id: string) {
 }
 
 export async function getMediaByUrl(url: string) {
-  'use cache'
-  cacheTag('mediaByUrl', url)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('mediaByUrl', url)
+  // cacheLife('hours')
 
   const service = new MediaService(db)
   return service.getMediaUploadUrl(url)

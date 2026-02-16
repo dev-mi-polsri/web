@@ -4,6 +4,7 @@ import { cacheLife } from 'next/cache'
 import { ProfileService } from '@/services/ProfileService'
 import db from '@/lib/db'
 import type { Profile } from '@/schemas/ProfileTable'
+import { getProfileBySlug } from '@/server-actions/profile'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/profile/slug/[slug]'>) {
   try {
@@ -17,12 +18,3 @@ export async function GET(_: NextRequest, ctx: RouteContext<'/api/profile/slug/[
     return handleApiError(error)
   }
 }
-
-async function getProfileBySlug(slug: string) {
-  'use cache'
-  cacheLife('hours')
-
-  const profileService = new ProfileService(db)
-  return profileService.getProfileBySlug(slug)
-}
-

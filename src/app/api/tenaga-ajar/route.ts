@@ -7,6 +7,7 @@ import { TenagaAjarCriteria } from '@/repository/TenagaAjarRepository'
 import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { TenagaAjar } from '@/schemas/TenagaAjarTable'
+import { getTenagaAjar } from '@/server-actions/tenaga-ajar'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -39,12 +40,4 @@ export async function GET(request: NextRequest) {
   } catch (error: unknown) {
     return handleApiError(error)
   }
-}
-
-async function getTenagaAjar(criteria: TenagaAjarCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheLife('hours')
-
-  const tenagaAjarService = new TenagaAjarService(db)
-  return tenagaAjarService.getTenagaAjar(criteria, pageable)
 }

@@ -7,6 +7,7 @@ import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts
 import { PostCriteria } from '@/repository/PostRepository'
 import type { PostSummary } from '@/schemas/PostTable'
 import { PostService } from '@/services/PostService'
+import { getPost } from '@/server-actions/post'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -38,12 +39,4 @@ export async function GET(request: NextRequest) {
   } catch (error: unknown) {
     return handleApiError(error)
   }
-}
-
-async function getPost(criteria: PostCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheLife('hours')
-
-  const postService = new PostService(db)
-  return postService.getPost(criteria, pageable)
 }

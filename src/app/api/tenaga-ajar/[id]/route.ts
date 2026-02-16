@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cacheLife } from 'next/cache'
 
-import db from '@/lib/db'
-import { TenagaAjarService } from '@/services/TenagaAjarService'
 import { handleApiError, StandardApiResponse } from '@/app/api/_common'
 import type { TenagaAjar } from '@/schemas/TenagaAjarTable'
+import { getTenagaAjarById } from '@/server-actions/tenaga-ajar'
 
 export async function GET(_: NextRequest, ctx: RouteContext<'/api/tenaga-ajar/[id]'>) {
   try {
@@ -18,12 +16,3 @@ export async function GET(_: NextRequest, ctx: RouteContext<'/api/tenaga-ajar/[i
     return handleApiError(error)
   }
 }
-
-async function getTenagaAjarById(id: string) {
-  'use cache'
-  cacheLife('hours')
-
-  const tenagaAjarService = new TenagaAjarService(db)
-  return tenagaAjarService.getTenagaAjarById(id)
-}
-

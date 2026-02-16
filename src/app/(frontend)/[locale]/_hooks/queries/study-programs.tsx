@@ -54,7 +54,7 @@ export function useStudyPrograms({
     ...(page ? { page: page.toString() } : {}),
     ...(query.scope ? { scope: query.scope } : {}),
     ...(query.searchKeyword ? { searchKeyword: query.searchKeyword } : {}),
-  }).toString()
+  })
 
   let signal: AbortSignal | null = null
 
@@ -92,8 +92,9 @@ export function useStudyProgramsSuspense({
 }: useStudyProgramsParameters) {
   const params = useParams<{ locale: string }>()
 
-  const query: ProdiCriteria = {
-    scope: params.locale === 'id' ? PostScope.NATIONAL : PostScope.INTERNATIONAL,
+  const query = {
+    scope:
+      params.locale === 'id' ? PostScope.NATIONAL.toString() : PostScope.INTERNATIONAL.toString(),
     searchKeyword: searchKeyword,
   }
 
@@ -102,7 +103,7 @@ export function useStudyProgramsSuspense({
     ...(page ? { page: page.toString() } : {}),
     ...(query.scope ? { scope: query.scope } : {}),
     ...(query.searchKeyword ? { searchKeyword: query.searchKeyword } : {}),
-  }).toString()
+  })
 
   const fetchData = async () => {
     const res = await fetch(`/api/prodi?${searchParams.toString()}`)

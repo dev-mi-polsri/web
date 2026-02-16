@@ -7,6 +7,7 @@ import { ProfileCriteria } from '@/repository/ProfileRepository'
 import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import type { Profile } from '@/schemas/ProfileTable'
+import { getProfile } from '@/server-actions/profile'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -31,12 +32,4 @@ export async function GET(request: NextRequest) {
   } catch (error: unknown) {
     return handleApiError(error)
   }
-}
-
-async function getProfile(criteria: ProfileCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheLife('hours')
-
-  const profileService = new ProfileService(db)
-  return profileService.getProfile(criteria, pageable)
 }

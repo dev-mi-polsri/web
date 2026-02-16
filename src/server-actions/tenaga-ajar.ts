@@ -35,18 +35,18 @@ export type CreateTenagaAjarInput = z.infer<typeof createTenagaAjarSchema>
 export type UpdateTenagaAjarInput = z.infer<typeof updateTenagaAjarSchema>
 
 export async function getTenagaAjar(criteria: TenagaAjarCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('tenagaAjar')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('tenagaAjar')
+  // cacheLife('hours')
 
   const service = new TenagaAjarService(db)
   return service.getTenagaAjar(criteria, pageable)
 }
 
 export async function getTenagaAjarById(id: string) {
-  'use cache'
-  cacheTag('tenagaAjarById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('tenagaAjarById', id)
+  // cacheLife('hours')
 
   const parsedId = validateInput(idschema, id)
 

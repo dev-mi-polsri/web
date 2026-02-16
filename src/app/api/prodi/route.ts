@@ -6,6 +6,7 @@ import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/
 import type { Prodi } from '@/schemas/ProdiTable'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import { cacheLife } from 'next/cache'
+import { getProdi } from '@/server-actions/prodi'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -30,12 +31,4 @@ export async function GET(request: NextRequest) {
   } catch (error: unknown) {
     return handleApiError(error)
   }
-}
-
-async function getProdi(criteria: ProdiCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheLife('hours')
-
-  const prodiService = new ProdiService(db)
-  return prodiService.getProdi(criteria, pageable)
 }

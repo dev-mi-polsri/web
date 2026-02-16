@@ -35,9 +35,9 @@ export type CreateDokumenInput = z.infer<typeof createDokumenSchema>
 export type UpdateDokumenInput = z.infer<typeof updateDokumenSchema>
 
 export async function getDokumenById(id: string) {
-  'use cache'
-  cacheTag('dokumenById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('dokumenById', id)
+  // cacheLife('hours')
 
   const parsedId = validateInput(idschema, id)
 
@@ -46,9 +46,9 @@ export async function getDokumenById(id: string) {
 }
 
 export async function getDokumen(criteria: DokumenCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('dokumen')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('dokumen')
+  // cacheLife('hours')
 
   const dokumenService = new DokumenService(db)
   return dokumenService.getDokumen(criteria, pageable)

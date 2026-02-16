@@ -39,18 +39,18 @@ export type CreateProfileInput = z.infer<typeof createProfileSchema>
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
 
 export async function getProfile(criteria: ProfileCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('profile')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('profile')
+  // cacheLife('hours')
 
   const service = new ProfileService(db)
   return service.getProfile(criteria, pageable)
 }
 
 export async function getProfileById(id: string) {
-  'use cache'
-  cacheTag('profileById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('profileById', id)
+  // cacheLife('hours')
 
   const parsedId = validateInput(idschema, id)
 
@@ -59,9 +59,9 @@ export async function getProfileById(id: string) {
 }
 
 export async function getProfileBySlug(slug: string) {
-  'use cache'
-  cacheTag('profileBySlug', slug)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('profileBySlug', slug)
+  // cacheLife('hours')
 
   const parsedSlug = validateInput(slugSchema, slug)
 

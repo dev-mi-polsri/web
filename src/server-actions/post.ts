@@ -37,54 +37,54 @@ export type CreatePostInput = z.infer<typeof createPostSchema>
 export type UpdatePostInput = z.infer<typeof updatePostSchema>
 
 export async function getPost(criteria: PostCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('post')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('post')
+  // cacheLife('hours')
 
   const service = new PostService(db)
   return service.getPost(criteria, pageable)
 }
 
 export async function getPostById(id: string) {
-  'use cache'
-  cacheTag('postById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('postById', id)
+  // cacheLife('hours')
 
   const service = new PostService(db)
   return service.getPostById(id)
 }
 
 export async function getPostByTag(tagId: string, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('postByTag', tagId)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('postByTag', tagId)
+  // cacheLife('hours')
 
   const service = new PostService(db)
   return service.getByTag(tagId, pageable)
 }
 
 export async function getPostBySlug(slug: string) {
-  'use cache'
-  cacheTag('postBySlug', slug)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('postBySlug', slug)
+  // cacheLife('hours')
 
   const service = new PostService(db)
   return service.getPostBySlug(slug)
 }
 
 export async function getTags() {
-  'use cache'
-  cacheTag('tags')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('tags')
+  // cacheLife('hours')
 
   const service = new TagService(db)
   return service.getTags()
 }
 
 export async function getTagById(id: string) {
-  'use cache'
-  cacheTag('tagById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('tagById', id)
+  // cacheLife('hours')
 
   const service = new TagService(db)
   return service.getTagById(id)

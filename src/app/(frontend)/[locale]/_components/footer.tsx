@@ -2,12 +2,12 @@
 import { Link } from '@/i18n/navigation'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useStudyProgramsSuspense } from '../_hooks/queries/study-programs'
+import { useStudyPrograms } from '../_hooks/queries/study-programs'
 
-async function Footer() {
+function Footer() {
   const t = useTranslations('layout')
 
-  const { data: studyPrograms } = useStudyProgramsSuspense({
+  const { data: studyPrograms } = useStudyPrograms({
     limit: 10,
   })
 

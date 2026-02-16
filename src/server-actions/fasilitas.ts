@@ -34,18 +34,18 @@ export type CreateFasilitasInput = z.infer<typeof createFasilitasSchema>
 export type UpdateFasilitasInput = z.infer<typeof updateFasilitasSchema>
 
 export async function getFasilitasById(id: string) {
-  'use cache'
-  cacheTag('fasilitasById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('fasilitasById', id)
+  // cacheLife('hours')
 
   const fasilitasService = new FasilitasService(db)
   return fasilitasService.getFasilitasById(id)
 }
 
 export async function getFasilitas(criteria: FasilitasCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('fasilitas')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('fasilitas')
+  // cacheLife('hours')
 
   const fasilitasService = new FasilitasService(db)
   return fasilitasService.getFasilitas(criteria, pageable)

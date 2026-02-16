@@ -32,7 +32,7 @@ export function useDosenTendik({
     ...Object.fromEntries(Object.entries(query).filter(([_, value]) => value !== undefined)),
     limit: String(limit),
     page: String(page),
-  }).toString
+  }).toString()
 
   let signal: AbortSignal | null = null
 

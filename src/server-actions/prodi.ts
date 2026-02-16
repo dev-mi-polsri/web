@@ -39,18 +39,18 @@ export type CreateProdiInput = z.infer<typeof createProdiSchema>
 export type UpdateProdiInput = z.infer<typeof updateProdiSchema>
 
 export async function getProdi(criteria: ProdiCriteria, pageable: PaginationRequest) {
-  'use cache'
-  cacheTag('prodi')
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('prodi')
+  // cacheLife('hours')
 
   const service = new ProdiService(db)
   return service.getProdi(criteria, pageable)
 }
 
 export async function getProdiById(id: string) {
-  'use cache'
-  cacheTag('prodiById', id)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('prodiById', id)
+  // cacheLife('hours')
 
   const parsedId = validateInput(idschema, id)
 
@@ -59,9 +59,9 @@ export async function getProdiById(id: string) {
 }
 
 export async function getProdiBySlug(slug: string) {
-  'use cache'
-  cacheTag('prodiBySlug', slug)
-  cacheLife('hours')
+  // 'use cache'
+  // cacheTag('prodiBySlug', slug)
+  // cacheLife('hours')
 
   const parsedSlug = validateInput(slugSchema, slug)
 
