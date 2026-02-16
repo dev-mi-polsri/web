@@ -25,7 +25,7 @@ function RecommendedNews() {
           ? SKELETONS.map((_, idx) => <NewsCardSkeleton key={idx} />)
           : newsError
             ? SKELETONS.map((_, idx) => <NewsCardSkeleton key={idx} />)
-            : news.docs.map((data, idx) => <NewsCard {...data} key={idx} />)}
+            : news.results.map((data, idx) => <NewsCard {...data} key={idx} />)}
       </div>
     </div>
   )

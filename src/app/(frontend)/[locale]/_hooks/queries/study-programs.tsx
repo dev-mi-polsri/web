@@ -1,58 +1,60 @@
-import { Studyprogram } from '@/payload-types'
+import { StandardErrorResponse } from '@/app/api/_common'
+import { ProdiCriteria } from '@/repository/ProdiRepository'
+import { PostScope } from '@/schemas/_common'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import { PaginatedDocs } from 'payload'
-import { Where } from 'payload'
 import { stringify } from 'qs-esm'
 import { RefObject } from 'react'
+import { CMSFetchError } from './_common'
+import { PaginatedResult } from '@/repository/_common'
+import { Prodi } from '@/schemas/ProdiTable'
 
 type useStudyProgramsParameters = {
   controllerRef?: RefObject<AbortController | null>
   searchKeyword?: string
   limit?: number
   page?: number
-  featured?: boolean
 }
 
 export function useStudyPrograms({
   limit = 12,
   page = 1,
-  featured,
   searchKeyword,
   controllerRef,
 }: useStudyProgramsParameters) {
   const params = useParams<{ locale: string }>()
 
-  const query: Where = {
-    and: [
-      {
-        global: {
-          equals: params.locale === 'id' ? false : true,
-        },
-      },
-      {
-        featured: {
-          equals: featured,
-        },
-      },
-      {
-        name: {
-          contains: searchKeyword,
-        },
-      },
-    ],
+  // const query: Where = {
+  //   and: [
+  //     {
+  //       global: {
+  //         equals: params.locale === 'id' ? false : true,
+  //       },
+  //     },
+  //     {
+  //       featured: {
+  //         equals: featured,
+  //       },
+  //     },
+  //     {
+  //       name: {
+  //         contains: searchKeyword,
+  //       },
+  //     },
+  //   ],
+  // }
+
+  const query: ProdiCriteria = {
+    scope: params.locale === 'id' ? PostScope.NATIONAL : PostScope.INTERNATIONAL,
+    searchKeyword: searchKeyword,
   }
 
-  const stringifiedQuery = stringify(
-    {
-      where: query,
-      limit,
-      page,
-    },
-    {
-      addQueryPrefix: true,
-    },
-  )
+  const searchParams = new URLSearchParams({
+    ...(limit ? { limit: limit.toString() } : {}),
+    ...(page ? { page: page.toString() } : {}),
+    ...(query.scope ? { scope: query.scope } : {}),
+    ...(query.searchKeyword ? { searchKeyword: query.searchKeyword } : {}),
+  }).toString()
 
   let signal: AbortSignal | null = null
 
@@ -65,15 +67,17 @@ export function useStudyPrograms({
     signal = controllerRef.current.signal
   }
 
-  const fetchData = () =>
-    fetch(`/api/studyprogram${stringifiedQuery}`, {
+  const fetchData = async () => {
+    const res = await fetch(`/api/prodi?${searchParams.toString()}`, {
       signal: signal ?? undefined,
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Fetch Failed')
-        return res.json()
-      })
-      .then((data) => data as PaginatedDocs<Studyprogram>)
+    if (!res.ok) {
+      const parsedResponse = (await res.json()) as StandardErrorResponse
+      throw new CMSFetchError(parsedResponse.code, parsedResponse.error)
+    }
+
+    return (await res.json()) as Promise<PaginatedResult<Prodi>>
+  }
 
   return useQuery({
     queryKey: ['studyprogram', params.locale, searchKeyword, limit, page],

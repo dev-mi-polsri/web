@@ -1,10 +1,6 @@
-import { getPayload } from 'payload'
 import React from 'react'
-import config from '@payload-config'
 import { notFound } from 'next/navigation'
-import RichText from '@/components/richtext'
 import Image from 'next/image'
-import { Media } from '@/payload-types'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,6 +11,9 @@ import {
 } from '@/components/ui/breadcrumb'
 import RecommendedNews from '../../_sections/news/recomended-news'
 import { getMessages } from 'next-intl/server'
+import { getProdiBySlug } from '@/server-actions/prodi'
+import { PostScope } from '@/schemas/_common'
+import RichTextEditor from '@/app/(dashboard)/dashboard/_components/richtext/richtext.editor'
 
 export async function generateMetadata({
   params,
@@ -22,34 +21,27 @@ export async function generateMetadata({
   params: Promise<{ slug: string; locale: string }>
 }) {
   const { slug, locale } = await params
-  const payload = await getPayload({ config })
 
-  const {
-    docs: { 0: program },
-  } = await payload.find({
-    collection: 'studyprogram',
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
-
-  if (!program) {
-    return null
+  let program
+  try {
+    program = await getProdiBySlug(slug)
+  } catch (error) {
+    notFound()
   }
 
-  if (locale === 'en' && !program.global) {
-    return null
+  if (!program) {
+    notFound()
+  }
+
+  if (locale === 'en' && program.scope !== PostScope.INTERNATIONAL) {
+    notFound()
   }
 
   return {
-    title: program.name,
+    title: program.title,
     description: program.description,
     openGraph: {
-      images: [
-        { url: `https://manajemeninformatika.polsri.ac.id${(program.thumbnail as Media).url!}` },
-      ],
+      images: [{ url: `https://manajemeninformatika.polsri.ac.id${program.thumbnail}` }],
     },
   }
 }
@@ -60,24 +52,18 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
     pages: { newsPage: t },
   } = await getMessages({ locale })
 
-  const payload = await getPayload({ config })
-
-  const {
-    docs: { 0: program },
-  } = await payload.find({
-    collection: 'studyprogram',
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
+  let program
+  try {
+    program = await getProdiBySlug(slug)
+  } catch (error) {
+    notFound()
+  }
 
   if (!program) {
     notFound()
   }
 
-  if (locale === 'en' && !program.global) {
+  if (locale === 'en' && program.scope !== PostScope.INTERNATIONAL) {
     notFound()
   }
 
@@ -94,13 +80,13 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{program.name}</BreadcrumbPage>
+            <BreadcrumbPage>{program.title}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <article className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 flex flex-col">
-          <h1 className="text-4xl font-bold max-w-4xl">{program.name}</h1>
+          <h1 className="text-4xl font-bold max-w-4xl">{program.title}</h1>
           <div>
             <div className="mb-2 text-muted-foreground">
               {new Date(program.createdAt).toLocaleDateString('id-ID', {
@@ -112,14 +98,19 @@ async function ProgramPage({ params }: { params: Promise<{ slug: string; locale:
           </div>
           <div className="flex flex-col gap-4 w-full">
             <Image
-              src={(program.thumbnail as Media).url || '/placeholder.png'}
-              alt={program.name}
+              src={program.thumbnail || '/placeholder.png'}
+              alt={program.title}
               width={1280}
               height={720}
               className="w-full aspect-video object-cover rounded-lg mb-6"
             />
             <div>
-              <RichText data={program.content!} className="w-full text-lg" enableGutter={false} />
+              <RichTextEditor
+                value={program.content!}
+                className="w-full text-lg"
+                readOnly
+                hideMenuBar
+              />
             </div>
           </div>
         </div>

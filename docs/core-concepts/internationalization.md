@@ -149,7 +149,7 @@ async function getLocalizedNews(locale: string) {
 ## Middleware Configuration
 
 ```typescript
-// middleware.ts
+// proxy.ts
 import { createMiddleware } from 'next-intl/server'
 
 export default createMiddleware({

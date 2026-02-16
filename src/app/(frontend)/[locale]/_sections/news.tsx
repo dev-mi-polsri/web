@@ -34,7 +34,7 @@ function News({
   return (
     <section
       id="news"
-      className="max-w-screen-xl mx-auto px-8 py-10 w-full text-center flex flex-col items-center"
+      className="max-w-7xl mx-auto px-8 py-10 w-full text-center flex flex-col items-center"
     >
       <div>
         <h1 className="font-bold text-2xl">{t('heading')}</h1>
@@ -64,7 +64,7 @@ function News({
           ? Array.from({ length: 12 }).map((_, idx) => <NewsCardSkeleton key={idx} />)
           : newsError
             ? Array.from({ length: 12 }).map((_, idx) => <NewsCardSkeleton key={idx} />)
-            : news.docs.map((data, idx) => <NewsCard {...data} key={idx} />)}
+            : news.results.map((data, idx) => <NewsCard {...data} key={idx} />)}
       </div>
       {pagination && news && (
         <div className="flex w-full justify-center items-center gap-2">

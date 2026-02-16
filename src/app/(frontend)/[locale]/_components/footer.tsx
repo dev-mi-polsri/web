@@ -1,25 +1,23 @@
+import { Link } from '@/i18n/navigation'
+import { PostScope } from '@/schemas/_common'
+import { getProdi } from '@/server-actions/prodi'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { getMessages } from 'next-intl/server'
-import Link from 'next/link'
-import config from '@payload-config'
-import { getPayload } from 'payload'
-import React from 'react'
 
 async function Footer({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
 
   const { layout } = await getMessages({ locale })
 
-  const payload = await getPayload({ config })
-
-  const studyPrograms = await payload.find({
-    collection: 'studyprogram',
-    where: {
-      global: {
-        equals: locale === 'id' ? false : true,
-      },
+  const studyPrograms = await getProdi(
+    {
+      scope: locale === 'id' ? PostScope.NATIONAL : PostScope.INTERNATIONAL,
     },
-  })
+    {
+      page: 1,
+      size: 5,
+    },
+  )
 
   return (
     <>
@@ -55,9 +53,9 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
           <div className="flex flex-col gap-4">
             <h2 className="font-bold text-xl">{layout.footer.links.study}</h2>
             <div className="flex flex-col gap-2">
-              {studyPrograms?.docs.map((item, idx) => (
-                <Link href={`/${locale}/program/${item.slug}`} key={idx}>
-                  {item.name}
+              {studyPrograms?.results.map((item, idx) => (
+                <Link href={`/program/${item.slug}`} key={idx}>
+                  {item.title}
                 </Link>
               ))}
             </div>
@@ -66,7 +64,7 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
             <h2 className="font-bold text-xl">{layout.footer.links.links}</h2>
             <div className="flex flex-col gap-2">
               <Link href="/">{layout.footer.links.home}</Link>
-              <Link href={`/${locale}/news`}>{layout.footer.links.news}</Link>
+              <Link href={`/news`}>{layout.footer.links.news}</Link>
               <Link href="https://www.instagram.com/jurusan.mi.polsri/">
                 {layout.footer.links.ig}
               </Link>

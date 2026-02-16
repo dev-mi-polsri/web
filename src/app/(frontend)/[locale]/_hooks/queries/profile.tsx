@@ -1,58 +1,42 @@
-import { Profile } from '@/payload-types'
+import { StandardApiResponse, StandardErrorResponse } from '@/app/api/_common'
+import { ProfileCriteria } from '@/repository/ProfileRepository'
+import { PostScope } from '@/schemas/_common'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import { PaginatedDocs } from 'payload'
-import { Where } from 'payload'
 import { stringify } from 'qs-esm'
 import { RefObject } from 'react'
+import { CMSFetchError } from './_common'
+import { PaginatedResult } from '@/repository/_contracts'
+import { Profile } from '@/schemas/ProfileTable'
 
 type useProfilesParameters = {
   controllerRef?: RefObject<AbortController | null>
   searchKeyword?: string
   limit?: number
   page?: number
-  featured?: boolean
 }
 
 export function useProfiles({
   limit = 12,
   page = 1,
-  featured,
   searchKeyword,
   controllerRef,
 }: useProfilesParameters) {
   const params = useParams<{ locale: string }>()
 
-  const query: Where = {
-    and: [
-      {
-        global: {
-          equals: params.locale === 'id' ? false : true,
-        },
-      },
-      {
-        featured: {
-          equals: featured,
-        },
-      },
-      {
-        name: {
-          contains: searchKeyword,
-        },
-      },
-    ],
-  }
+  const query = {
+    scope: params.locale === 'id' ? PostScope.NATIONAL : PostScope.INTERNATIONAL,
+    searchKeyword,
+  } satisfies ProfileCriteria
 
-  const stringifiedQuery = stringify(
-    {
-      where: query,
-      limit,
-      page,
-    },
-    {
-      addQueryPrefix: true,
-    },
-  )
+  const querySearchParams = new URLSearchParams()
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      querySearchParams.append(key, String(value))
+    }
+  })
+  querySearchParams.append('limit', String(limit))
+  querySearchParams.append('page', String(page))
 
   let signal: AbortSignal | null = null
 
@@ -65,15 +49,17 @@ export function useProfiles({
     signal = controllerRef.current.signal
   }
 
-  const fetchData = () =>
-    fetch(`/api/profile${stringifiedQuery}`, {
+  const fetchData = async () => {
+    const res = await fetch(`/api/profile?${querySearchParams.toString()}`, {
       signal: signal ?? undefined,
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Fetch Failed')
-        return res.json()
-      })
-      .then((data) => data as PaginatedDocs<Profile>)
+    if (!res.ok) {
+      const parsedResponse = (await res.json()) as StandardErrorResponse
+      throw new CMSFetchError(parsedResponse.code, parsedResponse.error)
+    }
+
+    return (await res.json()) as Promise<PaginatedResult<Profile>>
+  }
 
   return useQuery({
     queryKey: ['profile', params.locale, searchKeyword, limit, page],

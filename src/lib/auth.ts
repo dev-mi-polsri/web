@@ -1,0 +1,23 @@
+import { betterAuth } from 'better-auth'
+import { createPool } from 'mysql2/promise'
+import { DATABASE_CONFIG } from './db.config'
+import { admin, organization } from 'better-auth/plugins'
+
+export const APP_ROLES = ['user', 'admin'] as const
+export type AppRole = (typeof APP_ROLES)[number]
+
+export const auth = betterAuth({
+  database: createPool(DATABASE_CONFIG),
+  emailAndPassword: {
+    enabled: true,
+    disableSignUp: true,
+    minPasswordLength: 8,
+    maxPasswordLength: 128,
+    requireEmailVerification: false, // TODO: Implement after SMTP Server granted
+  },
+  sendResetPassword: async () => {
+    // TODO: Password Reset
+  },
+  resetPasswordTokenExpiresIn: 3600,
+  plugins: [admin(), organization()],
+})

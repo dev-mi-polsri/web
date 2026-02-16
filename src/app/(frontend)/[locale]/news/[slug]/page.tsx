@@ -1,10 +1,5 @@
-import { getPayload } from 'payload'
-import React from 'react'
-import config from '@payload-config'
 import { notFound } from 'next/navigation'
-import RichText from '@/components/richtext'
 import Image from 'next/image'
-import { Media } from '@/payload-types'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,40 +12,50 @@ import { Badge } from '@/components/ui/badge'
 import RecommendedNews from '../../_sections/news/recomended-news'
 import { getMessages } from 'next-intl/server'
 import { Metadata } from 'next'
+import { getPostBySlug } from '@/server-actions/post'
+import { PostScope } from '@/schemas/_common'
+import RichTextEditor from '@/app/(dashboard)/dashboard/_components/richtext/richtext.editor'
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string; locale: string }>
 }): Promise<Metadata> {
-  const { slug, locale } = await params
-  const payload = await getPayload({ config })
+  // const { slug, locale } = await params
+  // const payload = await getPayload({ config })
 
-  const {
-    docs: { 0: post },
-  } = await payload.find({
-    collection: 'news',
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
+  // const {
+  //   docs: { 0: post },
+  // } = await payload.find({
+  //   collection: 'news',
+  //   where: {
+  //     slug: {
+  //       equals: slug,
+  //     },
+  //   },
+  // })
+  const { slug, locale } = await params
+  let post
+  try {
+    post = await getPostBySlug(slug)
+  } catch (error) {
+    console.error('Error fetching post:', error)
+
+    notFound()
+  }
 
   if (!post) {
     notFound()
   }
 
-  if (locale === 'en' && !post.global) {
+  if (locale === 'en' && post.scope != PostScope.INTERNATIONAL) {
     notFound()
   }
 
   return {
-    title: post.name,
+    title: post.title,
     openGraph: {
-      images: [
-        { url: `https://manajemeninformatika.polsri.ac.id${(post.thumbnail as Media).url!}` },
-      ],
+      images: [{ url: `https://manajemeninformatika.polsri.ac.id${post.thumbnail}` }],
     },
   }
 }
@@ -60,25 +65,20 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
   const {
     pages: { newsPage: t },
   } = await getMessages({ locale })
-
-  const payload = await getPayload({ config })
-
-  const {
-    docs: { 0: post },
-  } = await payload.find({
-    collection: 'news',
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
-
-  if (!post) {
+  let post
+  try {
+    post = await getPostBySlug(slug)
+  } catch (error) {
+    console.error('Error fetching post:', error)
     notFound()
   }
 
-  if (locale === 'en' && !post.global) {
+  if (!post) {
+    console.error('Post not found for slug:', slug)
+    notFound()
+  }
+
+  if (locale === 'en' && post.scope != PostScope.INTERNATIONAL) {
     notFound()
   }
 
@@ -95,7 +95,7 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{post.name}</BreadcrumbPage>
+            <BreadcrumbPage>{post.title}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -104,9 +104,9 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           <div className="flex gap-1 items-center mb-2 flex-wrap">
             {post.tags &&
               post.tags?.length > 0 &&
-              post.tags.map((tag, idx) => <Badge key={idx}>{tag.tag}</Badge>)}
+              post.tags.map((tag, idx) => <Badge key={idx}>{tag.name}</Badge>)}
           </div>
-          <h1 className="text-4xl font-bold max-w-4xl">{post.name}</h1>
+          <h1 className="text-4xl font-bold max-w-4xl">{post.title}</h1>
           <div>
             <div className="mb-2 text-muted-foreground">
               {new Date(post.createdAt).toLocaleDateString('id-ID', {
@@ -118,14 +118,14 @@ async function NewsPage({ params }: { params: Promise<{ slug: string; locale: st
           </div>
           <div className="flex flex-col gap-4 w-full">
             <Image
-              src={(post.thumbnail as Media).url || '/placeholder.png'}
-              alt={post.name} 
+              src={post.thumbnail || '/placeholder.png'}
+              alt={post.title}
               width={1280}
               height={720}
               className="w-full aspect-video object-cover rounded-lg mb-6"
             />
             <div>
-              <RichText data={post.content!} className="w-full text-lg" enableGutter={false} />
+              <RichTextEditor value={post.content} readOnly hideMenuBar />
             </div>
           </div>
         </div>

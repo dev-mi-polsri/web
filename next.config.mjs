@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'url'
-import { withPayload } from '@payloadcms/next/withPayload'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
@@ -7,6 +5,7 @@ const withNextIntl = createNextIntlPlugin()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Your Next.js config here
+  cacheComponents: true,
   output: 'standalone',
   images: {
     remotePatterns: [
@@ -21,6 +20,11 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
 }
 
-export default withNextIntl(withPayload(nextConfig, { devBundleServerPackages: false }))
+export default withNextIntl(nextConfig)

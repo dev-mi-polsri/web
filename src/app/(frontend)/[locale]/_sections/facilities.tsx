@@ -1,9 +1,7 @@
-import { Facility, Media } from '@/payload-types'
 import Image from 'next/image'
-import React from 'react'
-import config from '@payload-config'
-import { getPayload } from 'payload'
 import { getMessages } from 'next-intl/server'
+import { getFasilitas } from '@/server-actions/fasilitas'
+import { Fasilitas } from '@/schemas/FasilitasTable'
 
 async function Facilities({ locale }: { locale: string }) {
   // const t = useTranslations('pages.home.facilities')
@@ -14,12 +12,7 @@ async function Facilities({ locale }: { locale: string }) {
     },
   } = await getMessages({ locale })
 
-  const payload = await getPayload({ config })
-
-  const facilities = await payload.find({
-    collection: 'facility',
-    limit: 10,
-  })
+  const facilities = await getFasilitas({}, { page: 1, size: 10 })
 
   return (
     <section className="py-8 text-center">
@@ -28,7 +21,7 @@ async function Facilities({ locale }: { locale: string }) {
         <p className="text-sm text-muted-foreground">{t.description}</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 overflow-x-auto mx-auto max-w-7xl px-4 pb-4">
-        {facilities?.docs.map(({ ...facility }, idx) => (
+        {facilities?.results.map(({ ...facility }, idx) => (
           <FacilityCard {...facility} locale={locale} key={idx} />
         ))}
       </div>
@@ -36,7 +29,7 @@ async function Facilities({ locale }: { locale: string }) {
   )
 }
 
-function FacilityCard({ logo, name, enName, locale }: Facility & { locale: string }) {
+function FacilityCard({ image, name, enName, locale }: Fasilitas & { locale: string }) {
   return (
     <div>
       <div className="relative w-full pb-[133.33%]">
@@ -45,7 +38,7 @@ function FacilityCard({ logo, name, enName, locale }: Facility & { locale: strin
           className="rounded-lg object-cover absolute inset-0 w-full h-full"
           fill
           alt={locale === 'en' ? enName : name}
-          src={(logo as Media).url ?? '/placeholder.svg'}
+          src={image ?? '/placeholder.svg'}
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 rounded-lg" />
