@@ -14,8 +14,8 @@ export default function LoginPage() {
       email: email, // required
       password: password, // required
       rememberMe: true,
-      callbackURL: 'http://localhost:3000/dashboard',
     })
+
     if (error) {
       toast.error(error.message)
       return
