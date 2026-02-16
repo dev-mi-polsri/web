@@ -15,6 +15,7 @@ import { Metadata } from 'next'
 import { getPostBySlug } from '@/server-actions/post'
 import { PostScope } from '@/schemas/_common'
 import RichTextEditor from '@/app/(dashboard)/dashboard/_components/richtext/richtext.editor'
+import { connection } from 'next/server'
 
 export async function generateMetadata({
   params,
@@ -34,6 +35,7 @@ export async function generateMetadata({
   //     },
   //   },
   // })
+  await connection()
   const { slug, locale } = await params
   let post
   try {
@@ -61,6 +63,7 @@ export async function generateMetadata({
 }
 
 async function NewsPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  await connection()
   const { slug, locale } = await params
   const {
     pages: { newsPage: t },

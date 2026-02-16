@@ -9,9 +9,8 @@ import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts
 import type { Profile } from '@/schemas/ProfileTable'
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
   try {
-    const searchParams = request.nextUrl.searchParams
-
     const { page, size } = parsePagination(searchParams)
     const searchKeyword = searchParams.get('searchKeyword') || undefined
     const scope = (searchParams.get('scope') || undefined) as ProfileCriteria['scope']
@@ -41,4 +40,3 @@ async function getProfile(criteria: ProfileCriteria, pageable: PaginationRequest
   const profileService = new ProfileService(db)
   return profileService.getProfile(criteria, pageable)
 }
-

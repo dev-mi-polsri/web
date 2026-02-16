@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { FasilitasCriteria } from '@/repository/FasilitasRepository'
 import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
-import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
+import type { PaginatedResult } from '@/repository/_contracts'
+import { FasilitasCriteria } from '@/repository/FasilitasRepository'
 import type { Fasilitas } from '@/schemas/FasilitasTable'
 import { getFasilitas } from '@/server-actions/fasilitas'
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
   try {
-    const searchParams = request.nextUrl.searchParams
-
     const { page, size } = parsePagination(searchParams)
     const searchKeyword = searchParams.get('searchKeyword') || undefined
 

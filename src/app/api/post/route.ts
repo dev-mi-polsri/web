@@ -1,17 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { cacheLife } from 'next/cache'
+import { NextRequest, NextResponse } from 'next/server'
 
-import db from '@/lib/db'
-import { PostService } from '@/services/PostService'
-import { PostCriteria } from '@/repository/PostRepository'
 import { handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import db from '@/lib/db'
 import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
-import type { Post, PostSummary } from '@/schemas/PostTable'
+import { PostCriteria } from '@/repository/PostRepository'
+import type { PostSummary } from '@/schemas/PostTable'
+import { PostService } from '@/services/PostService'
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
   try {
-    const searchParams = request.nextUrl.searchParams
-
     const { page, size } = parsePagination(searchParams)
     const searchKeyword = searchParams.get('searchKeyword') || undefined
     const type = (searchParams.get('type') || undefined) as PostCriteria['type']

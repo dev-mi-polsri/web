@@ -1,9 +1,10 @@
-import { cn } from '@/lib/utils'
-import { Inter as FontSans } from 'next/font/google'
-import './globals.css'
-import { Metadata } from 'next'
 import { Toaster } from '@/components/ui/sonner'
+import { cn } from '@/lib/utils'
+import { Metadata } from 'next'
+import { Inter as FontSans } from 'next/font/google'
+import { ReactNode } from 'react'
 import { ThemeProvider } from '../(frontend)/[locale]/_providers/theme-provider'
+import './globals.css'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: 'JuaraCMS Dashboard',
 }
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <html suppressHydrationWarning>
       <body

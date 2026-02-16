@@ -5,12 +5,13 @@ import { Navbar } from './_components/navbar'
 import { Providers } from './_providers'
 import { ThemeProvider } from './_providers/theme-provider'
 import { cn } from '@/lib/utils'
-import { NextIntlClientProvider } from 'next-intl'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import Footer from './_components/footer'
 import { Metadata } from 'next'
 import { Toaster } from '@/components/ui/sonner'
-import { routing } from '@/i18n/routing'
+import { locales, routing } from '@/i18n/routing'
+import { notFound } from 'next/navigation'
 // import FabButton from './_widgets/fab/button'
 
 const fontSans = FontSans({
@@ -46,15 +47,20 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export default async function RootLayout(props: {
+export default async function RootLayout({
+  children,
+  params,
+}: {
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }) {
-  const { children } = props
-  const { locale } = await props.params
-  const messages = await getMessages({ locale })
+  const { locale } = await params
+  if (!hasLocale(locales, locale)) {
+    notFound()
+  }
+
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body
         className={cn(
           'relative antialiased min-h-screen overflow-x-hidden font-sans',
@@ -62,12 +68,12 @@ export default async function RootLayout(props: {
         )}
       >
         <Providers>
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider>
             <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
               <Navbar />
               <main>{children}</main>
               {/* <FabButton /> */}
-              <Footer params={props.params} />
+              <Footer />
               <Toaster />
             </ThemeProvider>
           </NextIntlClientProvider>

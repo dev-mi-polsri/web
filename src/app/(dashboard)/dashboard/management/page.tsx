@@ -1,7 +1,9 @@
 import getSession from '../_lib/auth'
 import AccountManagement from './_components/account-management'
+import { connection } from 'next/server'
 
 export default async function ManagementPage() {
+  await connection()
   const user = await getSession()
 
   return (

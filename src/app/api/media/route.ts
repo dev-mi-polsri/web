@@ -6,9 +6,8 @@ import { PaginatedResult } from '@/repository/_contracts'
 import { getMedia } from '@/server-actions/media'
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
   try {
-    const searchParams = request.nextUrl.searchParams
-
     const { page, size } = parsePagination(searchParams)
 
     const criteria: MediaCriteria = {

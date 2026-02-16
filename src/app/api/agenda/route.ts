@@ -1,17 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { AgendaService } from '@/services/AgendaService'
-import db from '@/lib/db'
-import { AgendaCriteria } from '@/repository/AgendaRepository'
 import { ApiError, handleApiError, parsePagination, StandardApiResponse } from '@/app/api/_common'
+import { PaginatedResult } from '@/repository/_contracts'
+import { AgendaCriteria } from '@/repository/AgendaRepository'
 import { Agenda } from '@/schemas/AgendaTable'
-import { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
-import { cacheLife, cacheTag } from 'next/cache'
 import { getAgenda } from '@/server-actions/agenda'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
- try {
-    const searchParams = request.nextUrl.searchParams
-
+  const searchParams = request.nextUrl.searchParams
+  try {
     const { page, size } = parsePagination(searchParams)
     const { startDate, endDate } = parseDateRange(searchParams)
     const searchKeyword = searchParams.get('searchKeyword') || undefined
@@ -30,7 +26,7 @@ export async function GET(request: NextRequest) {
     )
   } catch (error: unknown) {
     return handleApiError(error)
- }
+  }
 }
 
 /// Validate date format YYYY-MM-DD

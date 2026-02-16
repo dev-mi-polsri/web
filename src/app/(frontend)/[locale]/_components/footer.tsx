@@ -1,57 +1,49 @@
+'use client'
 import { Link } from '@/i18n/navigation'
-import { PostScope } from '@/schemas/_common'
-import { getProdi } from '@/server-actions/prodi'
 import { Mail, MapPin, Phone } from 'lucide-react'
-import { getMessages } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
+import { useStudyProgramsSuspense } from '../_hooks/queries/study-programs'
 
-async function Footer({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params
+async function Footer() {
+  const t = useTranslations('layout')
 
-  const { layout } = await getMessages({ locale })
-
-  const studyPrograms = await getProdi(
-    {
-      scope: locale === 'id' ? PostScope.NATIONAL : PostScope.INTERNATIONAL,
-    },
-    {
-      page: 1,
-      size: 5,
-    },
-  )
+  const { data: studyPrograms } = useStudyProgramsSuspense({
+    limit: 10,
+  })
 
   return (
     <>
       <footer className="bg-secondary text-secondary-foreground py-12 flex flex-col">
         <div className="container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
           <div className="flex flex-col gap-4">
-            <h2 className="font-bold text-2xl">{layout.footer.title}</h2>
+            <h2 className="font-bold text-2xl">{t('footer.title')}</h2>
             <p className="text-muted-foreground">
-              {layout.footer.campus}
+              {t('footer.campus')}
               <br />
-              {layout.footer.road}
+              {t('footer.road')}
               <br />
-              {layout.footer.city}
+              {t('footer.city')}
             </p>
           </div>
           <div className="flex flex-col gap-4">
-            <h2 className="font-bold text-xl">{layout.footer.links.contact}</h2>
+            <h2 className="font-bold text-xl">{t('footer.links.contact')}</h2>
             <div className="flex flex-col gap-2">
               <div className="flex gap-2 items-center">
                 <MapPin className="size-4" />
-                <p>{layout.footer.road}</p>
+                <p>{t('footer.road')}</p>
               </div>
               <div className="flex gap-2 items-center">
                 <Phone className="size-4" />
-                <p>{layout.footer.contact.phone}</p>
+                <p>{t('footer.contact.phone')}</p>
               </div>
               <div className="flex gap-2 items-center">
                 <Mail className="size-4" />
-                <p>{layout.footer.contact.email}</p>
+                <p>{t('footer.contact.email')}</p>
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h2 className="font-bold text-xl">{layout.footer.links.study}</h2>
+            <h2 className="font-bold text-xl">{t('footer.links.study')}</h2>
             <div className="flex flex-col gap-2">
               {studyPrograms?.results.map((item, idx) => (
                 <Link href={`/program/${item.slug}`} key={idx}>
@@ -61,20 +53,20 @@ async function Footer({ params }: { params: Promise<{ locale: string }> }) {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <h2 className="font-bold text-xl">{layout.footer.links.links}</h2>
+            <h2 className="font-bold text-xl">{t('footer.links.links')}</h2>
             <div className="flex flex-col gap-2">
-              <Link href="/">{layout.footer.links.home}</Link>
-              <Link href={`/news`}>{layout.footer.links.news}</Link>
+              <Link href="/">{t('footer.links.home')}</Link>
+              <Link href={`/news`}>{t('footer.links.news')}</Link>
               <Link href="https://www.instagram.com/jurusan.mi.polsri/">
-                {layout.footer.links.ig}
+                {t('footer.links.ig')}
               </Link>
-              <Link href="https://www.instagram.com/hmjmi_polsri/">{layout.footer.links.hmj}</Link>
+              <Link href="https://www.instagram.com/hmjmi_polsri/">{t('footer.links.hmj')}</Link>
             </div>
           </div>
         </div>
         <div className="container max-w-7xl mx-auto text-center mt-8 text-xs text-muted-foreground px-6">
           <p>
-            © {new Date().getFullYear()} {layout.footer.title} Polsri. All rights reserved.
+            © {new Date().getFullYear()} {t('footer.title')} Polsri. All rights reserved.
           </p>
         </div>
       </footer>

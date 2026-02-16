@@ -9,9 +9,8 @@ import type { PaginatedResult, PaginationRequest } from '@/repository/_contracts
 import type { TenagaAjar } from '@/schemas/TenagaAjarTable'
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
   try {
-    const searchParams = request.nextUrl.searchParams
-
     const { page, size } = parsePagination(searchParams)
     const searchKeyword = searchParams.get('searchKeyword') || undefined
 
@@ -28,7 +27,10 @@ export async function GET(request: NextRequest) {
       ...(typeof isPejabat === 'boolean' ? { isPejabat } : {}),
     }
 
-    const paginatedResult: PaginatedResult<TenagaAjar> = await getTenagaAjar(criteria, { page, size })
+    const paginatedResult: PaginatedResult<TenagaAjar> = await getTenagaAjar(criteria, {
+      page,
+      size,
+    })
 
     return NextResponse.json(
       paginatedResult satisfies StandardApiResponse<PaginatedResult<TenagaAjar>>,
@@ -46,4 +48,3 @@ async function getTenagaAjar(criteria: TenagaAjarCriteria, pageable: PaginationR
   const tenagaAjarService = new TenagaAjarService(db)
   return tenagaAjarService.getTenagaAjar(criteria, pageable)
 }
-

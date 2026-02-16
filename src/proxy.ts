@@ -1,11 +1,15 @@
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
-import { routing } from './i18n/routing'
+import { defaultLocale, locales } from './i18n/routing'
 import { auth } from './lib/auth'
 import { headers } from 'next/headers'
 
 export default async function proxy(request: NextRequest) {
-  const handleI18nRouting = createMiddleware(routing)
+  const handleI18nRouting = createMiddleware({
+    locales: locales,
+    defaultLocale: defaultLocale,
+    localePrefix: 'always',
+  })
   const response = handleI18nRouting(request)
 
   if (request.nextUrl.pathname.startsWith('/dashboard/')) {

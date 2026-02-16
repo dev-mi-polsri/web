@@ -1,8 +1,10 @@
 import React from 'react'
 import Agenda from '../_sections/agenda'
 import { getMessages } from 'next-intl/server'
+import { connection } from 'next/server'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  await connection()
   const { locale } = await params
 
   const messages = await getMessages({ locale })

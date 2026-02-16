@@ -8,9 +8,8 @@ import { getDokumen } from '@/server-actions/dokumen'
 import { MediaType } from '@/schemas/MediaTable'
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
   try {
-    const searchParams = request.nextUrl.searchParams
-
     const { page, size } = parsePagination(searchParams)
     const searchKeyword = searchParams.get('searchKeyword') || undefined
     const jenisDokumenParam = searchParams.get('jenisDokumen') || undefined

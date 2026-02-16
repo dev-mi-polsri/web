@@ -2,8 +2,10 @@ import React from 'react'
 import News from '../_sections/news'
 import FeaturedNews from '../_sections/featured-news'
 import { getMessages } from 'next-intl/server'
+import { connection } from 'next/server'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  await connection()
   const { locale } = await params
 
   const messages = await getMessages({ locale })
@@ -12,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     title,
-    description
+    description,
   }
 }
 

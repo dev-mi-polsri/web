@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { DashboardRoute, getDashboardRoutes } from './_components/dashboard.constants'
 import getSession from './_lib/auth'
+import { connection } from 'next/server'
 
 function DashboardMenu({ href, label }: DashboardRoute) {
   return (
@@ -11,6 +12,7 @@ function DashboardMenu({ href, label }: DashboardRoute) {
 }
 
 export default async function DashboardPage() {
+  await connection()
   const user = await getSession()
 
   return (
