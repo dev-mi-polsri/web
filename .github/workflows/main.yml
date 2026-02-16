@@ -46,8 +46,8 @@ jobs:
       # Ensure your next.config.mjs has `output: 'standalone'`
       - name: Build Next.js app
         env:
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }} # Example of using a secret
-          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }} # Example of using a secret
+          BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
         run: pnpm build
 
       - name: Running post build scripts
