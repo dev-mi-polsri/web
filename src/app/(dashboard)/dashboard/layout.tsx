@@ -3,6 +3,7 @@ import Sidebar from './_components/sidebar/sidebar'
 import { Metadata } from 'next'
 import { getSession } from '@/server-actions/_resource-access'
 import UserAvatar from '@/app/(dashboard)/dashboard/_components/user-avatar'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'JuaraCMS Dashboard',
