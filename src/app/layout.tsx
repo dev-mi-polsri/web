@@ -1,11 +1,10 @@
 import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
-import { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
-import { ReactNode } from 'react'
-import { ThemeProvider } from '../(frontend)/[locale]/_providers/theme-provider'
+import React from 'react'
+import { QueryProviders } from './(frontend)/[locale]/_providers/query-provider'
+import { ThemeProvider } from './(frontend)/[locale]/_providers/theme-provider'
 import './globals.css'
-import { QueryProviders } from '../(frontend)/[locale]/_providers/query-provider'
 
 const fontSans = FontSans({
   variable: '--font-sans',
@@ -13,11 +12,7 @@ const fontSans = FontSans({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: 'JuaraCMS Dashboard',
-}
-
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html suppressHydrationWarning>
       <body
@@ -28,7 +23,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       >
         <QueryProviders>
           <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-            {children}
+            <main>{children}</main>
+            {/* <FabButton /> */}
             <Toaster />
           </ThemeProvider>
         </QueryProviders>

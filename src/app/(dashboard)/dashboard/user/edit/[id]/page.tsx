@@ -1,10 +1,8 @@
 import getSession from '../../../_lib/auth'
 import { getUserById, getUsers } from '@/server-actions/auth'
 import EditUserPage from './edit-page'
-import { connection } from 'next/server'
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  await connection()
   const session = await getSession()
   if (session.role !== 'admin') {
     return <div>You are not allowed to access this page.</div>

@@ -1,24 +1,13 @@
-import React from 'react'
-import './globals.css'
-import { Inter as FontSans } from 'next/font/google'
-import { Navbar } from './_components/navbar'
-import { QueryProviders } from './_providers/query-provider'
-import { ThemeProvider } from './_providers/theme-provider'
-import { cn } from '@/lib/utils'
-import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-import Footer from './_components/footer'
-import { Metadata } from 'next'
 import { Toaster } from '@/components/ui/sonner'
 import { locales, routing } from '@/i18n/routing'
+import { Metadata } from 'next'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-// import FabButton from './_widgets/fab/button'
-
-const fontSans = FontSans({
-  variable: '--font-sans',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-})
+import React from 'react'
+import Footer from './_components/footer'
+import { Navbar } from './_components/navbar'
+import { ThemeProvider } from './_providers/theme-provider'
 
 export async function generateMetadata({
   params,
@@ -61,25 +50,13 @@ export default async function RootLayout({
   }
 
   return (
-    <html suppressHydrationWarning>
-      <body
-        className={cn(
-          'relative antialiased min-h-screen overflow-x-hidden font-sans',
-          fontSans.variable,
-        )}
-      >
-        <QueryProviders>
-          <NextIntlClientProvider>
-            <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-              <Navbar />
-              <main>{children}</main>
-              {/* <FabButton /> */}
-              <Footer />
-              <Toaster />
-            </ThemeProvider>
-          </NextIntlClientProvider>
-        </QueryProviders>
-      </body>
-    </html>
+    <NextIntlClientProvider>
+      <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+        <Toaster />
+      </ThemeProvider>
+    </NextIntlClientProvider>
   )
 }
