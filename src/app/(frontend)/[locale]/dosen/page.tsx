@@ -3,10 +3,8 @@ import DosenList from './list'
 import { getMessages } from 'next-intl/server'
 import { getTenagaAjar } from '@/server-actions/tenaga-ajar'
 import { Homebase } from '@/schemas/TenagaAjarTable'
-import { connection } from 'next/server'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  await connection()
   const { locale } = await params
 
   const messages = await getMessages({ locale })
@@ -20,7 +18,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 async function Page({ params }: { params: Promise<{ locale: string }> }) {
-  await connection()
   const { locale } = await params
 
   const {

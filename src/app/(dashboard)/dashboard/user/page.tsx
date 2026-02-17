@@ -6,14 +6,12 @@ import { PlusIcon } from 'lucide-react'
 import getSession from '../_lib/auth'
 import { getUsers } from '@/server-actions/auth'
 import UserTable from './_components/user-table'
-import { connection } from 'next/server'
 
 export default async function UserPage({
   searchParams,
 }: {
   searchParams: Promise<{ query?: string; page?: string; size?: string }>
 }) {
-  await connection()
   const session = await getSession()
   if (session.role !== 'admin') {
     return (

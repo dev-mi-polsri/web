@@ -14,14 +14,12 @@ import { getMessages } from 'next-intl/server'
 import { getProfileBySlug } from '@/server-actions/profile'
 import { PostScope } from '@/schemas/_common'
 import RichTextEditor from '@/app/(dashboard)/dashboard/_components/richtext/richtext.editor'
-import { connection } from 'next/server'
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string; locale: string }>
 }) {
-  await connection()
   const { slug, locale } = await params
   // const payload = await getPayload({ config })
 
@@ -60,7 +58,6 @@ export async function generateMetadata({
 }
 
 async function ProfilePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
-  await connection()
   const { slug, locale } = await params
   const {
     pages: { newsPage: t },

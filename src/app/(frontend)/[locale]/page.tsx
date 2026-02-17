@@ -11,7 +11,6 @@ import WelcomingWord from './_sections/welcome-words'
 import StudyPrograms from './_sections/study-programs'
 import { Metadata } from 'next'
 import AnnouncementSection from './_sections/announcement/main'
-import { connection } from 'next/server'
 
 export async function generateMetadata({
   params,
@@ -37,7 +36,6 @@ export async function generateMetadata({
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-  await connection()
   const { locale } = await params
 
   return (
