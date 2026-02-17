@@ -6,6 +6,6 @@ export const authClient = createAuthClient({
   baseURL:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000'
-      : 'https://www.manajemeninformatika.polsri.ac.id',
+      : 'https://manajemeninformatika.polsri.ac.id',
   plugins: [adminClient(), organizationClient()],
 })
