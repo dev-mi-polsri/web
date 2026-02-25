@@ -40,6 +40,7 @@
       },
       "news": "Berita",
       "agenda": "Agenda",
+      "download": "Unduh",
       "theme": {
         "dark": "Gelap",
         "light": "Terang",
@@ -174,6 +175,11 @@
         "d3": "Dosen Prodi Diploma"
       },
       "description": "Dosen Jurusan Manajemen Informatika Polsri"
+    },
+    "document": {
+      "title": "Unduh Dokumen",
+      "description": "Unduh Dokumen Jurusan Manajemen Informatika",
+      "searchBarText": "Cari Dokumen"
     }
   }
 }

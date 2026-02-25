@@ -41,6 +41,7 @@
       },
       "news": "News",
       "agenda": "Agenda",
+      "download": "Downloads",
       "theme": {
         "dark": "Dark",
         "light": "Light",
@@ -175,6 +176,11 @@
         "d3": "Diploma Program Lecturers"
       },
       "description": "Lecturers of Informatics Management Department of Polsri"
+    },
+    "document": {
+      "title": "Unduh Dokumen",
+      "description": "Unduh Dokumen Jurusan Manajemen Informatika",
+      "searchBarText": "Cari Dokumen"
     }
   }
 }

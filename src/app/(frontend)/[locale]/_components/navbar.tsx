@@ -222,6 +222,7 @@ export function Navbar() {
                     {t('news')}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+                
                 <NavigationMenuItem>
                   <NavigationMenuLink
                     href={`/${params.locale}/agenda`}
@@ -233,6 +234,20 @@ export function Navbar() {
                     )}
                   >
                     {t('agenda')}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    href={`/${params.locale}/dokumen`}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      pathname === `${params.locale}/dokumen`
+                        ? 'text-foreground hover:text-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {t('download')}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
