@@ -6,6 +6,9 @@ import { admin, organization } from 'better-auth/plugins'
 export const APP_ROLES = ['user', 'admin'] as const
 export type AppRole = (typeof APP_ROLES)[number]
 
+const AUTH_URL =
+  process.env.NEXT_PUBLIC_BETTER_AUTH_URL ?? 'https://manajemeninformatika.polsri.ac.id'
+
 export const auth = betterAuth({
   baseURL: process.env.BASE_URL || 'http://localhost:3000',
   database: createPool(DATABASE_CONFIG),
@@ -19,11 +22,7 @@ export const auth = betterAuth({
   sendResetPassword: async () => {
     // TODO: Password Reset
   },
-  trustedOrigins: [
-    'http://localhost:3000',
-    'https://manajemeninformatika.polsri.ac.id',
-    'https://www.manajemeninformatika.polsri.ac.id',
-  ],
+  trustedOrigins: process.env.NODE_ENV === 'development' ? ['http://localhost:3000'] : [AUTH_URL],
   advanced: {
     defaultCookieAttributes: {
       sameSite: 'none', // Required for cross-origin cookies
