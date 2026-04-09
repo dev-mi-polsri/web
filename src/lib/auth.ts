@@ -23,13 +23,13 @@ export const auth = betterAuth({
     // TODO: Password Reset
   },
   // trustedOrigins: process.env.NODE_ENV === 'development' ? ['http://localhost:3000'] : [AUTH_URL],
-  advanced: {
-    defaultCookieAttributes: {
-      sameSite: 'none', // Required for cross-origin cookies
-      secure: true, // Required for SameSite=None and only works over HTTPS
-      httpOnly: true,
-    },
-  },
+  // advanced: {
+  //   defaultCookieAttributes: {
+  //     sameSite: 'none', // Required for cross-origin cookies
+  //     secure: true, // Required for SameSite=None and only works over HTTPS
+  //     httpOnly: true,
+  //   },
+  // },
   resetPasswordTokenExpiresIn: 3600,
   plugins: [admin(), organization()],
 })
