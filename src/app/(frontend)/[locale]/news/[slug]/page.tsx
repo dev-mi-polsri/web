@@ -56,7 +56,7 @@ export async function generateMetadata({
   return {
     title: post.title,
     openGraph: {
-      images: [{ url: `https://manajemeninformatika.polsri.ac.id${post.thumbnail}` }],
+      images: [{ url: `https://www.manajemeninformatika.polsri.ac.id${post.thumbnail}` }],
     },
   }
 }

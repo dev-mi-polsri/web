@@ -52,7 +52,7 @@ export async function generateMetadata({
     title: profile.title,
     description: profile.description,
     openGraph: {
-      images: [{ url: `https://manajemeninformatika.polsri.ac.id${profile.thumbnail}` }],
+      images: [{ url: `https://www.manajemeninformatika.polsri.ac.id${profile.thumbnail}` }],
     },
   }
 }

@@ -28,7 +28,7 @@ export async function generateMetadata({
     openGraph: {
       images: [
         {
-          url: 'https://manajemeninformatika.polsri.ac.id/Hero-1.jpeg',
+          url: 'https://www.manajemeninformatika.polsri.ac.id/Hero-1.jpeg',
         },
       ],
     },

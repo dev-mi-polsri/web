@@ -7,7 +7,7 @@ export const APP_ROLES = ['user', 'admin'] as const
 export type AppRole = (typeof APP_ROLES)[number]
 
 const AUTH_URL =
-  process.env.NEXT_PUBLIC_BETTER_AUTH_URL ?? 'https://manajemeninformatika.polsri.ac.id'
+  process.env.NEXT_PUBLIC_BETTER_AUTH_URL ?? 'https://www.manajemeninformatika.polsri.ac.id'
 
 export const auth = betterAuth({
   baseURL: process.env.BASE_URL || 'http://localhost:3000',
