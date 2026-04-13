@@ -1,11 +1,21 @@
-import { createPool } from 'mysql2/promise'
+import { createPool as createMysqlPool } from 'mysql2/promise'
+import { Pool } from 'pg'
 import { DATABASE_CONFIG } from '@/lib/db.config'
+import { DATABASE_POSTGRES_CONFIG } from '@/lib/db.postgres.config'
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { extname, join } from 'node:path'
 
 const MIGRATION_FILE_EXTENSION = '.sql'
+const DATABASE_TYPE = process.env.DATABASE_TYPE || 'postgres'
 
-const pool = createPool({ ...DATABASE_CONFIG, multipleStatements: true })
+// Create appropriate pool based on DATABASE_TYPE
+let pool: any
+
+if (DATABASE_TYPE === 'postgres') {
+  pool = new Pool(DATABASE_POSTGRES_CONFIG)
+} else {
+  pool = createMysqlPool({ ...DATABASE_CONFIG, multipleStatements: true })
+}
 
 async function readFolder(
   directoryPath: string,
@@ -50,7 +60,14 @@ async function migrate() {
     console.log('Starting database migration... 🚀')
 
     // Define the folders where migration files are located
-    const migrationFolders = ['migrations', 'better-auth_migrations']
+    const migrationFolders = ['migrations']
+
+    if (DATABASE_TYPE === 'postgres') {
+      migrationFolders.push('better-auth_migrations/postgres')
+    } else if (DATABASE_TYPE === 'mysql') {
+      migrationFolders.push('better-auth_migrations/mysql')
+    }
+
     let migrationFiles: File[] = []
 
     // Read all migration files from the specified folders
@@ -64,9 +81,26 @@ async function migrate() {
     migrationFiles.sort((a, b) => a.name.localeCompare(b.name))
     console.log(`Found ${migrationFiles.length} migration files.`)
 
-    // Skip down migrations (files that include 'down' in their name)
-    migrationFiles = migrationFiles.filter(file => !file.name.toLowerCase().includes('down'))
-    console.log(`After filtering down migrations, ${migrationFiles.length} files remain.`)
+    // Filter migrations based on DATABASE_TYPE
+    // Skip MySQL migrations when using PostgreSQL, and vice versa
+    migrationFiles = migrationFiles.filter((file) => {
+      const fileName = file.name.toLowerCase()
+      // Skip down migrations
+      if (fileName.includes('down')) return false
+      // When using PostgreSQL, skip non-postgres migrations
+      if (DATABASE_TYPE === 'postgres' && !fileName.includes('postgres')) {
+        // Only skip the generic MySQL migrations (not postgres-specific ones)
+        if (fileName.includes('init-schema') || fileName.includes('dokumen')) {
+          return false
+        }
+      }
+      // When using MySQL, skip postgres migrations
+      if (DATABASE_TYPE === 'mysql' && fileName.includes('postgres')) {
+        return false
+      }
+      return true
+    })
+    console.log(`After filtering migrations for ${DATABASE_TYPE}, ${migrationFiles.length} files remain.`)
 
     // Execute each migration file in order
     for (const file of migrationFiles) {
@@ -74,7 +108,18 @@ async function migrate() {
       let sql = await file.text() // Get the SQL content as text
 
       try {
-        await pool.query(sql) // Execute the SQL query
+        if (DATABASE_TYPE === 'postgres') {
+          // PostgreSQL: use client from pool
+          const client = await pool.connect()
+          try {
+            await client.query(sql)
+          } finally {
+            client.release()
+          }
+        } else {
+          // MySQL: use pool.query directly
+          await pool.query(sql)
+        }
         console.log(`Migrated: ${file.name}`)
       } catch (error) {
         console.error(`Error migrating ${file.name}:`, error)

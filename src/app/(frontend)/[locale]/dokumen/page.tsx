@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 async function Page() {
   return (
-    <div className="my-12">
+    <div className="my-12 min-h-screen">
       <Dokumen />
     </div>
   )

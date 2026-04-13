@@ -14,7 +14,12 @@ import {
 } from '@/schemas/PostTable'
 import { JsonValue, PostScope } from '@/schemas/_common'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
-import { jsonArrayFrom } from 'kysely/helpers/mysql'
+import { jsonArrayFrom as jsonArrayFromMySQL } from 'kysely/helpers/mysql'
+import { jsonArrayFrom as jsonArrayFromPostgres } from 'kysely/helpers/postgres'
+
+// Use the appropriate jsonArrayFrom based on database type
+const databaseType = process.env.DATABASE_TYPE || 'mysql'
+const jsonArrayFrom = databaseType === 'postgres' ? jsonArrayFromPostgres : jsonArrayFromMySQL
 
 function parseTagsJson(tagsJson: unknown): Tag[] {
   if (!tagsJson) return []

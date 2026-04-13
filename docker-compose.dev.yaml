@@ -1,24 +1,49 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: webmi_mysql
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: webmi_mysql
+  #   restart: unless-stopped
+  #   environment:
+  #     # Use environment variable values when provided, otherwise fall back to safe local defaults
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-local_root_password}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE:-devdb}
+  #     MYSQL_USER: ${MYSQL_USER:-devuser}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD:-devpass}
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   ports:
+  #     # Maps host port (default 3306) to container 3306. Change MYSQL_HOST_PORT to avoid conflicts.
+  #     - '${MYSQL_HOST_PORT:-3306}:3306'
+  #   healthcheck:
+  #     # Uses mysqladmin inside the container to report readiness
+  #     test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-uroot', '-p${MYSQL_ROOT_PASSWORD}']
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 30s
+  #   networks:
+  #     - webmi_default
+
+  postgres:
+    image: postgres:16
+    container_name: webmi_postgres
     restart: unless-stopped
     environment:
-      # Use environment variable values when provided, otherwise fall back to safe local defaults
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-local_root_password}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-devdb}
-      MYSQL_USER: ${MYSQL_USER:-devuser}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-devpass}
+      # PostgreSQL environment variables
+      POSTGRES_DB: ${POSTGRES_DATABASE:-devdb}
+      POSTGRES_USER: ${POSTGRES_USER:-devdb}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_root_password}
+      POSTGRES_INITDB_ARGS: '--encoding=UTF8 --locale=en_US.UTF-8'
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      # Maps host port (default 3306) to container 3306. Change MYSQL_HOST_PORT to avoid conflicts.
-      - "${MYSQL_HOST_PORT:-3306}:3306"
+      # Maps host port (default 5432) to container 5432. Change POSTGRES_HOST_PORT to avoid conflicts.
+      - '${POSTGRES_HOST_PORT:-5432}:5432'
     healthcheck:
-      # Uses mysqladmin inside the container to report readiness
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      # Uses pg_isready to check database readiness
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-devdb}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,8 +53,8 @@ services:
 
 volumes:
   mysql_data:
+  postgres_data:
 
 networks:
   webmi_default:
     driver: bridge
-
