@@ -2,7 +2,7 @@ import { PaginatedResult, PaginationRequest, processPagination } from '@/reposit
 import { Fasilitas, NewFasilitas, UpdateFasilitas } from '@/schemas/FasilitasTable'
 import { DeleteResult, InsertResult, Kysely, UpdateResult } from 'kysely'
 import { Database } from '@/lib/db'
-import { IOAdapter, NodeIOAdapter } from '@/lib/io'
+import { IOAdapter, VercelBlobIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
 
 export interface FasilitasCriteria {
@@ -26,7 +26,7 @@ export class FasilitasRepository implements IFasilitasRepository {
 
   constructor(database: Kysely<Database>, io: IOAdapter) {
     this.db = database
-    this.io = io ?? new NodeIOAdapter()
+    this.io = io ?? new VercelBlobIOAdapter()
   }
 
   async create(fasilitas: NewFasilitas): Promise<InsertResult> {

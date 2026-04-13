@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import type { Dokumen } from '@/schemas/DokumenTable'
 import { Base64Utils } from '@/lib/base64'
-import { useUpdateDokumen } from '@/app/(dashboard)/_hooks/dokumen'
+import { updateDokumen } from '@/server-actions/dokumen'
 import { DokumenForm } from '../../new/dokumen-form'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 type EditDokumenPageProps = {
   dokumen: Dokumen
@@ -14,7 +16,7 @@ type EditDokumenPageProps = {
 
 export default function EditDokumenPage({ dokumen }: EditDokumenPageProps) {
   const router = useRouter()
-  const updateMutation = useUpdateDokumen(dokumen.id)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -29,14 +31,28 @@ export default function EditDokumenPage({ dokumen }: EditDokumenPageProps) {
           enName: dokumen.enName,
         }}
         onSubmit={async (values) => {
-          await updateMutation.mutateAsync({
-            name: values.name,
-            enName: values.enName,
-            ...(values.file ? { file: await Base64Utils.toDataUrl(values.file) } : {}),
-          })
+          try {
+            setIsLoading(true)
+            const result = await updateDokumen({
+              id: dokumen.id,
+              name: values.name,
+              enName: values.enName,
+              ...(values.file ? { file: await Base64Utils.toDataUrl(values.file) } : {}),
+            })
 
-          router.push('/dashboard/dokumen')
-          router.refresh()
+            if (result && typeof result === 'object' && 'error' in result) {
+              toast.error(result.error)
+              return
+            }
+
+            toast.success('Dokumen berhasil diperbarui')
+            router.push('/dashboard/dokumen')
+            router.refresh()
+          } catch (error) {
+            toast.error('Gagal memperbarui dokumen')
+          } finally {
+            setIsLoading(false)
+          }
         }}
         skipValidation={{ file: true }}
       />

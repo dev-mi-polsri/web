@@ -3,11 +3,13 @@ import { PostForm } from './post-form'
 import { Base64Utils } from '@/lib/base64'
 import { useRouter } from 'next/navigation'
 import BackButton from '../../_components/back-button'
-import { useCreatePost } from '@/app/(dashboard)/_hooks/post'
+import { createPost } from '@/server-actions/post'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 export default function NewPostClient() {
   const router = useRouter()
-  const createMutation = useCreatePost()
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <>
@@ -17,18 +19,31 @@ export default function NewPostClient() {
         </div>
         <PostForm
           onSubmit={async (values) => {
-            await createMutation.mutateAsync({
-              title: values.title,
-              content: values.content!,
-              type: values.type,
-              scope: values.scope,
-              isFeatured: values.isFeatured,
-              isPublished: values.isPublished,
-              thumbnail: await Base64Utils.toDataUrl(values.thumbnail!),
-            })
+            try {
+              setIsLoading(true)
+              const result = await createPost({
+                title: values.title,
+                content: values.content!,
+                type: values.type,
+                scope: values.scope,
+                isFeatured: values.isFeatured,
+                isPublished: values.isPublished,
+                thumbnail: await Base64Utils.toDataUrl(values.thumbnail!),
+              })
 
-            router.push('/dashboard/posts')
-            router.refresh()
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Post berhasil dibuat')
+              router.push('/dashboard/posts')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal membuat post')
+            } finally {
+              setIsLoading(false)
+            }
           }}
         />
       </div>

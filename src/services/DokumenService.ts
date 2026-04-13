@@ -2,7 +2,7 @@ import { Dokumen, NewDokumen, UpdateDokumen } from '@/schemas/DokumenTable'
 import { DokumenCriteria, DokumenRepository } from '@/repository/DokumenRepository'
 import { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import { normalizePagination, ServiceError } from '@/services/_common'
-import { IOAdapter, NodeIOAdapter } from '@/lib/io'
+import { IOAdapter, VercelBlobIOAdapter } from '@/lib/io'
 import { Kysely } from 'kysely'
 import { Database } from '@/lib/db'
 

@@ -2,7 +2,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
 import { toast } from 'sonner'
 import { Fasilitas } from '@/schemas/FasilitasTable'
-import { deleteResource } from '@/app/(dashboard)/_hooks/delete-resource'
+import { deleteFasilitas } from '@/server-actions/fasilitas'
 
 export const fasiltiasTableColumn: ColumnDef<Fasilitas>[] = [
   {
@@ -28,8 +28,13 @@ export const fasiltiasTableColumn: ColumnDef<Fasilitas>[] = [
           <DeleteButton
             onConfirm={async () => {
               try {
-                await deleteResource(`/api/fasilitas/${row.original.id}`)
+                const result = await deleteFasilitas(row.original.id)
+                if (result && typeof result === 'object' && 'error' in result) {
+                  toast.error(result.error)
+                  return
+                }
                 toast.success('Fasilitas berhasil dihapus')
+                window.location.reload()
               } catch (error) {
                 const message = error instanceof Error ? error.message : 'Gagal menghapus fasilitas'
                 toast.error(message)

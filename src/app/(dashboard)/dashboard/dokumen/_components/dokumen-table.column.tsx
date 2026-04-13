@@ -3,7 +3,7 @@ import { toast } from 'sonner'
 
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
 import type { Dokumen } from '@/schemas/DokumenTable'
-import { deleteResource } from '@/app/(dashboard)/_hooks/delete-resource'
+import { deleteDokumen } from '@/server-actions/dokumen'
 
 export const dokumenTableColumn: ColumnDef<Dokumen>[] = [
   {
@@ -33,8 +33,13 @@ export const dokumenTableColumn: ColumnDef<Dokumen>[] = [
           <DeleteButton
             onConfirm={async () => {
               try {
-                await deleteResource(`/api/dokumen/${row.original.id}`)
+                const result = await deleteDokumen(row.original.id)
+                if (result && typeof result === 'object' && 'error' in result) {
+                  toast.error(result.error)
+                  return
+                }
                 toast.success('Dokumen berhasil dihapus')
+                window.location.reload()
               } catch (error) {
                 const message = error instanceof Error ? error.message : 'Gagal menghapus dokumen'
                 toast.error(message)

@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
 import { toast } from 'sonner'
 import { PostScope } from '@/schemas/_common'
-import { deleteResource } from '@/app/(dashboard)/_hooks/delete-resource'
+import { deleteProfile } from '@/server-actions/profile'
 import type { Profile } from '@/schemas/ProfileTable'
 
 const SCOPE_MAP: Record<PostScope, string> = {
@@ -42,8 +42,13 @@ export const profileTableColumn: ColumnDef<Profile>[] = [
           <DeleteButton
             onConfirm={async () => {
               try {
-                await deleteResource(`/api/profile/${row.original.id}`)
-                toast.success('Profile deleted successfully')
+                const result = await deleteProfile(row.original.id)
+                if (result && typeof result === 'object' && 'error' in result) {
+                  toast.error(result.error)
+                  return
+                }
+                toast.success('Profile berhasil dihapus')
+                window.location.reload()
               } catch (error) {
                 const message = error instanceof Error ? error.message : 'Gagal menghapus profile'
                 toast.error(message)

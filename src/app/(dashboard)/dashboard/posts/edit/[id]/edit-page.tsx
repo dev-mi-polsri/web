@@ -2,9 +2,11 @@
 import { Post } from '@/schemas/PostTable'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { PostForm } from '@/app/(dashboard)/dashboard/posts/new/post-form'
-import { useUpdatePost } from '@/app/(dashboard)/_hooks/post'
+import { updatePost } from '@/server-actions/post'
 import { Base64Utils } from '@/lib/base64'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 type EditPostPageProps = {
   post: Post
@@ -12,7 +14,7 @@ type EditPostPageProps = {
 
 export default function EditPostPage({ post }: EditPostPageProps) {
   const router = useRouter()
-  const updateMutation = useUpdatePost(post.id)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <>
@@ -32,23 +34,37 @@ export default function EditPostPage({ post }: EditPostPageProps) {
             isPublished: post.isPublished,
           }}
           onSubmit={async (values) => {
-            let thumbnail
-            if (values.thumbnail instanceof File) {
-              thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+            try {
+              setIsLoading(true)
+              let thumbnail
+              if (values.thumbnail instanceof File) {
+                thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+              }
+
+              const result = await updatePost({
+                id: post.id,
+                title: values.title,
+                content: values.content!,
+                type: values.type,
+                scope: values.scope,
+                isFeatured: values.isFeatured,
+                isPublished: values.isPublished,
+                thumbnail,
+              })
+
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Post berhasil diperbarui')
+              router.push('/dashboard/posts')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal memperbarui post')
+            } finally {
+              setIsLoading(false)
             }
-
-            await updateMutation.mutateAsync({
-              title: values.title,
-              content: values.content!,
-              type: values.type,
-              scope: values.scope,
-              isFeatured: values.isFeatured,
-              isPublished: values.isPublished,
-              thumbnail,
-            })
-
-            router.push('/dashboard/posts')
-            router.refresh()
           }}
           skipValidation={{ thumbnail: true }}
         />

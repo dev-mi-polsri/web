@@ -3,7 +3,10 @@ import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { useRouter } from 'next/navigation'
 import { Fasilitas } from '@/schemas/FasilitasTable'
 import { FasilitasForm } from '../../new/fasilitas-form'
-import { useUpdateFasilitas } from '@/app/(dashboard)/_hooks/fasilitas'
+import { updateFasilitas } from '@/server-actions/fasilitas'
+import { Base64Utils } from '@/lib/base64'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 type EditFasilitasPageProps = {
   fasilitas: Fasilitas
@@ -11,7 +14,7 @@ type EditFasilitasPageProps = {
 
 export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps) {
   const router = useRouter()
-  const updateMutation = useUpdateFasilitas(fasilitas.id)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <>
@@ -27,13 +30,33 @@ export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps)
             enName: fasilitas.enName,
           }}
           onSubmit={async (values) => {
-            await updateMutation.mutateAsync({
-              name: values.name,
-              enName: values.enName,
-            })
+            try {
+              setIsLoading(true)
+              let image
+              if (values.foto instanceof File) {
+                image = await Base64Utils.toDataUrl(values.foto)
+              }
 
-            router.push('/dashboard/fasilitas')
-            router.refresh()
+              const result = await updateFasilitas({
+                id: fasilitas.id,
+                name: values.name,
+                enName: values.enName,
+                ...(image ? { image } : {}),
+              })
+
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Fasilitas berhasil diperbarui')
+              router.push('/dashboard/fasilitas')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal memperbarui fasilitas')
+            } finally {
+              setIsLoading(false)
+            }
           }}
           skipValidation={{ foto: true }}
         />

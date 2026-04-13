@@ -3,12 +3,14 @@
 import { Base64Utils } from '@/lib/base64'
 import { useRouter } from 'next/navigation'
 import BackButton from '../../_components/back-button'
-import { useCreateTenagaAjar } from '@/app/(dashboard)/_hooks/tenaga-ajar'
+import { createTenagaAjar } from '@/server-actions/tenaga-ajar'
 import { TenagaAjarForm } from './tenaga-ajar-form'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 export default function NewTenagaAjarClient() {
   const router = useRouter()
-  const createMutation = useCreateTenagaAjar()
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -17,19 +19,32 @@ export default function NewTenagaAjarClient() {
       </div>
       <TenagaAjarForm
         onSubmit={async (values) => {
-          await createMutation.mutateAsync({
-            nama: values.nama,
-            jenis: values.jenis,
-            homebase: values.homebase,
-            foto: await Base64Utils.toDataUrl(values.foto!),
-            nip: values.nip,
-            nidn: values.nidn || undefined,
-            nuptk: values.nuptk || undefined,
-            isPejabat: values.isPejabat,
-          })
+          try {
+            setIsLoading(true)
+            const result = await createTenagaAjar({
+              nama: values.nama,
+              jenis: values.jenis,
+              homebase: values.homebase,
+              foto: await Base64Utils.toDataUrl(values.foto!),
+              nip: values.nip,
+              nidn: values.nidn || undefined,
+              nuptk: values.nuptk || undefined,
+              isPejabat: values.isPejabat,
+            })
 
-          router.push('/dashboard/tenaga-ajar')
-          router.refresh()
+            if (result && typeof result === 'object' && 'error' in result) {
+              toast.error(result.error)
+              return
+            }
+
+            toast.success('Tenaga ajar berhasil dibuat')
+            router.push('/dashboard/tenaga-ajar')
+            router.refresh()
+          } catch (error) {
+            toast.error('Gagal membuat tenaga ajar')
+          } finally {
+            setIsLoading(false)
+          }
         }}
       />
     </div>

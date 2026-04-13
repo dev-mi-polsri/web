@@ -1,6 +1,6 @@
 import { PaginatedResult, PaginationRequest, processPagination } from '@/repository/_common'
 import { Database } from '@/lib/db'
-import { IOAdapter, NodeIOAdapter } from '@/lib/io'
+import { IOAdapter, VercelBlobIOAdapter } from '@/lib/io'
 import { MediaType } from '@/schemas/MediaTable'
 import {
   NewPost,
@@ -65,7 +65,7 @@ export class PostRepository implements IPostRepository {
 
   constructor(database: Kysely<Database>, io?: IOAdapter) {
     this.db = database
-    this.io = io ?? new NodeIOAdapter()
+    this.io = io ?? new VercelBlobIOAdapter()
   }
 
   async getAll(

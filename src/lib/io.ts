@@ -1,6 +1,7 @@
 import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { MimeType } from '@/schemas/MediaTable'
+import { put, get, del } from '@vercel/blob'
 
 export type FileName = string
 
@@ -14,6 +15,13 @@ export class NodeIOAdapterException extends Error {
   constructor(message: string) {
     super(message)
     this.name = 'NodeIOAdapterException'
+  }
+}
+
+export class VercelBlobIOAdapterException extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'VercelBlobIOAdapterException'
   }
 }
 
@@ -67,5 +75,72 @@ export class NodeIOAdapter implements IOAdapter {
       if (err?.code === 'ENOENT') return
       throw new NodeIOAdapterException(`Failed to delete file: ${err?.message ?? String(e)}`)
     })
+  }
+}
+
+export class VercelBlobIOAdapter implements IOAdapter {
+  async write(file: File): Promise<FileName> {
+    try {
+      const extension = file.type.split('/')[1] || 'bin'
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${extension}`
+
+      const result = await put(fileName, file, {
+        access: 'private',
+        addRandomSuffix: false,
+      })
+
+      return result.url
+    } catch (e) {
+      throw new VercelBlobIOAdapterException(`Failed to write file: ${(e as Error).message}`)
+    }
+  }
+
+  async read(url: FileName, type: MimeType): Promise<Blob | undefined> {
+    try {
+      const result = await get(url, {
+        access: 'private',
+      })
+
+      if (result?.statusCode === 304) {
+        return undefined
+      }
+
+      if (result?.statusCode !== 200 || !result?.stream) {
+        return undefined
+      }
+
+      const chunks: Uint8Array[] = []
+      const reader = result.stream.getReader()
+
+      try {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          chunks.push(value)
+        }
+      } finally {
+        reader.releaseLock()
+      }
+
+      const buffer = new Uint8Array(chunks.reduce((acc, chunk) => acc + chunk.length, 0))
+      let offset = 0
+      for (const chunk of chunks) {
+        buffer.set(chunk, offset)
+        offset += chunk.length
+      }
+
+      return new Blob([buffer], { type: type || 'application/octet-stream' })
+    } catch (e) {
+      throw new VercelBlobIOAdapterException(`Failed to read file: ${(e as Error).message}`)
+    }
+  }
+
+  async delete(name: FileName): Promise<void> {
+    try {
+      await del(name)
+    } catch (e) {
+      throw new VercelBlobIOAdapterException(`Failed to delete file: ${(e as Error).message}`)
+    }
   }
 }

@@ -4,8 +4,10 @@ import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { useRouter } from 'next/navigation'
 import type { TenagaAjar } from '@/schemas/TenagaAjarTable'
 import { TenagaAjarForm } from '../../new/tenaga-ajar-form'
-import { useUpdateTenagaAjar } from '@/app/(dashboard)/_hooks/tenaga-ajar'
+import { updateTenagaAjar } from '@/server-actions/tenaga-ajar'
 import { Base64Utils } from '@/lib/base64'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 type EditTenagaAjarPageProps = {
   tenagaAjar: TenagaAjar
@@ -13,7 +15,7 @@ type EditTenagaAjarPageProps = {
 
 export default function EditTenagaAjarPage({ tenagaAjar }: EditTenagaAjarPageProps) {
   const router = useRouter()
-  const updateMutation = useUpdateTenagaAjar(tenagaAjar.id)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -33,19 +35,33 @@ export default function EditTenagaAjarPage({ tenagaAjar }: EditTenagaAjarPagePro
           isPejabat: tenagaAjar.isPejabat,
         }}
         onSubmit={async (values) => {
-          await updateMutation.mutateAsync({
-            nama: values.nama,
-            jenis: values.jenis,
-            homebase: values.homebase,
-            nip: values.nip,
-            nidn: values.nidn || undefined,
-            nuptk: values.nuptk || undefined,
-            isPejabat: values.isPejabat,
-            ...(values.foto ? { foto: await Base64Utils.toDataUrl(values.foto) } : {}),
-          })
+          try {
+            setIsLoading(true)
+            const result = await updateTenagaAjar({
+              id: tenagaAjar.id,
+              nama: values.nama,
+              jenis: values.jenis,
+              homebase: values.homebase,
+              nip: values.nip,
+              nidn: values.nidn || undefined,
+              nuptk: values.nuptk || undefined,
+              isPejabat: values.isPejabat,
+              ...(values.foto ? { foto: await Base64Utils.toDataUrl(values.foto) } : {}),
+            })
 
-          router.push('/dashboard/tenaga-ajar')
-          router.refresh()
+            if (result && typeof result === 'object' && 'error' in result) {
+              toast.error(result.error)
+              return
+            }
+
+            toast.success('Tenaga ajar berhasil diperbarui')
+            router.push('/dashboard/tenaga-ajar')
+            router.refresh()
+          } catch (error) {
+            toast.error('Gagal memperbarui tenaga ajar')
+          } finally {
+            setIsLoading(false)
+          }
         }}
         skipValidation={{ foto: true }}
       />

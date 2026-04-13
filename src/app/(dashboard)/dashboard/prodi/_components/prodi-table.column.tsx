@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
 import { toast } from 'sonner'
 import { PostScope } from '@/schemas/_common'
-import { deleteResource } from '@/app/(dashboard)/_hooks/delete-resource'
+import { deleteProdi } from '@/server-actions/prodi'
 import type { Prodi } from '@/schemas/ProdiTable'
 
 const SCOPE_MAP: Record<PostScope, string> = {
@@ -42,8 +42,13 @@ export const prodiTableColumn: ColumnDef<Prodi>[] = [
           <DeleteButton
             onConfirm={async () => {
               try {
-                await deleteResource(`/api/prodi/${row.original.id}`)
-                toast.success('Program studi deleted successfully')
+                const result = await deleteProdi(row.original.id)
+                if (result && typeof result === 'object' && 'error' in result) {
+                  toast.error(result.error)
+                  return
+                }
+                toast.success('Program studi berhasil dihapus')
+                window.location.reload()
               } catch (error) {
                 const message = error instanceof Error ? error.message : 'Gagal menghapus prodi'
                 toast.error(message)

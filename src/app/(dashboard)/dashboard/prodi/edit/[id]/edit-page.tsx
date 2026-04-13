@@ -3,9 +3,11 @@
 import type { Prodi } from '@/schemas/ProdiTable'
 import BackButton from '@/app/(dashboard)/dashboard/_components/back-button'
 import { ProdiForm } from '@/app/(dashboard)/dashboard/prodi/new/prodi-form'
-import { useUpdateProdi } from '@/app/(dashboard)/_hooks/prodi'
+import { updateProdi } from '@/server-actions/prodi'
 import { Base64Utils } from '@/lib/base64'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 type EditProdiPageProps = {
   prodi: Prodi
@@ -13,7 +15,7 @@ type EditProdiPageProps = {
 
 export default function EditProdiPage({ prodi }: EditProdiPageProps) {
   const router = useRouter()
-  const updateMutation = useUpdateProdi(prodi.id)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div className="flex flex-col gap-4">
@@ -30,21 +32,35 @@ export default function EditProdiPage({ prodi }: EditProdiPageProps) {
           scope: prodi.scope,
         }}
         onSubmit={async (values) => {
-          let thumbnail
-          if (values.thumbnail instanceof File) {
-            thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+          try {
+            setIsLoading(true)
+            let thumbnail
+            if (values.thumbnail instanceof File) {
+              thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+            }
+
+            const result = await updateProdi({
+              id: prodi.id,
+              title: values.title,
+              description: values.description,
+              content: values.content!,
+              scope: values.scope,
+              thumbnail,
+            })
+
+            if (result && typeof result === 'object' && 'error' in result) {
+              toast.error(result.error)
+              return
+            }
+
+            toast.success('Prodi berhasil diperbarui')
+            router.push('/dashboard/prodi')
+            router.refresh()
+          } catch (error) {
+            toast.error('Gagal memperbarui prodi')
+          } finally {
+            setIsLoading(false)
           }
-
-          await updateMutation.mutateAsync({
-            title: values.title,
-            description: values.description,
-            content: values.content!,
-            scope: values.scope,
-            thumbnail,
-          })
-
-          router.push('/dashboard/prodi')
-          router.refresh()
         }}
         skipValidation={{ thumbnail: true }}
       />
