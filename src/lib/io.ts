@@ -144,3 +144,15 @@ export class VercelBlobIOAdapter implements IOAdapter {
     }
   }
 }
+
+export class IOAdapterFactory {
+  static create(): IOAdapter {
+    const adapterType = process.env.IO_ADAPTER || 'local'
+
+    if (adapterType === 'vercel') {
+      return new VercelBlobIOAdapter()
+    }
+
+    return new NodeIOAdapter()
+  }
+}

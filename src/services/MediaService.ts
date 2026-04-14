@@ -48,18 +48,37 @@ export class MediaService implements IMediaService {
   }
 
   async getMediaUploadUrl(url: string): Promise<File> {
-    const media = await this.getMediaByUrl(url)
+    const isVercelBlobUrl = (url: string) => url.startsWith('https://') && url.includes('.blob.vercel-storage.com')
+    const isLocalUrl = (url: string) => url.startsWith('/api/media/uploads/')
 
-    if (!media) {
-      throw new MediaNotFoundError(`Media with url ${url} not found`)
+    let resolvedUrl: string
+    let mediaUrl: MediaUrl
+
+    if (isVercelBlobUrl(url)) {
+      // Route to blob proxy endpoint
+      resolvedUrl = `/api/blob-proxy/${encodeURIComponent(url)}`
+      mediaUrl = resolvedUrl as MediaUrl
+    } else if (isLocalUrl(url)) {
+      // Keep local URL as-is
+      resolvedUrl = url
+      mediaUrl = url as MediaUrl
+    } else {
+      throw new ServiceError(`Invalid URL format: ${url}. Must be a Vercel Blob URL or local upload URL`, 'INVALID_URL', 400)
     }
 
-    // Get name from url '/api/media/uploads/filename.jpg' => 'filename.jpg'
+    const media = await this.getMediaByUrl(mediaUrl)
+
+    if (!media) {
+      throw new MediaNotFoundError(`Media with url ${mediaUrl} not found`)
+    }
+
+    // Extract filename from original URL (works for both local and Vercel Blob URLs)
     const fileName = url.substring(url.lastIndexOf('/') + 1)
+    
     const blob = await this.io.read(fileName, media.mime)
 
     if (!blob) {
-      throw new MediaNotFoundError(`Media file at url ${url} could not be read`)
+      throw new MediaNotFoundError(`Media file at url ${mediaUrl} could not be read`)
     }
 
     const file = new File([blob], fileName, { type: media.mime })

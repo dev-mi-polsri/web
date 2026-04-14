@@ -15,7 +15,7 @@ import {
 } from '@/server-actions/_common'
 import { Base64Utils } from '@/lib/base64'
 import { MediaType, MediaTypeFactory } from '@/schemas/MediaTable'
-import { VercelBlobIOAdapter } from '@/lib/io'
+import { IOAdapterFactory } from '@/lib/io'
 import { getSessionThrowable } from './_resource-access'
 
 const createMediaSchema = z.object({
@@ -74,7 +74,7 @@ export async function createMedia(input: CreateMediaInput): Promise<ServerAction
     const base64utils = new Base64Utils()
     const file = await base64utils.parseBase64(parsed.file, { filename: 'media' })
 
-    const io = new VercelBlobIOAdapter()
+    const io = IOAdapterFactory.create()
     const url = await io.write(file)
 
     const service = new MediaService(db)
