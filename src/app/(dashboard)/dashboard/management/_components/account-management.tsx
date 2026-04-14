@@ -98,7 +98,6 @@ export default function AccountManagement({ currentUser }: AccountManagementProp
                   }
 
                   toast.success('Detail berhasil diperbarui')
-                  router.refresh()
                 }}
               >
                 Save
@@ -155,7 +154,6 @@ export default function AccountManagement({ currentUser }: AccountManagementProp
                   toast.success('Password berhasil diperbarui')
                   passwordForm.handleChange('currentPassword', '')
                   passwordForm.handleChange('newPassword', '')
-                  router.refresh()
                 }}
               >
                 Save

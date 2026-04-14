@@ -106,7 +106,6 @@ export default function EditUserPage({ user }: { user: EditUser }) {
                     return
                   }
                   toast.success('User berhasil diperbarui')
-                  router.refresh()
                 })
               }}
             >
@@ -154,7 +153,6 @@ export default function EditUserPage({ user }: { user: EditUser }) {
                     return
                   }
                   toast.success('Role berhasil diperbarui')
-                  router.refresh()
                 })
               }}
             >
@@ -198,7 +196,6 @@ export default function EditUserPage({ user }: { user: EditUser }) {
 
                   toast.success('Password berhasil diperbarui')
                   passwordForm.handleChange('newPassword', '')
-                  router.refresh()
                 })
               }}
             >

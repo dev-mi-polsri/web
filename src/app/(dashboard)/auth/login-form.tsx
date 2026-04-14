@@ -1,5 +1,4 @@
 'use client'
-import { useTransition } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,11 +21,11 @@ type LoginFormValues = {
 
 type LoginFormProps = {
   onSubmit: (values: Value<LoginFormValues>) => void
+  isLoading?: boolean
   className?: string
 }
 
-export function LoginForm({ className, onSubmit }: LoginFormProps) {
-  const [isPending, startTransition] = useTransition()
+export function LoginForm({ className, onSubmit, isLoading }: LoginFormProps) {
   const form = useForm<LoginFormValues>({
     email: {
       value: '',
@@ -97,12 +96,10 @@ export function LoginForm({ className, onSubmit }: LoginFormProps) {
         <Field>
           <Button
             type="submit"
-            disabled={isPending}
+            disabled={isLoading}
             onClick={() => {
               if (form.validate()) {
-                startTransition(() => {
-                  onSubmit?.({ ...form.getValues() })
-                })
+                onSubmit?.({ ...form.getValues() })
               }
             }}
           >

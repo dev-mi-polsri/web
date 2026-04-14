@@ -1,6 +1,5 @@
 'use client'
 
-import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
@@ -50,8 +49,7 @@ export function ProdiForm({
   title = 'New Program Studi',
   actionButtonLabel = 'Tambah',
 }: ProdiFormProps) {
-  const [isPending, startTransition] = useTransition()
-  const isLoading = isLoadingProp || isPending
+  const isLoading = isLoadingProp
   
   const form = useForm<ProdiFormValues>({
     title: {
@@ -123,9 +121,7 @@ export function ProdiForm({
           disabled={isLoading}
           onClick={() => {
             if (form.validate()) {
-              startTransition(() => {
-                onSubmit({ ...form.getValues() })
-              })
+              onSubmit({ ...form.getValues() })
             }
           }}
         >

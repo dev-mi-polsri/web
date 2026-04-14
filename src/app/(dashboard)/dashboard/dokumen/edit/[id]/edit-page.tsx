@@ -48,7 +48,6 @@ export default function EditDokumenPage({ dokumen }: EditDokumenPageProps) {
 
               toast.success('Dokumen berhasil diperbarui')
               router.push('/dashboard/dokumen')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal memperbarui dokumen')
             }

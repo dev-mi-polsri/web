@@ -36,7 +36,6 @@ export default function NewDokumenClient() {
 
               toast.success('Dokumen berhasil dibuat')
               router.push('/dashboard/dokumen')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal membuat dokumen')
             }

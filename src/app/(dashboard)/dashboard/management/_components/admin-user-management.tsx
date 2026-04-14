@@ -159,8 +159,6 @@ export default function AdminUserManagement({ users }: AdminUserManagementProps)
                 createForm.handleChange('name', '')
                 createForm.handleChange('password', '')
                 createForm.handleChange('role', 'user')
-
-                router.refresh()
               }}
             >
               Add User
@@ -173,7 +171,7 @@ export default function AdminUserManagement({ users }: AdminUserManagementProps)
         <h4 className="font-medium">Users</h4>
         <div className="flex flex-col gap-3">
           {users.map((u) => (
-            <UserRow key={u.id} user={u} onUpdated={() => router.refresh()} />
+            <UserRow key={u.id} user={u} onUpdated={() => {}} />
           ))}
           {users.length === 0 && <div className="text-sm text-muted-foreground">No users</div>}
         </div>
