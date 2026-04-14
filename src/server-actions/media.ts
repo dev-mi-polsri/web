@@ -65,7 +65,7 @@ export async function getMediaByUrl(url: string) {
   return service.getMediaUploadUrl(url)
 }
 
-export async function createMedia(input: CreateMediaInput): Promise<ServerActionResponse<void>> {
+export async function createMedia(input: CreateMediaInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -87,12 +87,13 @@ export async function createMedia(input: CreateMediaInput): Promise<ServerAction
     })
 
     // updateTag('media')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function updateMedia(input: UpdateMediaInput): Promise<ServerActionResponse<void>> {
+export async function updateMedia(input: UpdateMediaInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -105,12 +106,13 @@ export async function updateMedia(input: UpdateMediaInput): Promise<ServerAction
     // updateTag('media')
     // updateTag('mediaById')
     // updateTag(id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteMedia(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteMedia(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -122,6 +124,7 @@ export async function deleteMedia(id: string): Promise<ServerActionResponse<void
     // updateTag('media')
     // updateTag('mediaById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }

@@ -71,7 +71,7 @@ export async function getProfileBySlug(slug: string) {
 
 export async function createProfile(
   input: CreateProfileInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -91,6 +91,7 @@ export async function createProfile(
     })
 
     // updateTag('profile')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -98,7 +99,7 @@ export async function createProfile(
 
 export async function updateProfile(
   input: UpdateProfileInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -120,12 +121,13 @@ export async function updateProfile(
     // updateTag('profile')
     // updateTag('profileById')
     // updateTag(parsed.id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteProfile(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteProfile(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsedId = validateInput(idschema, id)
@@ -136,6 +138,7 @@ export async function deleteProfile(id: string): Promise<ServerActionResponse<vo
     // updateTag('profile')
     // updateTag('profileById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }

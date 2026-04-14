@@ -69,7 +69,7 @@ export async function getProdiBySlug(slug: string) {
   return service.getProdiBySlug(parsedSlug)
 }
 
-export async function createProdi(input: CreateProdiInput): Promise<ServerActionResponse<void>> {
+export async function createProdi(input: CreateProdiInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -89,12 +89,13 @@ export async function createProdi(input: CreateProdiInput): Promise<ServerAction
     })
 
     // updateTag('prodi')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function updateProdi(input: UpdateProdiInput): Promise<ServerActionResponse<void>> {
+export async function updateProdi(input: UpdateProdiInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -116,12 +117,13 @@ export async function updateProdi(input: UpdateProdiInput): Promise<ServerAction
     // updateTag('prodi')
     // updateTag('prodiById')
     // updateTag(parsed.id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteProdi(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteProdi(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -133,6 +135,7 @@ export async function deleteProdi(id: string): Promise<ServerActionResponse<void
     // updateTag('prodi')
     // updateTag('prodiById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
@@ -48,6 +49,7 @@ export function TenagaAjarForm({
   title = 'New Tenaga Ajar',
   actionButtonLabel = 'Tambah',
 }: TenagaAjarFormProps) {
+  const [isPending, startTransition] = useTransition()
   const form = useForm<TenagaAjarFormValues>({
     nama: {
       value: initialValues?.nama ?? '',
@@ -113,10 +115,12 @@ export function TenagaAjarForm({
       <div className="flex justify-between items-center">
         <h2 className="text-xl">{title}</h2>
         <Button
-          disabled={isLoading}
+          disabled={isLoading || isPending}
           onClick={() => {
             if (form.validate()) {
-              onSubmit({ ...form.getValues() })
+              startTransition(() => {
+                onSubmit({ ...form.getValues() })
+              })
             }
           }}
         >
@@ -126,14 +130,14 @@ export function TenagaAjarForm({
       </div>
 
       <FieldGroup>
-        <Field data-disabled={isLoading}>
+        <Field data-disabled={isLoading || isPending}>
           <FieldLabel htmlFor="foto">Foto</FieldLabel>
           <FieldContent>
             <Input
               id="foto"
               type="file"
               accept="image/*"
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null
 
@@ -156,14 +160,14 @@ export function TenagaAjarForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.nama.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.nama.error}>
           <FieldLabel htmlFor="nama">Nama</FieldLabel>
           <FieldContent>
             <Input
               id="nama"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.nama.value}
               onChange={(e) => form.handleChange('nama', e.target.value)}
             />
@@ -172,13 +176,13 @@ export function TenagaAjarForm({
         </Field>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Field data-disabled={isLoading} data-invalid={!!form.values.jenis.error}>
+          <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.jenis.error}>
             <FieldLabel htmlFor="jenis">Jenis</FieldLabel>
             <FieldContent>
               <Select
                 value={form.values.jenis.value}
                 onValueChange={(value) => form.handleChange('jenis', value as JenisTenagaAjar)}
-                disabled={isLoading}
+                disabled={isLoading || isPending}
               >
                 <SelectTrigger id="jenis">
                   <SelectValue placeholder="Pilih jenis" />
@@ -195,13 +199,13 @@ export function TenagaAjarForm({
             </FieldContent>
           </Field>
 
-          <Field data-disabled={isLoading} data-invalid={!!form.values.homebase.error}>
+          <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.homebase.error}>
             <FieldLabel htmlFor="homebase">Homebase</FieldLabel>
             <FieldContent>
               <Select
                 value={form.values.homebase.value}
                 onValueChange={(value) => form.handleChange('homebase', value as Homebase)}
-                disabled={isLoading}
+                disabled={isLoading || isPending}
               >
                 <SelectTrigger id="homebase">
                   <SelectValue placeholder="Pilih homebase" />
@@ -219,14 +223,14 @@ export function TenagaAjarForm({
           </Field>
         </div>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.nip.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.nip.error}>
           <FieldLabel htmlFor="nip">NIP</FieldLabel>
           <FieldContent>
             <Input
               id="nip"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.nip.value}
               onChange={(e) => form.handleChange('nip', e.target.value)}
             />
@@ -235,13 +239,13 @@ export function TenagaAjarForm({
         </Field>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Field data-disabled={isLoading} data-invalid={!!form.values.nidn.error}>
+          <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.nidn.error}>
             <FieldLabel htmlFor="nidn">NIDN</FieldLabel>
             <FieldContent>
               <Input
                 id="nidn"
                 type="text"
-                disabled={isLoading}
+                disabled={isLoading || isPending}
                 value={form.values.nidn.value}
                 onChange={(e) => form.handleChange('nidn', e.target.value)}
               />
@@ -249,13 +253,13 @@ export function TenagaAjarForm({
             </FieldContent>
           </Field>
 
-          <Field data-disabled={isLoading} data-invalid={!!form.values.nuptk.error}>
+          <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.nuptk.error}>
             <FieldLabel htmlFor="nuptk">NUPTK</FieldLabel>
             <FieldContent>
               <Input
                 id="nuptk"
                 type="text"
-                disabled={isLoading}
+                disabled={isLoading || isPending}
                 value={form.values.nuptk.value}
                 onChange={(e) => form.handleChange('nuptk', e.target.value)}
               />
@@ -266,11 +270,11 @@ export function TenagaAjarForm({
 
         {children}
 
-        <Field orientation="horizontal" data-disabled={isLoading}>
+        <Field orientation="horizontal" data-disabled={isLoading || isPending}>
           <FieldLabel>
             <Checkbox
               checked={form.values.isPejabat.value}
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               onCheckedChange={(checked) => form.handleChange('isPejabat', checked === true)}
             />
             Pejabat

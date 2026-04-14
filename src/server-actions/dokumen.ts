@@ -56,7 +56,7 @@ export async function getDokumen(criteria: DokumenCriteria, pageable: Pagination
 
 export async function createDokumen(
   input: CreateDokumenInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
     const parsed = validateInput(createDokumenSchema, input)
@@ -72,6 +72,7 @@ export async function createDokumen(
     })
 
     // updateTag('dokumen')
+    return true
   } catch (e) {
     return handleServerActionError(e)
   }
@@ -79,7 +80,7 @@ export async function createDokumen(
 
 export async function updateDokumen(
   input: UpdateDokumenInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
@@ -101,12 +102,13 @@ export async function updateDokumen(
     // updateTag('dokumen')
     // updateTag('dokumenById')
     // updateTag(parsed.id)
+    return true
   } catch (e) {
     return handleServerActionError(e)
   }
 }
 
-export async function deleteDokumen(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteDokumen(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
@@ -118,6 +120,7 @@ export async function deleteDokumen(id: string): Promise<ServerActionResponse<vo
     // updateTag('dokumen')
     // updateTag('dokumenById')
     // updateTag(parsedId)
+    return true
   } catch (e) {
     return handleServerActionError(e)
   }

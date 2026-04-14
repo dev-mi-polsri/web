@@ -90,30 +90,32 @@ export async function getTagById(id: string) {
   return service.getTagById(id)
 }
 
-export async function createTag(name: string): Promise<ServerActionResponse<void>> {
+export async function createTag(name: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
     const service = new TagService(db)
     await service.createTag(name)
     // updateTag('tags')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteTag(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteTag(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
     const service = new TagService(db)
     await service.deleteTag(id)
     // updateTag('tags')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function createPost(input: CreatePostInput): Promise<ServerActionResponse<void>> {
+export async function createPost(input: CreatePostInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
@@ -135,12 +137,13 @@ export async function createPost(input: CreatePostInput): Promise<ServerActionRe
     })
 
     // updateTag('post')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function updatePost(input: UpdatePostInput): Promise<ServerActionResponse<void>> {
+export async function updatePost(input: UpdatePostInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
@@ -166,12 +169,13 @@ export async function updatePost(input: UpdatePostInput): Promise<ServerActionRe
     // updateTag('post')
     // updateTag('postById')
     // updateTag(parsed.id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deletePost(id: string): Promise<ServerActionResponse<void>> {
+export async function deletePost(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
@@ -183,6 +187,7 @@ export async function deletePost(id: string): Promise<ServerActionResponse<void>
     // updateTag('post')
     // updateTag('postById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -191,7 +196,7 @@ export async function deletePost(id: string): Promise<ServerActionResponse<void>
 export async function removeTagFromPost(
   postId: string,
   tagId: string,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable()
 
@@ -200,6 +205,7 @@ export async function removeTagFromPost(
 
     const service = new PostService(db)
     await service.removeTag(parsedPostId, parsedTagId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }

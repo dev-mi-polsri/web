@@ -1,5 +1,6 @@
 'use client'
 
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
@@ -33,11 +34,14 @@ type UserFormProps = {
 export function UserForm({
   initialValues,
   onSubmit,
-  isLoading,
+  isLoading: isLoadingProp,
   children,
   title = 'New User',
   actionButtonLabel = 'Tambah',
 }: UserFormProps) {
+  const [isPending, startTransition] = useTransition()
+  const isLoading = isLoadingProp || isPending
+  
   const form = useForm<UserFormValues>({
     email: {
       value: initialValues?.email ?? '',

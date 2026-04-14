@@ -56,7 +56,7 @@ export async function getTenagaAjarById(id: string) {
 
 export async function createTenagaAjar(
   input: CreateTenagaAjarInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsed = validateInput(createTenagaAjarSchema, input)
@@ -72,6 +72,7 @@ export async function createTenagaAjar(
     })
 
     // updateTag('tenagaAjar')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -79,7 +80,7 @@ export async function createTenagaAjar(
 
 export async function updateTenagaAjar(
   input: UpdateTenagaAjarInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsed = validateInput(updateTenagaAjarSchema, input)
@@ -99,12 +100,13 @@ export async function updateTenagaAjar(
     // updateTag('tenagaAjar')
     // updateTag('tenagaAjarById')
     // updateTag(parsed.id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteTenagaAjar(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteTenagaAjar(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsedId = validateInput(idschema, id)
@@ -115,6 +117,7 @@ export async function deleteTenagaAjar(id: string): Promise<ServerActionResponse
     // updateTag('tenagaAjar')
     // updateTag('tenagaAjarById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }

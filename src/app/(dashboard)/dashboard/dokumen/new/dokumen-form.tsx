@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { useTransition } from 'react'
 import { SaveIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -36,6 +37,7 @@ export function DokumenForm({
   title = 'New Dokumen',
   actionButtonLabel = 'Tambah',
 }: DokumenFormProps) {
+  const [isPending, startTransition] = useTransition()
   const form = useForm<DokumenFormValues>({
     name: {
       value: initialValues?.name ?? '',
@@ -84,10 +86,12 @@ export function DokumenForm({
       <div className="flex justify-between items-center">
         <h2 className="text-xl">{title}</h2>
         <Button
-          disabled={isLoading}
+          disabled={isLoading || isPending}
           onClick={() => {
             if (form.validate()) {
-              onSubmit({ ...form.getValues() })
+              startTransition(() => {
+                onSubmit({ ...form.getValues() })
+              })
             }
           }}
         >
@@ -97,13 +101,13 @@ export function DokumenForm({
       </div>
 
       <FieldGroup>
-        <Field data-disabled={isLoading}>
+        <Field data-disabled={isLoading || isPending}>
           <FieldLabel htmlFor="file">Dokumen</FieldLabel>
           <FieldContent>
             <Input
               id="file"
               type="file"
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null
 
@@ -126,14 +130,14 @@ export function DokumenForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.name.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.name.error}>
           <FieldLabel htmlFor="name">Judul</FieldLabel>
           <FieldContent>
             <Input
               id="name"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.name.value}
               onChange={(e) => form.handleChange('name', e.target.value)}
             />
@@ -141,14 +145,14 @@ export function DokumenForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.enName.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.enName.error}>
           <FieldLabel htmlFor="enName">Judul (English)</FieldLabel>
           <FieldContent>
             <Input
               id="enName"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.enName.value}
               onChange={(e) => form.handleChange('enName', e.target.value)}
             />

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
@@ -52,6 +53,7 @@ export function PostForm({
   title = 'New Post',
   actionButtonLabel = 'Tambah',
 }: PostFormProps) {
+  const [isPending, startTransition] = useTransition()
   const form = useForm<PostFormValues>({
     title: {
       value: initialValues?.title ?? '',
@@ -121,10 +123,12 @@ export function PostForm({
       <div className="flex justify-between items-center">
         <h2 className="text-xl">{title}</h2>
         <Button
-          disabled={isLoading}
+          disabled={isPending || isLoading}
           onClick={() => {
             if (form.validate()) {
-              onSubmit({ ...form.getValues() })
+              startTransition(() => {
+                onSubmit({ ...form.getValues() })
+              })
             }
           }}
         >

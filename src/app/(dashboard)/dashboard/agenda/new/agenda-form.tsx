@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
@@ -105,6 +106,7 @@ export function AgendaForm({
   title = 'New Agenda',
   actionButtonLabel = 'Tambah',
 }: AgendaFormProps) {
+  const [isPending, startTransition] = useTransition()
   const form = useForm<AgendaFormValues>({
     title: {
       value: initialValues?.title ?? '',
@@ -153,10 +155,12 @@ export function AgendaForm({
       <div className="flex justify-between items-center">
         <h2 className="text-xl">{title}</h2>
         <Button
-          disabled={isLoading}
+          disabled={isLoading || isPending}
           onClick={() => {
             if (form.validate()) {
-              onSubmit({ ...form.getValues() })
+              startTransition(() => {
+                onSubmit({ ...form.getValues() })
+              })
             }
           }}
         >
@@ -166,14 +170,14 @@ export function AgendaForm({
       </div>
 
       <FieldGroup>
-        <Field data-disabled={isLoading} data-invalid={!!form.values.title.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.title.error}>
           <FieldLabel htmlFor="title">Judul</FieldLabel>
           <FieldContent>
             <Input
               id="title"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.title.value}
               onChange={(e) => form.handleChange('title', e.target.value)}
             />
@@ -181,14 +185,14 @@ export function AgendaForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.enTitle.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.enTitle.error}>
           <FieldLabel htmlFor="enTitle">Judul (English)</FieldLabel>
           <FieldContent>
             <Input
               id="enTitle"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.enTitle.value}
               onChange={(e) => form.handleChange('enTitle', e.target.value)}
             />
@@ -196,13 +200,13 @@ export function AgendaForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.description.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.description.error}>
           <FieldLabel htmlFor="description">Deskripsi</FieldLabel>
           <FieldContent>
             <Textarea
               id="description"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.description.value}
               onChange={(e) => form.handleChange('description', e.target.value)}
             />
@@ -215,7 +219,7 @@ export function AgendaForm({
             id="startDate"
             label="Tanggal Mulai"
             value={form.values.startDate.value}
-            disabled={isLoading}
+            disabled={isLoading || isPending}
             error={form.values.startDate.error}
             onChange={(nextValue) => form.handleChange('startDate', nextValue)}
           />
@@ -224,20 +228,20 @@ export function AgendaForm({
             id="endDate"
             label="Tanggal Selesai"
             value={form.values.endDate.value}
-            disabled={isLoading}
+            disabled={isLoading || isPending}
             error={form.values.endDate.error}
             onChange={(nextValue) => form.handleChange('endDate', nextValue)}
           />
         </div>
 
-        <Field data-disabled={isLoading} data-invalid={!!form.values.location.error}>
+        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.location.error}>
           <FieldLabel htmlFor="location">Lokasi</FieldLabel>
           <FieldContent>
             <Input
               id="location"
               type="text"
               required
-              disabled={isLoading}
+              disabled={isLoading || isPending}
               value={form.values.location.value}
               onChange={(e) => form.handleChange('location', e.target.value)}
             />

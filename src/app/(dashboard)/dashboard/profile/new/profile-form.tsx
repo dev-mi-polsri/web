@@ -1,5 +1,6 @@
 'use client'
 
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
@@ -43,12 +44,15 @@ type ProfileFormProps = {
 export function ProfileForm({
   initialValues,
   onSubmit,
-  isLoading,
+  isLoading: isLoadingProp,
   children,
   skipValidation,
   title = 'New Profile',
   actionButtonLabel = 'Tambah',
 }: ProfileFormProps) {
+  const [isPending, startTransition] = useTransition()
+  const isLoading = isLoadingProp || isPending
+  
   const form = useForm<ProfileFormValues>({
     title: {
       value: initialValues?.title ?? '',
@@ -119,7 +123,9 @@ export function ProfileForm({
           disabled={isLoading}
           onClick={() => {
             if (form.validate()) {
-              onSubmit({ ...form.getValues() })
+              startTransition(() => {
+                onSubmit({ ...form.getValues() })
+              })
             }
           }}
         >

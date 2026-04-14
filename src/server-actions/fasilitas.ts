@@ -53,7 +53,7 @@ export async function getFasilitas(criteria: FasilitasCriteria, pageable: Pagina
 
 export async function createFasilitas(
   input: CreateFasilitasInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -70,6 +70,7 @@ export async function createFasilitas(
     })
 
     // updateTag('fasilitas')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
@@ -77,7 +78,7 @@ export async function createFasilitas(
 
 export async function updateFasilitas(
   input: UpdateFasilitasInput,
-): Promise<ServerActionResponse<void>> {
+): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -99,12 +100,13 @@ export async function updateFasilitas(
     // updateTag('fasilitas')
     // updateTag('fasilitasById')
     // updateTag(parsed.id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteFasilitas(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteFasilitas(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
 
@@ -116,6 +118,7 @@ export async function deleteFasilitas(id: string): Promise<ServerActionResponse<
     // updateTag('fasilitas')
     // updateTag('fasilitasById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }

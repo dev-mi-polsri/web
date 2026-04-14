@@ -60,7 +60,7 @@ export async function getAgendaById(id: string) {
   return agendaService.getAgendaById(parsedId)
 }
 
-export async function createAgenda(input: CreateAgendaInput): Promise<ServerActionResponse<void>> {
+export async function createAgenda(input: CreateAgendaInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsedInput = validateInput(createAgendaSchema, input)
@@ -68,12 +68,13 @@ export async function createAgenda(input: CreateAgendaInput): Promise<ServerActi
     const agendaService = new AgendaService(db)
     await agendaService.createAgenda(parsedInput)
     // updateTag('agenda')
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActionResponse<void>> {
+export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsedInput = validateInput(updateAgendaSchema, input)
@@ -84,12 +85,13 @@ export async function updateAgenda(input: UpdateAgendaInput): Promise<ServerActi
     // updateTag('agenda')
     // updateTag('agendaById')
     // updateTag(id)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
 }
 
-export async function deleteAgenda(id: string): Promise<ServerActionResponse<void>> {
+export async function deleteAgenda(id: string): Promise<ServerActionResponse<boolean>> {
   try {
     await getSessionThrowable(['admin'])
     const parsedId = validateInput(idschema, id)
@@ -100,6 +102,7 @@ export async function deleteAgenda(id: string): Promise<ServerActionResponse<voi
     // updateTag('agenda')
     // updateTag('agendaById')
     // updateTag(parsedId)
+    return true
   } catch (error) {
     return handleServerActionError(error)
   }
