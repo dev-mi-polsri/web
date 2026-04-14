@@ -1,0 +1,111 @@
+
+> mi-polsri@1.0.0 build
+> cross-env NODE_OPTIONS=--no-deprecation next build --webpack
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Γû▓ Next.js 16.0.11 (webpack)
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     ┬╖ serverActions
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 15.2s
+   Running TypeScript ...
+   Collecting page data using 11 workers ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 11 workers (0/41) ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+(node:1924) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+
+To prepare for this change:
+- If you want the current behavior, explicitly use 'sslmode=verify-full'
+- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+
+See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+(Use `node --trace-warnings ...` to show where the warning was created)
+   Generating static pages using 11 workers (10/41) 
+   Generating static pages using 11 workers (20/41) 
+   Generating static pages using 11 workers (30/41) 
+ Γ£ô Generating static pages using 11 workers (41/41) in 2.6s
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)
+Γöî Γùï /_not-found
+Γö£ ╞Æ /[locale]
+Γö£ ╞Æ /[locale]/agenda
+Γö£ ╞Æ /[locale]/dokumen
+Γö£ ╞Æ /[locale]/dosen
+Γö£ ╞Æ /[locale]/news
+Γö£ ╞Æ /[locale]/news/[slug]
+Γö£ ╞Æ /[locale]/profile/[slug]
+Γö£ ╞Æ /[locale]/program/[slug]
+Γö£ ╞Æ /api/agenda
+Γö£ ╞Æ /api/agenda/[id]
+Γö£ ╞Æ /api/auth/[...all]
+Γö£ ╞Æ /api/blob-proxy/[...path]
+Γö£ ╞Æ /api/dokumen
+Γö£ ╞Æ /api/dokumen/[id]
+Γö£ ╞Æ /api/fasilitas
+Γö£ ╞Æ /api/fasilitas/[id]
+Γö£ ╞Æ /api/media
+Γö£ ╞Æ /api/media/uploads/[name]
+Γö£ ╞Æ /api/post
+Γö£ ╞Æ /api/post/[id]
+Γö£ ╞Æ /api/post/slug/[slug]
+Γö£ ╞Æ /api/prodi
+Γö£ ╞Æ /api/prodi/[id]
+Γö£ ╞Æ /api/prodi/slug/[slug]
+Γö£ ╞Æ /api/profile
+Γö£ ╞Æ /api/profile/[id]
+Γö£ ╞Æ /api/profile/slug/[slug]
+Γö£ ╞Æ /api/tenaga-ajar
+Γö£ ╞Æ /api/tenaga-ajar/[id]
+Γö£ Γùï /auth
+Γö£ ╞Æ /dashboard
+Γö£ ╞Æ /dashboard/agenda
+Γö£ ╞Æ /dashboard/agenda/edit/[id]
+Γö£ ╞Æ /dashboard/agenda/new
+Γö£ ╞Æ /dashboard/dokumen
+Γö£ ╞Æ /dashboard/dokumen/edit/[id]
+Γö£ ╞Æ /dashboard/dokumen/new
+Γö£ ╞Æ /dashboard/fasilitas
+Γö£ ╞Æ /dashboard/fasilitas/edit/[id]
+Γö£ ╞Æ /dashboard/fasilitas/new
+Γö£ ╞Æ /dashboard/management
+Γö£ ╞Æ /dashboard/posts
+Γö£ ╞Æ /dashboard/posts/edit/[id]
+Γö£ ╞Æ /dashboard/posts/new
+Γö£ ╞Æ /dashboard/prodi
+Γö£ ╞Æ /dashboard/prodi/edit/[id]
+Γö£ ╞Æ /dashboard/prodi/new
+Γö£ ╞Æ /dashboard/profile
+Γö£ ╞Æ /dashboard/profile/edit/[id]
+Γö£ ╞Æ /dashboard/profile/new
+Γö£ ╞Æ /dashboard/tenaga-ajar
+Γö£ ╞Æ /dashboard/tenaga-ajar/edit/[id]
+Γö£ ╞Æ /dashboard/tenaga-ajar/new
+Γö£ ╞Æ /dashboard/user
+Γö£ ╞Æ /dashboard/user/edit/[id]
+Γö£ ╞Æ /dashboard/user/new
+Γö£ ╞Æ /posts-sitemap.xml
+Γöö Γùï /sitemap.xml
+
+
+╞Æ Proxy (Middleware)
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+
