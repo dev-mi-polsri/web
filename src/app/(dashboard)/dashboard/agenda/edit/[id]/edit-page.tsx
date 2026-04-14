@@ -7,7 +7,7 @@ import { AgendaForm } from '../../new/agenda-form'
 import { updateAgenda } from '@/server-actions/agenda'
 import { parseDate } from '@/lib/date'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 type EditAgendaPageProps = {
   agenda: Agenda
@@ -15,7 +15,7 @@ type EditAgendaPageProps = {
 
 export default function EditAgendaPage({ agenda }: EditAgendaPageProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -33,32 +33,32 @@ export default function EditAgendaPage({ agenda }: EditAgendaPageProps) {
           endDate: parseDate(agenda.endDate as unknown as Date),
           location: agenda.location,
         }}
+        isLoading={isPending}
         onSubmit={async (values) => {
-          try {
-            setIsLoading(true)
-            const result = await updateAgenda({
-              id: agenda.id,
-              title: values.title,
-              enTitle: values.enTitle,
-              description: values.description,
-              startDate: values.startDate,
-              endDate: values.endDate,
-              location: values.location,
-            })
+          startTransition(async () => {
+            try {
+              const result = await updateAgenda({
+                id: agenda.id,
+                title: values.title,
+                enTitle: values.enTitle,
+                description: values.description,
+                startDate: values.startDate,
+                endDate: values.endDate,
+                location: values.location,
+              })
 
-            if (result && typeof result === 'object' && 'error' in result) {
-              toast.error(result.error)
-              return
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Agenda berhasil diperbarui')
+              router.push('/dashboard/agenda')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal memperbarui agenda')
             }
-
-            toast.success('Agenda berhasil diperbarui')
-            router.push('/dashboard/agenda')
-            router.refresh()
-          } catch (error) {
-            toast.error('Gagal memperbarui agenda')
-          } finally {
-            setIsLoading(false)
-          }
+          })
         }}
       />
     </div>

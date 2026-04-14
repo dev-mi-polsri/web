@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation'
 import BackButton from '../../_components/back-button'
 import { createProfile } from '@/server-actions/profile'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 export default function NewProfileClient() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <div className="flex flex-col gap-4">
@@ -18,30 +18,30 @@ export default function NewProfileClient() {
         <BackButton />
       </div>
       <ProfileForm
+        isLoading={isPending}
         onSubmit={async (values) => {
-          try {
-            setIsLoading(true)
-            const result = await createProfile({
-              title: values.title,
-              description: values.description,
-              content: values.content!,
-              scope: values.scope,
-              thumbnail: await Base64Utils.toDataUrl(values.thumbnail!),
-            })
+          startTransition(async () => {
+            try {
+              const result = await createProfile({
+                title: values.title,
+                description: values.description,
+                content: values.content!,
+                scope: values.scope,
+                thumbnail: await Base64Utils.toDataUrl(values.thumbnail!),
+              })
 
-            if (result && typeof result === 'object' && 'error' in result) {
-              toast.error(result.error)
-              return
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Profile berhasil dibuat')
+              router.push('/dashboard/profile')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal membuat profile')
             }
-
-            toast.success('Profile berhasil dibuat')
-            router.push('/dashboard/profile')
-            router.refresh()
-          } catch (error) {
-            toast.error('Gagal membuat profile')
-          } finally {
-            setIsLoading(false)
-          }
+          })
         }}
       />
     </div>

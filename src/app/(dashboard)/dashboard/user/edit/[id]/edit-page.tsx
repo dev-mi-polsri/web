@@ -17,6 +17,7 @@ import {
 import { authClient } from '@/lib/auth.client'
 import { useForm, type FormValue } from '@/lib/form'
 import { updatePasswordAdmin, updateUserRole } from '@/server-actions/auth'
+import { useTransition } from 'react'
 
 function isActionError(res: unknown): res is { error: string; code: string } {
   return typeof res === 'object' && res !== null && 'error' in res
@@ -31,6 +32,7 @@ type EditUser = {
 
 export default function EditUserPage({ user }: { user: EditUser }) {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
 
   const detailsForm = useForm<{ name: FormValue<string> }>({
     name: {
@@ -79,6 +81,7 @@ export default function EditUserPage({ user }: { user: EditUser }) {
               <FieldContent>
                 <Input
                   id="user-name"
+                  disabled={isPending}
                   value={detailsForm.values.name.value}
                   onChange={(e) => detailsForm.handleChange('name', e.target.value)}
                 />
@@ -87,21 +90,24 @@ export default function EditUserPage({ user }: { user: EditUser }) {
             </Field>
 
             <Button
+              disabled={isPending}
               variant="secondary"
               onClick={async () => {
                 if (!detailsForm.validate()) return
-                const res = await authClient.admin.updateUser({
-                  userId: user.id,
-                  data: {
-                    name: detailsForm.values.name.value,
-                  },
+                startTransition(async () => {
+                  const res = await authClient.admin.updateUser({
+                    userId: user.id,
+                    data: {
+                      name: detailsForm.values.name.value,
+                    },
+                  })
+                  if (res.error) {
+                    toast.error(res.error.message)
+                    return
+                  }
+                  toast.success('User berhasil diperbarui')
+                  router.refresh()
                 })
-                if (res.error) {
-                  toast.error(res.error.message)
-                  return
-                }
-                toast.success('User berhasil diperbarui')
-                router.refresh()
               }}
             >
               Save
@@ -116,6 +122,7 @@ export default function EditUserPage({ user }: { user: EditUser }) {
               <FieldLabel htmlFor="user-role">Role</FieldLabel>
               <FieldContent>
                 <Select
+                  disabled={isPending}
                   value={roleForm.values.role.value}
                   onValueChange={(value) =>
                     roleForm.handleChange('role', value as 'admin' | 'user')
@@ -133,19 +140,22 @@ export default function EditUserPage({ user }: { user: EditUser }) {
             </Field>
 
             <Button
+              disabled={isPending}
               variant="secondary"
               onClick={async () => {
                 if (!roleForm.validate()) return
-                const res = await updateUserRole({
-                  userId: user.id,
-                  role: roleForm.values.role.value,
+                startTransition(async () => {
+                  const res = await updateUserRole({
+                    userId: user.id,
+                    role: roleForm.values.role.value,
+                  })
+                  if (isActionError(res)) {
+                    toast.error(res.code, { description: res.error })
+                    return
+                  }
+                  toast.success('Role berhasil diperbarui')
+                  router.refresh()
                 })
-                if (isActionError(res)) {
-                  toast.error(res.code, { description: res.error })
-                  return
-                }
-                toast.success('Role berhasil diperbarui')
-                router.refresh()
               }}
             >
               Save
@@ -162,6 +172,7 @@ export default function EditUserPage({ user }: { user: EditUser }) {
                 <Input
                   id="user-password"
                   type="password"
+                  disabled={isPending}
                   value={passwordForm.values.newPassword.value}
                   onChange={(e) => passwordForm.handleChange('newPassword', e.target.value)}
                 />
@@ -170,22 +181,25 @@ export default function EditUserPage({ user }: { user: EditUser }) {
             </Field>
 
             <Button
+              disabled={isPending}
               variant="secondary"
               onClick={async () => {
                 if (!passwordForm.validate()) return
 
-                const res = await updatePasswordAdmin({
-                  userId: user.id,
-                  newPassword: passwordForm.values.newPassword.value,
-                })
-                if (isActionError(res)) {
-                  toast.error(res.code, { description: res.error })
-                  return
-                }
+                startTransition(async () => {
+                  const res = await updatePasswordAdmin({
+                    userId: user.id,
+                    newPassword: passwordForm.values.newPassword.value,
+                  })
+                  if (isActionError(res)) {
+                    toast.error(res.code, { description: res.error })
+                    return
+                  }
 
-                toast.success('Password berhasil diperbarui')
-                passwordForm.handleChange('newPassword', '')
-                router.refresh()
+                  toast.success('Password berhasil diperbarui')
+                  passwordForm.handleChange('newPassword', '')
+                  router.refresh()
+                })
               }}
             >
               Save

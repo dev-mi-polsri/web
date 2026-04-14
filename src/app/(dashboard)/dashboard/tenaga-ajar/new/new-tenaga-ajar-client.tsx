@@ -6,11 +6,11 @@ import BackButton from '../../_components/back-button'
 import { createTenagaAjar } from '@/server-actions/tenaga-ajar'
 import { TenagaAjarForm } from './tenaga-ajar-form'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 export default function NewTenagaAjarClient() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -18,33 +18,33 @@ export default function NewTenagaAjarClient() {
         <BackButton />
       </div>
       <TenagaAjarForm
+        isLoading={isPending}
         onSubmit={async (values) => {
-          try {
-            setIsLoading(true)
-            const result = await createTenagaAjar({
-              nama: values.nama,
-              jenis: values.jenis,
-              homebase: values.homebase,
-              foto: await Base64Utils.toDataUrl(values.foto!),
-              nip: values.nip,
-              nidn: values.nidn || undefined,
-              nuptk: values.nuptk || undefined,
-              isPejabat: values.isPejabat,
-            })
+          startTransition(async () => {
+            try {
+              const result = await createTenagaAjar({
+                nama: values.nama,
+                jenis: values.jenis,
+                homebase: values.homebase,
+                foto: await Base64Utils.toDataUrl(values.foto!),
+                nip: values.nip,
+                nidn: values.nidn || undefined,
+                nuptk: values.nuptk || undefined,
+                isPejabat: values.isPejabat,
+              })
 
-            if (result && typeof result === 'object' && 'error' in result) {
-              toast.error(result.error)
-              return
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Tenaga ajar berhasil dibuat')
+              router.push('/dashboard/tenaga-ajar')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal membuat tenaga ajar')
             }
-
-            toast.success('Tenaga ajar berhasil dibuat')
-            router.push('/dashboard/tenaga-ajar')
-            router.refresh()
-          } catch (error) {
-            toast.error('Gagal membuat tenaga ajar')
-          } finally {
-            setIsLoading(false)
-          }
+          })
         }}
       />
     </div>

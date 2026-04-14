@@ -6,7 +6,7 @@ import { FasilitasForm } from '../../new/fasilitas-form'
 import { updateFasilitas } from '@/server-actions/fasilitas'
 import { Base64Utils } from '@/lib/base64'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 type EditFasilitasPageProps = {
   fasilitas: Fasilitas
@@ -14,7 +14,7 @@ type EditFasilitasPageProps = {
 
 export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <>
@@ -29,34 +29,34 @@ export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps)
             name: fasilitas.name,
             enName: fasilitas.enName,
           }}
+          isLoading={isPending}
           onSubmit={async (values) => {
-            try {
-              setIsLoading(true)
-              let image
-              if (values.foto instanceof File) {
-                image = await Base64Utils.toDataUrl(values.foto)
+            startTransition(async () => {
+              try {
+                let image
+                if (values.foto instanceof File) {
+                  image = await Base64Utils.toDataUrl(values.foto)
+                }
+
+                const result = await updateFasilitas({
+                  id: fasilitas.id,
+                  name: values.name,
+                  enName: values.enName,
+                  ...(image ? { image } : {}),
+                })
+
+                if (result && typeof result === 'object' && 'error' in result) {
+                  toast.error(result.error)
+                  return
+                }
+
+                toast.success('Fasilitas berhasil diperbarui')
+                router.push('/dashboard/fasilitas')
+                router.refresh()
+              } catch (error) {
+                toast.error('Gagal memperbarui fasilitas')
               }
-
-              const result = await updateFasilitas({
-                id: fasilitas.id,
-                name: values.name,
-                enName: values.enName,
-                ...(image ? { image } : {}),
-              })
-
-              if (result && typeof result === 'object' && 'error' in result) {
-                toast.error(result.error)
-                return
-              }
-
-              toast.success('Fasilitas berhasil diperbarui')
-              router.push('/dashboard/fasilitas')
-              router.refresh()
-            } catch (error) {
-              toast.error('Gagal memperbarui fasilitas')
-            } finally {
-              setIsLoading(false)
-            }
+            })
           }}
           skipValidation={{ foto: true }}
         />

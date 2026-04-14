@@ -37,7 +37,6 @@ export function DokumenForm({
   title = 'New Dokumen',
   actionButtonLabel = 'Tambah',
 }: DokumenFormProps) {
-  const [isPending, startTransition] = useTransition()
   const form = useForm<DokumenFormValues>({
     name: {
       value: initialValues?.name ?? '',
@@ -86,12 +85,10 @@ export function DokumenForm({
       <div className="flex justify-between items-center">
         <h2 className="text-xl">{title}</h2>
         <Button
-          disabled={isLoading || isPending}
+          disabled={isLoading}
           onClick={() => {
             if (form.validate()) {
-              startTransition(() => {
-                onSubmit({ ...form.getValues() })
-              })
+              onSubmit({ ...form.getValues() })
             }
           }}
         >
@@ -101,13 +98,13 @@ export function DokumenForm({
       </div>
 
       <FieldGroup>
-        <Field data-disabled={isLoading || isPending}>
+        <Field data-disabled={isLoading}>
           <FieldLabel htmlFor="file">Dokumen</FieldLabel>
           <FieldContent>
             <Input
               id="file"
               type="file"
-              disabled={isLoading || isPending}
+              disabled={isLoading}
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null
 
@@ -130,14 +127,14 @@ export function DokumenForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.name.error}>
+        <Field data-disabled={isLoading} data-invalid={!!form.values.name.error}>
           <FieldLabel htmlFor="name">Judul</FieldLabel>
           <FieldContent>
             <Input
               id="name"
               type="text"
               required
-              disabled={isLoading || isPending}
+              disabled={isLoading}
               value={form.values.name.value}
               onChange={(e) => form.handleChange('name', e.target.value)}
             />
@@ -145,14 +142,14 @@ export function DokumenForm({
           </FieldContent>
         </Field>
 
-        <Field data-disabled={isLoading || isPending} data-invalid={!!form.values.enName.error}>
+        <Field data-disabled={isLoading} data-invalid={!!form.values.enName.error}>
           <FieldLabel htmlFor="enName">Judul (English)</FieldLabel>
           <FieldContent>
             <Input
               id="enName"
               type="text"
               required
-              disabled={isLoading || isPending}
+              disabled={isLoading}
               value={form.values.enName.value}
               onChange={(e) => form.handleChange('enName', e.target.value)}
             />

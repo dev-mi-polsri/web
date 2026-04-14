@@ -7,7 +7,7 @@ import { TenagaAjarForm } from '../../new/tenaga-ajar-form'
 import { updateTenagaAjar } from '@/server-actions/tenaga-ajar'
 import { Base64Utils } from '@/lib/base64'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 type EditTenagaAjarPageProps = {
   tenagaAjar: TenagaAjar
@@ -15,7 +15,7 @@ type EditTenagaAjarPageProps = {
 
 export default function EditTenagaAjarPage({ tenagaAjar }: EditTenagaAjarPageProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <div className="flex flex-col gap-4 max-w-screen-sm">
@@ -34,34 +34,34 @@ export default function EditTenagaAjarPage({ tenagaAjar }: EditTenagaAjarPagePro
           nuptk: tenagaAjar.nuptk ?? '',
           isPejabat: tenagaAjar.isPejabat,
         }}
+        isLoading={isPending}
         onSubmit={async (values) => {
-          try {
-            setIsLoading(true)
-            const result = await updateTenagaAjar({
-              id: tenagaAjar.id,
-              nama: values.nama,
-              jenis: values.jenis,
-              homebase: values.homebase,
-              nip: values.nip,
-              nidn: values.nidn || undefined,
-              nuptk: values.nuptk || undefined,
-              isPejabat: values.isPejabat,
-              ...(values.foto ? { foto: await Base64Utils.toDataUrl(values.foto) } : {}),
-            })
+          startTransition(async () => {
+            try {
+              const result = await updateTenagaAjar({
+                id: tenagaAjar.id,
+                nama: values.nama,
+                jenis: values.jenis,
+                homebase: values.homebase,
+                nip: values.nip,
+                nidn: values.nidn || undefined,
+                nuptk: values.nuptk || undefined,
+                isPejabat: values.isPejabat,
+                ...(values.foto ? { foto: await Base64Utils.toDataUrl(values.foto) } : {}),
+              })
 
-            if (result && typeof result === 'object' && 'error' in result) {
-              toast.error(result.error)
-              return
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Tenaga ajar berhasil diperbarui')
+              router.push('/dashboard/tenaga-ajar')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal memperbarui tenaga ajar')
             }
-
-            toast.success('Tenaga ajar berhasil diperbarui')
-            router.push('/dashboard/tenaga-ajar')
-            router.refresh()
-          } catch (error) {
-            toast.error('Gagal memperbarui tenaga ajar')
-          } finally {
-            setIsLoading(false)
-          }
+          })
         }}
         skipValidation={{ foto: true }}
       />

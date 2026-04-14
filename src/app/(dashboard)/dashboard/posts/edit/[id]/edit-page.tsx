@@ -6,7 +6,7 @@ import { updatePost } from '@/server-actions/post'
 import { Base64Utils } from '@/lib/base64'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 type EditPostPageProps = {
   post: Post
@@ -14,7 +14,7 @@ type EditPostPageProps = {
 
 export default function EditPostPage({ post }: EditPostPageProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <>
@@ -33,38 +33,38 @@ export default function EditPostPage({ post }: EditPostPageProps) {
             isFeatured: post.isFeatured,
             isPublished: post.isPublished,
           }}
+          isLoading={isPending}
           onSubmit={async (values) => {
-            try {
-              setIsLoading(true)
-              let thumbnail
-              if (values.thumbnail instanceof File) {
-                thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+            startTransition(async () => {
+              try {
+                let thumbnail
+                if (values.thumbnail instanceof File) {
+                  thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+                }
+
+                const result = await updatePost({
+                  id: post.id,
+                  title: values.title,
+                  content: values.content!,
+                  type: values.type,
+                  scope: values.scope,
+                  isFeatured: values.isFeatured,
+                  isPublished: values.isPublished,
+                  thumbnail,
+                })
+
+                if (result && typeof result === 'object' && 'error' in result) {
+                  toast.error(result.error)
+                  return
+                }
+
+                toast.success('Post berhasil diperbarui')
+                router.push('/dashboard/posts')
+                router.refresh()
+              } catch (error) {
+                toast.error('Gagal memperbarui post')
               }
-
-              const result = await updatePost({
-                id: post.id,
-                title: values.title,
-                content: values.content!,
-                type: values.type,
-                scope: values.scope,
-                isFeatured: values.isFeatured,
-                isPublished: values.isPublished,
-                thumbnail,
-              })
-
-              if (result && typeof result === 'object' && 'error' in result) {
-                toast.error(result.error)
-                return
-              }
-
-              toast.success('Post berhasil diperbarui')
-              router.push('/dashboard/posts')
-              router.refresh()
-            } catch (error) {
-              toast.error('Gagal memperbarui post')
-            } finally {
-              setIsLoading(false)
-            }
+            })
           }}
           skipValidation={{ thumbnail: true }}
         />

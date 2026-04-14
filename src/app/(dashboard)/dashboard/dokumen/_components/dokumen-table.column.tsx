@@ -4,6 +4,9 @@ import { toast } from 'sonner'
 import { DeleteButton, EditButton } from '@/components/table/data-table.action-buttons'
 import type { Dokumen } from '@/schemas/DokumenTable'
 import { deleteDokumen } from '@/server-actions/dokumen'
+import { Button } from '@/components/ui/button'
+import { DownloadIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export const dokumenTableColumn: ColumnDef<Dokumen>[] = [
   {
@@ -21,7 +24,14 @@ export const dokumenTableColumn: ColumnDef<Dokumen>[] = [
   },
   {
     accessorKey: 'url',
-    header: 'URL',
+    header: 'Download',
+    cell: ({ row }) => (
+      <Link href={row.original.url} target="_blank">
+        <Button size="icon-sm">
+          <DownloadIcon />
+        </Button>
+      </Link>
+    ),
   },
   {
     id: 'action',

@@ -7,7 +7,7 @@ import { updateProfile } from '@/server-actions/profile'
 import { Base64Utils } from '@/lib/base64'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useTransition } from 'react'
 
 type EditProfilePageProps = {
   profile: Profile
@@ -15,7 +15,7 @@ type EditProfilePageProps = {
 
 export default function EditProfilePage({ profile }: EditProfilePageProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   return (
     <div className="flex flex-col gap-4">
@@ -31,36 +31,36 @@ export default function EditProfilePage({ profile }: EditProfilePageProps) {
           description: profile.description,
           scope: profile.scope,
         }}
+        isLoading={isPending}
         onSubmit={async (values) => {
-          try {
-            setIsLoading(true)
-            let thumbnail
-            if (values.thumbnail instanceof File) {
-              thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+          startTransition(async () => {
+            try {
+              let thumbnail
+              if (values.thumbnail instanceof File) {
+                thumbnail = await Base64Utils.toDataUrl(values.thumbnail)
+              }
+
+              const result = await updateProfile({
+                id: profile.id,
+                title: values.title,
+                description: values.description,
+                content: values.content!,
+                scope: values.scope,
+                thumbnail,
+              })
+
+              if (result && typeof result === 'object' && 'error' in result) {
+                toast.error(result.error)
+                return
+              }
+
+              toast.success('Profile berhasil diperbarui')
+              router.push('/dashboard/profile')
+              router.refresh()
+            } catch (error) {
+              toast.error('Gagal memperbarui profile')
             }
-
-            const result = await updateProfile({
-              id: profile.id,
-              title: values.title,
-              description: values.description,
-              content: values.content!,
-              scope: values.scope,
-              thumbnail,
-            })
-
-            if (result && typeof result === 'object' && 'error' in result) {
-              toast.error(result.error)
-              return
-            }
-
-            toast.success('Profile berhasil diperbarui')
-            router.push('/dashboard/profile')
-            router.refresh()
-          } catch (error) {
-            toast.error('Gagal memperbarui profile')
-          } finally {
-            setIsLoading(false)
-          }
+          })
         }}
         skipValidation={{ thumbnail: true }}
       />
