@@ -85,7 +85,7 @@ export class VercelBlobIOAdapter implements IOAdapter {
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${extension}`
 
       const result = await put(fileName, file, {
-        access: 'private',
+        access: 'public',
         addRandomSuffix: false,
       })
 
@@ -98,7 +98,7 @@ export class VercelBlobIOAdapter implements IOAdapter {
   async read(url: FileName, type: MimeType): Promise<Blob | undefined> {
     try {
       const result = await get(url, {
-        access: 'private',
+        access: 'public',
       })
 
       if (result?.statusCode === 304) {
