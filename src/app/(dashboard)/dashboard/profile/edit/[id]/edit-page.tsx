@@ -56,7 +56,6 @@ export default function EditProfilePage({ profile }: EditProfilePageProps) {
 
               toast.success('Profile berhasil diperbarui')
               router.push('/dashboard/profile')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal memperbarui profile')
             }

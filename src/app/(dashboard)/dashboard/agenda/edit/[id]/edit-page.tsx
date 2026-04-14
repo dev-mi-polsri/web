@@ -54,7 +54,6 @@ export default function EditAgendaPage({ agenda }: EditAgendaPageProps) {
 
               toast.success('Agenda berhasil diperbarui')
               router.push('/dashboard/agenda')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal memperbarui agenda')
             }

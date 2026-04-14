@@ -56,7 +56,6 @@ export default function EditProdiPage({ prodi }: EditProdiPageProps) {
 
               toast.success('Prodi berhasil diperbarui')
               router.push('/dashboard/prodi')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal memperbarui prodi')
             }

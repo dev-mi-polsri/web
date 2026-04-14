@@ -37,7 +37,6 @@ export default function NewProfileClient() {
 
               toast.success('Profile berhasil dibuat')
               router.push('/dashboard/profile')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal membuat profile')
             }

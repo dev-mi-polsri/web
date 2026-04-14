@@ -39,7 +39,6 @@ export default function NewPostClient() {
 
                 toast.success('Post berhasil dibuat')
                 router.push('/dashboard/posts')
-                router.refresh()
               } catch (error) {
                 toast.error('Gagal membuat post')
               }

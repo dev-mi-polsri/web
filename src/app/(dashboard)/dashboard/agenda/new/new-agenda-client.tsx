@@ -37,7 +37,6 @@ export default function NewAgendaClient() {
 
               toast.success('Agenda berhasil dibuat')
               router.push('/dashboard/agenda')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal membuat agenda')
             }

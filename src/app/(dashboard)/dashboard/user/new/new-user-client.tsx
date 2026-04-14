@@ -34,7 +34,6 @@ export default function NewUserClient() {
 
             toast.success('User berhasil dibuat')
             router.push('/dashboard/user')
-            router.refresh()
           })
         }}
       />

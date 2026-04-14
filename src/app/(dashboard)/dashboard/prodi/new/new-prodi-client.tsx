@@ -37,7 +37,6 @@ export default function NewProdiClient() {
 
               toast.success('Prodi berhasil dibuat')
               router.push('/dashboard/prodi')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal membuat prodi')
             }

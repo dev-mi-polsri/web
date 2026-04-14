@@ -35,7 +35,6 @@ export default function NewFasilitasClient() {
 
                 toast.success('Fasilitas berhasil dibuat')
                 router.push('/dashboard/fasilitas')
-                router.refresh()
               } catch (error) {
                 toast.error('Gagal membuat fasilitas')
               }

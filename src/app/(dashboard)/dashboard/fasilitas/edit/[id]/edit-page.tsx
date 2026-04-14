@@ -52,7 +52,6 @@ export default function EditFasilitasPage({ fasilitas }: EditFasilitasPageProps)
 
                 toast.success('Fasilitas berhasil diperbarui')
                 router.push('/dashboard/fasilitas')
-                router.refresh()
               } catch (error) {
                 toast.error('Gagal memperbarui fasilitas')
               }

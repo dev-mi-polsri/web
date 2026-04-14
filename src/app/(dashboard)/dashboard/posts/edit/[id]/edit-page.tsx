@@ -60,7 +60,6 @@ export default function EditPostPage({ post }: EditPostPageProps) {
 
                 toast.success('Post berhasil diperbarui')
                 router.push('/dashboard/posts')
-                router.refresh()
               } catch (error) {
                 toast.error('Gagal memperbarui post')
               }

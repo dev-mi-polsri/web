@@ -40,7 +40,6 @@ export default function NewTenagaAjarClient() {
 
               toast.success('Tenaga ajar berhasil dibuat')
               router.push('/dashboard/tenaga-ajar')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal membuat tenaga ajar')
             }

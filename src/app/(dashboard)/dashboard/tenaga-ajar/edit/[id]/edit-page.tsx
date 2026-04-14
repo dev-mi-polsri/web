@@ -57,7 +57,6 @@ export default function EditTenagaAjarPage({ tenagaAjar }: EditTenagaAjarPagePro
 
               toast.success('Tenaga ajar berhasil diperbarui')
               router.push('/dashboard/tenaga-ajar')
-              router.refresh()
             } catch (error) {
               toast.error('Gagal memperbarui tenaga ajar')
             }
