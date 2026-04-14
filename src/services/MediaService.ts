@@ -10,7 +10,7 @@ import {
 } from '@/schemas/MediaTable'
 import type { Kysely } from 'kysely'
 import { normalizePagination, ServiceError } from '@/services/_common'
-import { IOAdapter, VercelBlobIOAdapter } from '@/lib/io'
+import { IOAdapter, IOAdapterFactory } from '@/lib/io'
 
 export interface IMediaService {
   getMedia(criteria: MediaCriteria, pageable?: PaginationRequest): Promise<PaginatedResult<Media>>
@@ -37,7 +37,7 @@ export class MediaService implements IMediaService {
 
   constructor(db: Kysely<Database>, io?: IOAdapter) {
     this.repository = new MediaRepository(db)
-    this.io = io ?? new VercelBlobIOAdapter()
+    this.io = io ?? IOAdapterFactory.create()
   }
 
   async getMedia(

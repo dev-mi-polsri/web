@@ -2,7 +2,7 @@ import { PaginatedResult, PaginationRequest } from '@/repository/_contracts'
 import { Fasilitas, NewFasilitas, UpdateFasilitas } from '@/schemas/FasilitasTable'
 import { FasilitasCriteria, FasilitasRepository } from '@/repository/FasilitasRepository'
 import { Database } from '@/lib/db'
-import { IOAdapter, VercelBlobIOAdapter } from '@/lib/io'
+import { IOAdapter, IOAdapterFactory } from '@/lib/io'
 import { Kysely } from 'kysely'
 import { normalizePagination, ServiceError } from '@/services/_common'
 
@@ -28,7 +28,7 @@ export class FasilitasService implements IFasilitasService {
   private repository: FasilitasRepository
 
   constructor(db: Kysely<Database>, io?: IOAdapter) {
-    this.repository = new FasilitasRepository(db, io ?? new VercelBlobIOAdapter())
+    this.repository = new FasilitasRepository(db, io ?? IOAdapterFactory.create())
   }
 
   async getFasilitas(

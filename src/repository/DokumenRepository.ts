@@ -3,7 +3,7 @@ import { PaginatedResult, PaginationRequest, processPagination } from '@/reposit
 import { Dokumen, NewDokumen, UpdateDokumen } from '@/schemas/DokumenTable'
 import { DeleteResult, InsertResult, Kysely } from 'kysely'
 import { Database } from '@/lib/db'
-import { IOAdapter, VercelBlobIOAdapter } from '@/lib/io'
+import { IOAdapter, IOAdapterFactory } from '@/lib/io'
 
 export type DokumenCriteria = {
   searchKeyword?: string
@@ -24,7 +24,7 @@ export class DokumenRepository implements IDokumenRepository {
 
   constructor(database: Kysely<Database>, io?: IOAdapter) {
     this.db = database
-    this.io = io ?? new VercelBlobIOAdapter()
+    this.io = io ?? IOAdapterFactory.create()
   }
 
   async getAll(
