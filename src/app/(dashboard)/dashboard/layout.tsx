@@ -28,8 +28,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="h-[calc(100dvh-var(--navbar-height))] hidden md:flex flex-col gap-4 overflow-y-auto p-4">
           <Sidebar />
         </div>
-        <ScrollArea className="max-w-6xl w-full h-[calc(100dvh-var(--navbar-height))] overflow-auto mx-auto col-span-5 p-4 ">
-          <div>{children}</div>
+        <ScrollArea className="w-full h-[calc(100dvh-var(--navbar-height))] col-span-5 p-4">
+          <div className="overflow-x-auto max-w-6xl mx-auto w-full">{children}</div>
         </ScrollArea>
       </div>
     </>
