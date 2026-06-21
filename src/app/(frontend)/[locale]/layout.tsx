@@ -51,7 +51,7 @@ export default async function RootLayout({
 
   return (
     <NextIntlClientProvider>
-      <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+      <ThemeProvider attribute="class" enableSystem>
         <Navbar />
         <main>{children}</main>
         <Footer />

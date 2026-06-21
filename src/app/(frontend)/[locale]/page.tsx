@@ -1,4 +1,3 @@
-import React from 'react'
 import { Hero } from './_sections/hero-video'
 import Partners from './_sections/partners'
 import Profile from './_sections/profile'
